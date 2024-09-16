@@ -1,0 +1,63 @@
+// SPDX-License-Identifier: MPL-2.0
+namespace Escapey.Providers.Input;
+
+/// <summary>Provides input from an input provider.</summary>
+partial interface IInputProvider : IDisposable
+{
+    /// <summary>Creates a default input provider.</summary>
+    /// <returns>The default <see cref="IInputProvider"/>.</returns>
+    [HandlesResourceDisposal]
+    public static IInputProvider Default(out ImmutableArray<Exception> warnings)
+    {
+        if (new Evdev(out warnings) is var evdev && warnings.IsEmpty)
+            return evdev;
+
+        evdev.Dispose();
+        warnings = [];
+        return new Xna();
+    }
+
+    /// <summary>Creates an input provider from an alias.</summary>
+    /// <param name="alias">The alias.</param>
+    /// <param name="warnings">The warnings.</param>
+    /// <returns>The <see cref="IInputProvider"/> from the parameter <paramref name="alias"/>.</returns>
+    [HandlesResourceDisposal]
+    public static IInputProvider FromAlias(scoped ReadOnlySpan<char> alias, out ImmutableArray<Exception> warnings)
+    {
+        if (!alias.EqualsIgnoreCase(nameof(Evdev)))
+        {
+            warnings = alias.IsWhiteSpace() || alias.EqualsIgnoreCase(nameof(Xna))
+                ? []
+                : [new FormatException($"Unrecognized alias, falling back to XNA: {alias}")];
+
+            return new Xna();
+        }
+
+        if (!OperatingSystem.IsFreeBSD() && !OperatingSystem.IsLinux())
+        {
+            warnings = [new PlatformNotSupportedException("Evdev is unsupported, falling back to XNA.")];
+
+            return new Xna();
+        }
+
+        warnings = Environment.IsPrivilegedProcess
+            ? []
+            : [new WarningException("Evdev is not privileged, may not work on some input devices.")];
+
+        var evdev = new Evdev(out var evdevWarnings);
+        warnings = warnings.AddRange(evdevWarnings);
+        return evdev;
+    }
+
+    /// <summary>Gets the next input.</summary>
+    /// <returns>The next input.</returns>
+    Columns Poll();
+
+    /// <summary>Adds an input.</summary>
+    /// <typeparam name="TSeparator">The type of separator for separating values.</typeparam>
+    /// <typeparam name="TStrategy">The type of strategy for separating values.</typeparam>
+    /// <param name="key">The key.</param>
+    /// <param name="values">The values.</param>
+    /// <returns>Whether the operation succeeded.</returns>
+    bool Add<TSeparator, TStrategy>(Columns key, scoped SplitSpan<char, TSeparator, TStrategy> values);
+}
