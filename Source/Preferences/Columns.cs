@@ -115,7 +115,7 @@ static class ColumnExtensions
             M => ["/m/"],
             Nsl => ["/ə/", "/ɹ/", "/n/", "/s/", "/l/"],
             O => ["/o/", "/ʊ/", "/u/", "/w/"],
-            _ => ["nothing", "keyboard typing", "loud breathing"],
+            _ => ["nothing", "keyboard typing", "loud breathing", "chair rocking"],
         };
 
     /// <summary>Converts the <see cref="Columns"/> to the <see cref="Sprite.Arm.Left"/>.</summary>

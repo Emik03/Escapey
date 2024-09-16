@@ -126,7 +126,7 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
 
             foreach (var ipa in key.ToIPAs())
             {
-                Console.Write($"Press any button and voice \"{ipa}\" until the next prompt.");
+                Console.Write($"Press any button and make \"{ipa}\" until the next prompt.");
                 var cursor = Console.CursorLeft;
                 Console.Write($" 0 / {config.Training}");
                 Console.ReadKey();
