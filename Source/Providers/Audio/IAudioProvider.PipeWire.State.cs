@@ -22,7 +22,7 @@ partial interface IAudioProvider
             /// <param name="data">The state containing the temporary buffer.</param>
             /// <returns>The next buffer, or empty if none is available.</returns>
             public static unsafe ReadOnlySpan<float> Poll(State* data) =>
-                data->_hasNewData && (data->_hasNewData = false) is var _ ? Array(data) : default;
+                data is not null && data->_hasNewData && (data->_hasNewData = false) is var _ ? Array(data) : default;
 
             /// <summary>Executes the entry point for PipeWire.</summary>
             /// <param name="data">The pointer to this function call's stack-allocated memory.</param>
@@ -32,6 +32,7 @@ partial interface IAudioProvider
                 Unsafe.SkipInit(out State state);
                 state._hasNewData = false;
                 state._isFirst = false;
+                state._loop = 0;
                 data = &state;
 
                 if (PropertiesNew(0, 0) is var props &&
@@ -78,7 +79,11 @@ partial interface IAudioProvider
             }
 
             /// <inheritdoc />
-            public readonly void Dispose() => ThreadLoopSignal(_loop);
+            public readonly void Dispose()
+            {
+                if (_loop is not 0)
+                    ThreadLoopSignal(_loop);
+            }
 
             /// <summary>Copies the next PipeWire buffer into its own temporary buffers.</summary>
             /// <param name="data">The state containing the temporary buffer.</param>

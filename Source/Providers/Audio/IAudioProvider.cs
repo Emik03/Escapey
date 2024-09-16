@@ -7,7 +7,7 @@ using F32Vec = System.Numerics.Vector<float>;
 partial interface IAudioProvider : IDisposable
 {
     /// <summary>The length of the audio buffer for training.</summary>
-    const int Length = 200;
+    const int Length = 192;
 
     /// <summary>Gets the imaginary part of the sample vector.</summary>
     float[] Imaginary { get; }

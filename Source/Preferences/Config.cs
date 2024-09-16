@@ -24,10 +24,10 @@ sealed partial class Config(
     public const int ColumnCount = 4;
 
     /// <summary>The default value for <see cref="Stabilization"/>.</summary>
-    const int DefaultStabilization = 11; // Smallest prime number greater than the number of mouths.
+    const int DefaultStabilization = 3;
 
     /// <summary>The default value for <see cref="Training"/>.</summary>
-    const int DefaultTraining = 2000;
+    const int DefaultTraining = 2500;
 
     /// <summary>The default value for <see cref="Profile"/>.</summary>
     const string DefaultProfile = "main.mlnet";
