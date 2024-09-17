@@ -10,7 +10,7 @@ partial interface IAudioProvider
         readonly partial struct Buffer
         {
             /// <summary>Contains the pointer to the <see cref="SpaBuffer"/>.</summary>
-            internal readonly unsafe SpaBuffer* _buffer;
+            readonly unsafe SpaBuffer* _buffer;
 
             /// <summary>Padding.</summary>
             readonly nint _userData;
@@ -18,14 +18,12 @@ partial interface IAudioProvider
             /// <summary>Padding.</summary>
             readonly ulong _size, _requested;
 
-            /// <summary>Gets a value determining whether there is data available to read.</summary>
-            public unsafe bool HasData => _buffer->_datas->_data is not null;
-
-            /// <inheritdoc cref="Span{T}.CopyTo"/>
-            public unsafe void CopyTo(Span<float> destination) => _buffer->_datas->AsSpan.CopyTo(destination);
+            /// <summary>Gets the <see cref="float"/> array.</summary>
+            /// <returns>The <see cref="float"/> array.</returns>
+            public unsafe ReadOnlySpan<float> AsSpan => _buffer->_datas->AsSpan;
 
             /// <inheritdoc />
-            public override unsafe string ToString() => _buffer->_datas->_data is null ? "[]" : _buffer->ToString();
+            public override unsafe string ToString() => _buffer->ToString();
         }
     }
 }

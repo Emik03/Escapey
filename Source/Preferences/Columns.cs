@@ -25,32 +25,35 @@ enum Columns : ushort
     /// <summary>Represents all buttons being held.</summary>
     All = First | Second | Third | Fourth,
 
+    /// <summary>Used to hide the keys.</summary>
+    Hide = 1 << 4,
+
     /// <summary>Used to indicate the expression be angry.</summary>
-    Angry = 1 << 4,
+    Angry = 1 << 5,
 
     /// <summary>Used to indicate the expression be bored.</summary>
-    Bored = 1 << 5,
+    Bored = 1 << 6,
 
     /// <summary>Used to indicate the expression be concentrated.</summary>
-    Concentrated = 1 << 6,
+    Concentrated = 1 << 7,
 
     /// <summary>Used to indicate the expression be confused.</summary>
-    Confused = 1 << 7,
+    Confused = 1 << 8,
 
     /// <summary>Used to indicate the expression be frowning.</summary>
-    Frown = 1 << 8,
+    Frown = 1 << 9,
 
     /// <summary>Used to indicate the expression be happy.</summary>
-    Happy = 1 << 9,
+    Happy = 1 << 10,
 
     /// <summary>Used to indicate the expression be happy, with a raised eyebrow.</summary>
-    HappyEyebrow = 1 << 10,
+    HappyEyebrow = 1 << 11,
 
     /// <summary>Used to indicate the expression be scared.</summary>
-    Scared = 1 << 11,
+    Scared = 1 << 12,
 
     /// <summary>Used to indicate the expression be upset.</summary>
-    Upset = 1 << 12,
+    Upset = 1 << 13,
 }
 
 /// <summary>Extensions for <see cref="Columns"/>.</summary>
@@ -143,7 +146,7 @@ static class ColumnExtensions
     /// The <see cref="Sprite.Mouth"/> of the <see cref="Columns"/>, or <paramref name="fallback"/> if no mouth is set.
     /// </returns>
     public static Sprite.Mouth ToMouth(this Columns column, ref Sprite.Mouth fallback) =>
-        (ushort)column >> 4 is not 0 and var shift
+        (ushort)column >> 5 is not 0 and var shift
             ? fallback = (Sprite.Mouth)BitOperations.TrailingZeroCount(shift)
             : fallback;
 }

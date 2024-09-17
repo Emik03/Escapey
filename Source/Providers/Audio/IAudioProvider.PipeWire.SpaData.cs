@@ -19,14 +19,14 @@ partial interface IAudioProvider
             readonly uint _mapOffset, _maxSize;
 
             /// <summary>Contains the pointer to the <see cref="float"/> array.</summary>
-            internal readonly float* _data;
+            readonly float* _data;
 
             /// <summary>Contains the pointer to the <c>spa_chunk</c> type.</summary>
-            internal readonly SpaChunk* _chunk;
+            readonly SpaChunk* _chunk;
 
             /// <summary>Gets the <see cref="float"/> array.</summary>
             /// <returns>The <see cref="float"/> array.</returns>
-            public ReadOnlySpan<float> AsSpan => new(_data, _chunk->_size / sizeof(float));
+            public ReadOnlySpan<float> AsSpan => _data is null ? default : new(_data, _chunk->_size / sizeof(float));
 
             /// <inheritdoc />
             public override string ToString() => $"[{AsSpan.ToArray().Conjoin()}]";

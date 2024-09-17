@@ -76,14 +76,12 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
         }
 
         ref var count = ref MemoryMarshal.GetArrayDataReference(_count);
-        var audio = config.Audio;
 
-        if (audio.Poll())
+        if (config.Audio.Poll() is { } segment)
         {
             var last = _order.Length - 1;
-            _engine.Predict(audio.Segment, ref _prediction);
+            _engine.Predict(segment, ref _prediction);
             ref var order = ref MemoryMarshal.GetArrayDataReference(_order);
-
             Unsafe.Add(ref count, order - Upset)--;
             MemoryMarshal.CreateReadOnlySpan(Unsafe.Add(ref order, 1), last).CopyTo(_order);
             Unsafe.Add(ref count, (Unsafe.Add(ref order, last) = _prediction.Mouth) - Upset)++;
@@ -110,7 +108,7 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
         if (File.Exists(file))
             return ml.Data.LoadFromBinary(file);
 
-        var data = ml.Data.LoadFromEnumerable(s_mouths.Select(Capture(config)).Flatten2().ToIList());
+        var data = ml.Data.LoadFromEnumerable(s_mouths.Select(Capture(config)).Flatten().ToIList());
         using var stream = File.Open(file, FileMode.OpenOrCreate);
         ml.Data.SaveAsBinary(data, stream);
         return data;
@@ -119,31 +117,40 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
     /// <summary>Creates the function for capturing audio and creating training data from it.</summary>
     /// <param name="config">The configuration.</param>
     /// <returns>The function to create training data.</returns>
-    static Func<Sprite.Mouth, List<AudioSegment[]>> Capture(Config config) =>
-        key =>
+    static Func<Sprite.Mouth, List<AudioSegment>> Capture(Config config) =>
+        keyMouth =>
         {
-            List<AudioSegment[]> ret = [];
+            var audio = config.Audio;
+            var segment = audio.Segment;
+            var training = config.Training;
+            var phonemes = keyMouth.ToIPAs();
+            List<AudioSegment> ret = new(phonemes.Length * (training * IAudioProvider.Length + 1));
 
-            foreach (var ipa in key.ToIPAs())
+            foreach (var phoneme in phonemes)
             {
-                Console.Write($"Press any button and make \"{ipa}\" until the next prompt.");
+                Console.Write($"Press any button and make \"{phoneme}\" until the next prompt.");
                 var cursor = Console.CursorLeft;
-                Console.Write($" 0 / {config.Training}");
+                Console.Write($" 0 / {ret.Capacity}");
                 Console.ReadKey();
-                var next = new AudioSegment[config.Training];
 
-                for (var i = 0; i < config.Training; i++)
+                while (audio.Poll() is null) { }
+
+                var previous = segment.With(keyMouth);
+
+                for (var i = 0; i < training; i++)
                 {
                     Console.CursorLeft = cursor;
-                    Console.Write($" {i + 1} / {config.Training}");
+                    Console.Write($" {ret.Count + 1} / {ret.Capacity}");
 
-                    while (!config.Audio.Poll()) { }
+                    while (audio.Poll() is null) { }
 
-                    next[i] = config.Audio.Segment.With(key);
+                    ret.AddRange(previous.With(segment));
+                    previous = segment.With(keyMouth);
                 }
 
-                Console.WriteLine();
-                ret.Add(next);
+                ret.Add(previous);
+                Console.CursorLeft = cursor;
+                Console.WriteLine($" {ret.Count} / {ret.Capacity}");
             }
 
             return ret;

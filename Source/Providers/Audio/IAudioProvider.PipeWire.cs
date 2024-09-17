@@ -70,13 +70,13 @@ partial interface IAudioProvider
         /// </code>
         /// </remarks>
         static ReadOnlySpan<byte> StreamParameterBlob =>
-            BitConverter.IsLittleEndian
-                ? [160, 0, 0, 0, 15, 0, 0, 0, 3, 0, 4, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0, 1,
-                    0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0,
-                    1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0, 27, 1, 0, 0, 0, 0, 0, 0, 3, 0, 1, 0, 0, 0, 0, 0, 4, 0, 0,
-                    0, 4, 0, 0, 0, 128, 187, 0, 0, 0, 0, 0, 0, 4, 0, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0,
-                    0, 0, 0, 0, 0, 5, 0, 1, 0, 0, 0, 0, 0, 12, 0, 0, 0, 13, 0, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0]
-                : [];
+        [
+            160, 0, 0, 0, 15, 0, 0, 0, 3, 0, 4, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0,
+            1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+            1, 0, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0, 27, 1, 0, 0, 0, 0, 0, 0, 3, 0, 1, 0, 0, 0, 0, 0,
+            4, 0, 0, 0, 4, 0, 0, 0, 128, 187, 0, 0, 0, 0, 0, 0, 4, 0, 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0,
+            1, 0, 0, 0, 0, 0, 0, 0, 5, 0, 1, 0, 0, 0, 0, 0, 12, 0, 0, 0, 13, 0, 0, 0, 4, 0, 0, 0, 3, 0, 0, 0,
+        ];
 
         /// <summary>Gets the singleton instance.</summary>
         /// <param name="warnings">The warnings.</param>
@@ -103,18 +103,23 @@ partial interface IAudioProvider
         }
 
         /// <inheritdoc />
-        public void Dispose() { }
+        void IDisposable.Dispose() { }
 
         /// <inheritdoc />
-        public unsafe bool Poll()
+        [MustUseReturnValue]
+        public unsafe AudioSegment? Poll()
         {
-            if (_task.IsCompleted || State.Poll(_state) is not { IsEmpty: false } buffer)
-                return false;
+            if (_task.IsCompleted || _state is null || State.Current(_state) is var current && current is [])
+                return _task.Exception is { } e ? throw e : null;
 
-            buffer.CopyTo(Real);
+            current.CopyTo(Real);
             FFT(this);
-            return true;
+            return Segment;
         }
+
+        /// <inheritdoc />
+        [MustUseReturnValue]
+        public unsafe ReadOnlySpan<float> PollRaw() => _task.IsCompleted || _state is null ? [] : State.Current(_state);
 
         /// <summary>
         /// Deinitializes PipeWire. This indirection is required to make <see cref="DllNotFoundException"/> catchable.
@@ -124,7 +129,7 @@ partial interface IAudioProvider
         {
             if (s_pw is not null)
             {
-                s_pw._state->Dispose();
+                s_pw._state->Stop();
 #pragma warning disable VSTHRD002
                 s_pw._task.Wait();
 #pragma warning restore VSTHRD002

@@ -7,32 +7,29 @@ partial interface IAudioProvider
     {
         /// <summary>Contains the data passed around within PipeWire callbacks.</summary>
         [StructLayout(LayoutKind.Auto)]
-        partial struct State : IDisposable // ReSharper disable UnassignedField.Local
+        partial struct State // ReSharper disable UnassignedField.Local
         {
+            /// <summary>The amount of latency.</summary>
+            static readonly string s_latency = $"{Length}/48000";
+
             /// <summary>The temporary buffers.</summary>
-            unsafe fixed float _first[Length], _second[Length]; // ReSharper restore UnassignedField.Local
+            unsafe fixed float _buffer[4800];
 
             /// <summary>The pointers to PipeWire objects.</summary>
             nint _loop, _stream;
 
-            /// <summary>The flag for buffers.</summary>
-            bool _hasNewData, _isFirst;
+            /// <summary>The index of the next buffer.</summary>
+            int _index;
 
-            /// <summary>Gets the available buffer.</summary>
-            /// <param name="data">The state containing the temporary buffer.</param>
-            /// <returns>The next buffer, or empty if none is available.</returns>
-            public static unsafe ReadOnlySpan<float> Poll(State* data) =>
-                data is not null && data->_hasNewData && (data->_hasNewData = false) is var _ ? Array(data) : default;
+            /// <summary>The flag for buffers.</summary>
+            bool _hasNewData;
 
             /// <summary>Executes the entry point for PipeWire.</summary>
             /// <param name="data">The pointer to this function call's stack-allocated memory.</param>
             /// <exception cref="Win32Exception">An error occured in the PipeWire library.</exception>
             public static unsafe void Run(out State* data)
             {
-                Unsafe.SkipInit(out State state);
-                state._hasNewData = false;
-                state._isFirst = false;
-                state._loop = 0;
+                State state = new();
                 data = &state;
 
                 if (PropertiesNew(0, 0) is var props &&
@@ -42,10 +39,11 @@ partial interface IAudioProvider
                     PropertiesSet(props, "media.type", "Audio") < 0 ||
                     PropertiesSet(props, "media.category", "Capture") < 0 ||
                     PropertiesSet(props, "media.role", "Music") < 0 ||
-                    PropertiesSet(props, "node.latency", $"{Length}/48000") < 0)
+                    PropertiesSet(props, "node.latency", s_latency) < 0)
                 {
+                    Win32Exception ex = new();
                     PropertiesFree(props);
-                    return;
+                    throw ex;
                 }
 
                 state._loop = ThreadLoopNew(nameof(Escapey));
@@ -53,9 +51,10 @@ partial interface IAudioProvider
 
                 if (ThreadLoopStart(state._loop) is not 0)
                 {
+                    Win32Exception ex = new();
                     ThreadLoopUnlock(state._loop);
                     ThreadLoopDestroy(state._loop);
-                    throw new Win32Exception();
+                    throw ex;
                 }
 
                 state._stream =
@@ -78,8 +77,16 @@ partial interface IAudioProvider
                 }
             }
 
-            /// <inheritdoc />
-            public readonly void Dispose()
+            /// <summary>Gets the current buffer.</summary>
+            /// <param name="data">The state to get the buffer from.</param>
+            /// <returns>The current buffer.</returns>
+            public static unsafe ReadOnlySpan<float> Current(State* data) =>
+                data->_hasNewData && !(data->_hasNewData = false)
+                    ? new Span<float>(data->_buffer + data->_index * Length, Length)
+                    : default;
+
+            /// <summary>Interrupts the thread loop.</summary>
+            public readonly void Stop()
             {
                 if (_loop is not 0)
                     ThreadLoopSignal(_loop);
@@ -89,21 +96,16 @@ partial interface IAudioProvider
             /// <param name="data">The state containing the temporary buffer.</param>
             static unsafe void OnProcess(State* data)
             {
-                if (DequeueBuffer(data->_stream) is var buffer && buffer is not null && buffer->HasData)
+                if (DequeueBuffer(data->_stream) is var buffer && buffer->AsSpan is not [] and var span)
                 {
-                    data->_isFirst = !data->_isFirst;
-                    buffer->CopyTo(Array(data));
+                    var i = (data->_index + 1).Mod(4800 / Length);
+                    span.CopyTo(new(data->_buffer + i * Length, Length));
+                    data->_index = i;
                     data->_hasNewData = true;
                 }
 
                 QueueBuffer(data->_stream, buffer);
             }
-
-            /// <summary>Gets the current temporary buffer.</summary>
-            /// <param name="data">The state containing the temporary buffer.</param>
-            /// <returns>The current temporary buffer.</returns>
-            static unsafe Span<float> Array(State* data) =>
-                data->_isFirst ? new Span<float>(data->_first, Length) : new(data->_second, Length);
 
             [LibraryImport(Lib, EntryPoint = "pw_properties_free")]
             private static partial void PropertiesFree(nint properties);
@@ -112,10 +114,10 @@ partial interface IAudioProvider
             private static unsafe partial void QueueBuffer(nint stream, Buffer* buffer);
 
             [LibraryImport(Lib, EntryPoint = "pw_stream_destroy")]
-            private static unsafe partial void StreamDestroy(nint stream);
+            private static partial void StreamDestroy(nint stream);
 
             [LibraryImport(Lib, EntryPoint = "pw_thread_loop_destroy")]
-            private static unsafe partial void ThreadLoopDestroy(nint loop);
+            private static partial void ThreadLoopDestroy(nint loop);
 
             [LibraryImport(Lib, EntryPoint = "pw_thread_loop_lock")]
             private static partial void ThreadLoopLock(nint loop);
@@ -125,13 +127,13 @@ partial interface IAudioProvider
                 ThreadLoopSignal(nint loop, [MarshalAs(UnmanagedType.Bool)] bool waitForAccept = false);
 
             [LibraryImport(Lib, EntryPoint = "pw_thread_loop_stop")]
-            private static unsafe partial void ThreadLoopStop(nint loop);
+            private static partial void ThreadLoopStop(nint loop);
 
             [LibraryImport(Lib, EntryPoint = "pw_thread_loop_unlock")]
             private static partial void ThreadLoopUnlock(nint loop);
 
             [LibraryImport(Lib, EntryPoint = "pw_thread_loop_wait")]
-            private static unsafe partial void ThreadLoopWait(nint loop);
+            private static partial void ThreadLoopWait(nint loop);
 
             [LibraryImport(Lib, EntryPoint = "pw_properties_set", StringMarshalling = StringMarshalling.Utf8)]
             private static partial int PropertiesSet(nint properties, string key, string value);

@@ -20,6 +20,12 @@ public sealed partial class EscapeyGame : Game
     /// <summary>The mouth to use when the user is not speaking.</summary>
     Sprite.Mouth _neutral;
 
+    /// <summary>Whether the keys are visible.</summary>
+    bool _areKeysVisible;
+
+    /// <summary>The state of the key visibility.</summary>
+    bool? _keyVisibleState;
+
     /// <summary>Initializes a new instance of the <see cref="EscapeyGame"/> class.</summary>
     public EscapeyGame()
     {
@@ -84,15 +90,25 @@ public sealed partial class EscapeyGame : Game
         var columns = _config.Input.Poll().InvertIf(_config.Inverted);
         var sound = _hearMonitor.Poll();
 
+        _keyVisibleState = _keyVisibleState switch
+        {
+            true when (_areKeysVisible = !_areKeysVisible) is var _ => null,
+            null when !columns.Has(Columns.Hide) => false,
+            false when columns.Has(Columns.Hide) => true,
+            _ => _keyVisibleState,
+        };
+
         _animations
            .Change(columns.ToEyes())
            .Change(sound.IsSpeaking() ? sound : columns.ToMouth(ref _neutral))
            .Change(columns.ToLeftArm())
            .Change(columns.ToRightArm())
-           .SetVisibility<Sprite.Keys.First>(columns.Has(Columns.First))
-           .SetVisibility<Sprite.Keys.Second>(columns.Has(Columns.Second))
-           .SetVisibility<Sprite.Keys.Third>(columns.Has(Columns.Third))
-           .SetVisibility<Sprite.Keys.Fourth>(columns.Has(Columns.Fourth))
+           .SetVisibility<Sprite.Keys.Overlay>(_areKeysVisible)
+           .SetVisibility<Sprite.Keys.Background>(_areKeysVisible)
+           .SetVisibility<Sprite.Keys.First>(_areKeysVisible && columns.Has(Columns.First))
+           .SetVisibility<Sprite.Keys.Second>(_areKeysVisible && columns.Has(Columns.Second))
+           .SetVisibility<Sprite.Keys.Third>(_areKeysVisible && columns.Has(Columns.Third))
+           .SetVisibility<Sprite.Keys.Fourth>(_areKeysVisible && columns.Has(Columns.Fourth))
            .Draw(gameTime);
     }
 

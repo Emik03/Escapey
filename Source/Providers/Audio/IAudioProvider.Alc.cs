@@ -44,10 +44,22 @@ partial interface IAudioProvider
         }
 
         /// <inheritdoc />
-        public bool Poll()
+        [MustUseReturnValue]
+        public AudioSegment? Poll()
+        {
+            if (PollRaw().IsEmpty)
+                return null;
+
+            FFT(this);
+            return Segment;
+        }
+
+        /// <inheritdoc />
+        [MustUseReturnValue]
+        public ReadOnlySpan<float> PollRaw()
         {
             if ((_i += Microphone.Default.GetData(_pcm, _i, _pcm.Length - _i)) < Length * sizeof(short))
-                return false;
+                return [];
 
             ref var end = ref Unsafe.As<byte, short>(ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(_pcm), _i));
             ref var real = ref MemoryMarshal.GetArrayDataReference(Real);
@@ -61,8 +73,7 @@ partial interface IAudioProvider
                 pcm = ref Unsafe.Add(ref pcm, 1);
             }
 
-            FFT(this);
-            return true;
+            return Real;
         }
     }
 }

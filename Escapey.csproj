@@ -5,9 +5,9 @@
         <TargetFramework>net9.0</TargetFramework>
         <TransformOnBuild>true</TransformOnBuild>
         <ApplicationIcon>Properties/Icon.ico</ApplicationIcon>
-        <DefineConstants>$(DefineConstants);XNA</DefineConstants>
         <DisableDefaultDocumentation>true</DisableDefaultDocumentation>
         <ApplicationManifest>Properties/app.manifest</ApplicationManifest>
+        <DefineConstants>$(DefineConstants);XNA;RELEASE;FORCE_SERILOG</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)' == 'Android'">
         <ApplicationId>dev.emik.escapey</ApplicationId>
@@ -20,13 +20,21 @@
         <PackageReference Include="MathNet.Numerics" Version="6.0.0-beta1" />
         <PackageReference Include="Microsoft.ML" Version="4.0.0-preview.24378.1" />
         <None Update="Source/Sprites/Sprite.tt" Generator="TextTemplatingFileGenerator"/>
-        <None Update="Source/ML/AudioSegment.tt" Generator="TextTemplatingFileGenerator"/>
+        <None Update="Source/ML/AudioSegment.tt">
+          <Generator>TextTemplatingFileGenerator</Generator>
+          <LastGenOutput>AudioSegment.g.cs</LastGenOutput>
+        </None>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' != 'Android'">
         <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105"/>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Android'">
         <PackageReference Include="MonoGame.Framework.Android" Version="3.8.2.1105"/>
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Source\ML\AudioSegment.g.cs">
+        <DependentUpon>AudioSegment.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
     <Target Name="CopyToDestination" AfterTargets="PostBuildEvent">
         <Exec Command="$(CopyCommand) &quot;$(ProjectDir)/Content/bin/Sprites&quot; &quot;$(OutDir)/Sprites&quot;"/>
