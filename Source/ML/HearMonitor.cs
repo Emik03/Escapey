@@ -130,7 +130,7 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
             {
                 Console.Write($"Press any button and make \"{phoneme}\" until the next prompt.");
                 var cursor = Console.CursorLeft;
-                Console.Write($" 0 / {ret.Capacity}");
+                Console.Write($" 0 / {ret.Capacity - 1}");
                 Console.ReadKey();
 
                 while (audio.Poll() is null) { }
@@ -140,7 +140,7 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
                 for (var i = 0; i < training; i++)
                 {
                     Console.CursorLeft = cursor;
-                    Console.Write($" {ret.Count + 1} / {ret.Capacity}");
+                    Console.Write($" {ret.Count + 1} / {ret.Capacity - 1}");
 
                     while (audio.Poll() is null) { }
 
@@ -150,7 +150,7 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
 
                 ret.Add(previous);
                 Console.CursorLeft = cursor;
-                Console.WriteLine($" {ret.Count} / {ret.Capacity}");
+                Console.WriteLine($" {ret.Count - 1} / {ret.Capacity - 1}");
             }
 
             return ret;
