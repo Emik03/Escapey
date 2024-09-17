@@ -7,7 +7,7 @@ using SingleVector = System.Numerics.Vector<float>;
 partial interface IAudioProvider : IDisposable
 {
     /// <summary>The length of the audio buffer for training.</summary>
-    const int Length = 128;
+    const int Length = 300;
 
     /// <summary>Gets the imaginary part of the sample vector.</summary>
     float[] Imaginary { get; }
