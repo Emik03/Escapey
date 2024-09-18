@@ -29,15 +29,13 @@ public sealed partial class EscapeyGame : Game
     /// <summary>Initializes a new instance of the <see cref="EscapeyGame"/> class.</summary>
     public EscapeyGame()
     {
-#pragma warning disable IDISP001
-        GraphicsDeviceManager graphics = new(this)
-#pragma warning restore IDISP001
+        _ = new GraphicsDeviceManager(this)
         {
-            PreferredBackBufferWidth = 930, PreferredBackBufferHeight = 780, SynchronizeWithVerticalRetrace = true,
+            GraphicsDevice = { BlendState = BlendState.NonPremultiplied },
+            PreferredBackBufferWidth = 930,
+            PreferredBackBufferHeight = 779,
+            SynchronizeWithVerticalRetrace = true,
         };
-
-        graphics.ApplyChanges();
-        IsMouseVisible = true;
 
         _animations = new Animations(this)
            .Add<Sprite.Legs>()
@@ -59,6 +57,7 @@ public sealed partial class EscapeyGame : Game
         };
 
         LoadConfig();
+        IsMouseVisible = true;
         _hearMonitor = HearMonitor.From(_config);
         _watcher.Changed += LoadConfig; // Re-read only after HearMonitor loads; causes undefined behavior otherwise.
     }

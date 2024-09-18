@@ -2,7 +2,9 @@
 namespace Escapey.Preferences;
 
 /// <summary>Represents the configuration of the application.</summary>
+/// <param name="borderless">Whether to use a borderless window.</param>
 /// <param name="inverted">Whether to invert the columns.</param>
+/// <param name="stabilization">The number of frames to display before allowing animations to change.</param>
 /// <param name="training">The amount of training data per phoneme.</param>
 /// <param name="profile">The name of the model.</param>
 /// <param name="background">The background color.</param>
@@ -17,8 +19,7 @@ sealed partial class Config(
     Color background,
     IAudioProvider audio,
     IInputProvider input
-)
-    : IDisposable
+) : IDisposable
 {
     /// <summary>The number of columns.</summary>
     public const int ColumnCount = 4;
@@ -47,6 +48,9 @@ sealed partial class Config(
         s_invalidFileName = SearchValues.Create(Path.GetInvalidFileNameChars()),
         s_separator = SearchValues.Create(",");
 
+    /// <summary>Contains the contents for the last time the config file was read.</summary>
+    static string? s_lastContents;
+
     /// <summary>Sets appropriate environment variables to ensure providers will always work.</summary>
     static Config()
     {
@@ -65,28 +69,28 @@ sealed partial class Config(
     public static string TextFile { get; } = Path.Join(Folder, "config.ini");
 
     /// <summary>Whether to use borderless mode.</summary>
-    public bool Borderless { get; } = borderless;
+    public bool Borderless { get; private set; } = borderless;
 
     /// <summary>Whether to invert the columns.</summary>
-    public bool Inverted { get; } = inverted;
+    public bool Inverted { get; private set; } = inverted;
 
     /// <summary>The amount of stabilization frames for the mouth.</summary>
-    public int Stabilization { get; } = stabilization;
+    public int Stabilization { get; private set; } = stabilization;
 
     /// <summary>The amount of training data per phoneme.</summary>
-    public int Training { get; } = training;
+    public int Training { get; private set; } = training;
 
     /// <summary>The name of the model.</summary>
-    public string Profile { get; } = profile;
+    public string Profile { get; private set; } = profile;
 
     /// <summary>The background color.</summary>
-    public Color Background { get; } = background;
+    public Color Background { get; private set; } = background;
 
     /// <summary>The audio provider.</summary>
-    public IAudioProvider Audio { get; } = audio;
+    public IAudioProvider Audio { get; private set; } = audio;
 
     /// <summary>The input provider.</summary>
-    public IInputProvider Input { get; } = input;
+    public IInputProvider Input { get; private set; } = input;
 
     /// <summary>Loads the config.</summary>
     /// <param name="warnings">The warnings.</param>
@@ -114,7 +118,12 @@ sealed partial class Config(
             return Default(file, out warnings);
 
         using StreamReader stream = new(ok);
-        return Parse(stream.ReadToEnd(), out warnings);
+
+        if (stream.ReadToEnd() is var str && Parse(str, out warnings) is var ret && str.Equals(s_lastContents))
+            warnings = []; // We suppress the warnings if the contents didn't change.
+
+        s_lastContents = str;
+        return ret;
     }
 
     /// <summary>Parses the config string.</summary>
@@ -168,10 +177,23 @@ sealed partial class Config(
 
     /// <summary>Copies the config over to <paramref name="config"/>.</summary>
     /// <param name="config"></param>
-    public void CopyTo([NotNull] ref Config? config)
+    public void CopyTo([MustDisposeResource, NotNull] ref Config? config)
     {
-        config?.Dispose();
-        config = this;
+        if (config is null)
+        {
+            config = this;
+            return;
+        }
+
+        config.Dispose();
+        config.Audio = Audio;
+        config.Background = Background;
+        config.Borderless = Borderless;
+        config.Input = Input;
+        config.Inverted = Inverted;
+        config.Profile = Profile;
+        config.Stabilization = Stabilization;
+        config.Training = Training;
     }
 
     /// <summary>Attempts to parse a hex number from the provided inputs.</summary>

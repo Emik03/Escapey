@@ -54,10 +54,10 @@ sealed class Animation<T> : DrawableGameComponent
 
         if (CurrentSprite.FrameRate is not 0 and var frameRate &&
             TimeSpan.FromSeconds(1) / frameRate is var interval &&
-            _delta.Ticks / interval.Ticks is not 0 and var advance)
+            (int)(_delta.Ticks / interval.Ticks) is not 0 and var advance)
         {
             _delta -= interval * advance;
-            _frame = CurrentSprite.Loops ? (_frame + 1).Mod(FrameLength) : LastFrame.Min(_frame + 1);
+            _frame = CurrentSprite.Loops ? (_frame + advance).Mod(FrameLength) : LastFrame.Min(_frame + advance);
         }
 
         Batch.Draw(CurrentTexture, Vector2.Zero, Color.White);
