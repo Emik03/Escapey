@@ -172,13 +172,18 @@ partial interface IAudioProvider : IDisposable
     AudioSegment? Poll();
 
     /// <summary>Polls the audio provider.</summary>
-    /// <returns>The raw PCM buffer from the audio provider, or empty if no new data.</returns>
+    /// <returns>
+    /// The raw PCM buffer from the audio provider, or empty if no new data.
+    /// <see cref="Real"/> may or may not be mutated, and therefore may not be equivalent to the return value.
+    /// </returns>
     [MustUseReturnValue]
     ReadOnlySpan<float> PollRaw();
 
     /// <summary>Polls the audio provider.</summary>
-    /// <remarks><para>This function waits until the next data is ready.</para></remarks>
-    /// <returns>The raw PCM buffer from the audio provider.</returns>
+    /// <returns>
+    /// The raw PCM buffer from the audio provider, blocking until the next data is available.
+    /// <see cref="Real"/> may or may not be mutated, and therefore may not be equivalent to the return value.
+    /// </returns>
     [MustUseReturnValue]
     ReadOnlySpan<float> WaitForRaw()
     {
