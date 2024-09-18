@@ -29,15 +29,14 @@ public sealed partial class EscapeyGame : Game
     /// <summary>Initializes a new instance of the <see cref="EscapeyGame"/> class.</summary>
     public EscapeyGame()
     {
-        _ = new GraphicsDeviceManager(this)
-        {
-            GraphicsDevice = { BlendState = BlendState.NonPremultiplied },
-            PreferredBackBufferWidth = 930,
-            PreferredBackBufferHeight = 779,
-            SynchronizeWithVerticalRetrace = true,
-        };
+        const int Width = 930, Height = 779;
 
-        _animations = new Animations(this)
+        new GraphicsDeviceManager(this)
+        {
+            PreferredBackBufferWidth = Width, PreferredBackBufferHeight = Height, SynchronizeWithVerticalRetrace = true,
+        }.ApplyChanges();
+
+        _animations = new Animations(this, Width, Height)
            .Add<Sprite.Legs>()
            .Add<Sprite.Body>()
            .Add(Sprite.Eyes.Happy)
@@ -58,7 +57,9 @@ public sealed partial class EscapeyGame : Game
 
         LoadConfig();
         IsMouseVisible = true;
+        Window.AllowUserResizing = true;
         _hearMonitor = HearMonitor.From(_config);
+        GraphicsDevice.BlendState = BlendState.NonPremultiplied;
         _watcher.Changed += LoadConfig; // Re-read only after HearMonitor loads; causes undefined behavior otherwise.
     }
 
@@ -86,7 +87,6 @@ public sealed partial class EscapeyGame : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(_config.Background);
-
         var columns = _config.Input.Poll().InvertIf(_config.Inverted);
         var sound = _hearMonitor.Poll();
         var flipped = false;
