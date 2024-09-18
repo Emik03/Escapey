@@ -18,7 +18,7 @@ public sealed partial class EscapeyGame : Game
     Config _config;
 
     /// <summary>The mouth to use when the user is not speaking.</summary>
-    Sprite.Mouth _neutral;
+    Sprite.Mouth _neutral = Sprite.Mouth.Happy;
 
     /// <summary>Whether the keys are visible.</summary>
     bool _areKeysVisible = true;

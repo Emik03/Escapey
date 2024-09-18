@@ -36,6 +36,7 @@ sealed class Animations(Game game, int width, int height)
         ForEach(gameTime, static (DrawableGameComponent c, GameTime t) => c.Draw(t));
         Batch.End();
         GraphicsDevice.SetRenderTarget(null);
+        GraphicsDevice.Clear(_background);
         Batch.Begin();
         var resolution = GraphicsDevice.Resolution(width, height);
         Batch.Draw(_target, resolution, Color.White);
