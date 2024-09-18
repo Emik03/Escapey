@@ -137,7 +137,7 @@ static class ColumnExtensions
     /// <param name="column">The <see cref="Columns"/> to convert.</param>
     /// <returns>The <see cref="Sprite.Eyes"/></returns>
     public static Sprite.Eyes ToEyes(this Columns column) =>
-        (Sprite.Eyes)BitOperations.TrailingZeroCount((ushort)column >> 4);
+        (Sprite.Eyes)BitOperations.TrailingZeroCount((ushort)column >> 5);
 
     /// <summary>Converts the <see cref="Columns"/> to the <see cref="Sprite.Mouth"/></summary>
     /// <param name="column">The <see cref="Columns"/> to convert.</param>

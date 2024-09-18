@@ -54,6 +54,14 @@ sealed class Animations(Game game) : DrawableGameComponent(game), IReadOnlyList<
         where T : struct, Enum =>
         value is { } v ? Change(v) : this;
 
+    /// <summary>Resets the animation from the start.</summary>
+    /// <typeparam name="T">The type of sprites.</typeparam>
+    /// <param name="reset">Whether to reset the animation.</param>
+    /// <returns>Itself.</returns>
+    public Animations Reset<T>(bool reset)
+        where T : struct, Enum =>
+        ForEach(reset, static (Animation<T> a, bool v) => a.Reset(v));
+
     /// <summary>Sets the visibility of all animations of type <typeparamref name="T"/>.</summary>
     /// <typeparam name="T">The type of sprites.</typeparam>
     /// <param name="visible">The new visibility.</param>
@@ -77,25 +85,25 @@ sealed class Animations(Game game) : DrawableGameComponent(game), IReadOnlyList<
         base.Dispose(disposing);
     }
 
-    /// <summary>Executes an action for each animation of type <typeparamref name="T"/>.</summary>
+    /// <summary>Executes an action for each animation of type <typeparamref name="TAnimation"/>.</summary>
     /// <param name="state">The state to pass to the action.</param>
     /// <param name="action">The action to execute.</param>
-    /// <typeparam name="T">The type of sprites.</typeparam>
+    /// <typeparam name="TAnimation">The type of sprites.</typeparam>
     /// <typeparam name="TState">The type of the state.</typeparam>
     /// <returns>Itself.</returns>
     [Inline]
-    Animations ForEach<T, TState>(
+    Animations ForEach<TAnimation, TState>(
         TState state,
-        [ResolveDelegate, RequireStaticDelegate(IsError = true)] Action<T, TState> action
+        [RequireStaticDelegate(IsError = true)] Action<TAnimation, TState> action
     )
-        where T : DrawableGameComponent
+        where TAnimation : DrawableGameComponent
     {
         var animations = _animations.AsSpan();
         ref var start = ref MemoryMarshal.GetReference(animations);
         ref readonly var end = ref Unsafe.Add(ref start, animations.Length);
 
         for (; Unsafe.IsAddressLessThan(start, end); start = ref Unsafe.Add(ref start, 1))
-            if (start is T a)
+            if (start is TAnimation a)
                 action(a, state);
 
         return this;

@@ -81,6 +81,7 @@ partial interface IAudioProvider
         /// <summary>Gets the singleton instance.</summary>
         /// <param name="warnings">The warnings.</param>
         /// <returns>The instance.</returns>
+        [MustUseReturnValue]
         public static PipeWire Instance(out ImmutableArray<Exception> warnings)
         {
             s_pw ??= new();
@@ -107,10 +108,10 @@ partial interface IAudioProvider
 
         /// <inheritdoc />
         [MustUseReturnValue]
-        public unsafe AudioSegment? Poll()
+        public AudioSegment? Poll()
         {
-            if (_task.IsCompleted || _state is null || State.Current(_state) is var current && current is [])
-                return _task.Exception is { } e ? throw e : null;
+            if (PollRaw() is var current && current is [])
+                return null;
 
             current.CopyTo(Real);
             FFT(this);
@@ -119,7 +120,8 @@ partial interface IAudioProvider
 
         /// <inheritdoc />
         [MustUseReturnValue]
-        public unsafe ReadOnlySpan<float> PollRaw() => _task.IsCompleted || _state is null ? [] : State.Current(_state);
+        public unsafe ReadOnlySpan<float> PollRaw() =>
+            _task.IsCompleted ? _task.Exception is { } e ? throw e : [] : State.Current(_state);
 
         /// <summary>
         /// Deinitializes PipeWire. This indirection is required to make <see cref="DllNotFoundException"/> catchable.

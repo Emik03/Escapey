@@ -7,8 +7,6 @@ partial interface IAudioProvider
     /// <param name="real">The real buffer.</param>
     private sealed class Blank(float[] real) : IAudioProvider
     {
-        bool _hasPolled;
-
         /// <inheritdoc />
         public float[] Imaginary { get; } = new float[Length];
 
@@ -26,18 +24,14 @@ partial interface IAudioProvider
 
         /// <inheritdoc />
         [MustUseReturnValue]
-        public AudioSegment? Poll()
+        public AudioSegment Poll()
         {
-            if (_hasPolled)
-                return null;
-
-            _hasPolled = true;
             FFT(this);
             return Segment;
         }
 
         /// <inheritdoc />
         [MustUseReturnValue, Pure]
-        public ReadOnlySpan<float> PollRaw() => _hasPolled ? [] : real;
+        public ReadOnlySpan<float> PollRaw() => real;
     }
 }

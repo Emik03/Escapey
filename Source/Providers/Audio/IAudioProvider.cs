@@ -129,19 +129,15 @@ partial interface IAudioProvider : IDisposable
         return max;
     }
 
-    /// <summary>Computes the Fast Fourier Transform.</summary>
-    /// <param name="real">The real part of the sample vector.</param>
-    /// <returns>The <see cref="AudioSegment"/>.</returns>
-    [Pure]
-    static AudioSegment FFT(float[] real)
-    {
-        using Blank blank = new(real);
-        return blank.Poll() ?? blank.Segment;
-    }
+    /// <summary>Creates the blank audio provider around the given <see cref="float"/> <see cref="Array"/>.</summary>
+    /// <param name="real">The <see cref="float"/> <see cref="Array"/> to use.</param>
+    /// <returns>The <see cref="IAudioProvider"/> that does not poll audio.</returns>
+    [MustDisposeResource, Pure]
+    static IAudioProvider CreateBlank(float[] real) => new Blank(real);
 
     /// <summary>Creates a default audio provider.</summary>
     /// <returns>The default <see cref="IAudioProvider"/>.</returns>
-    [MustDisposeResource]
+    [MustDisposeResource, MustUseReturnValue]
     static IAudioProvider Default() =>
         PipeWire.Instance(out var warnings) is var pipewire && warnings is [] ? pipewire : new Alc();
 
@@ -149,7 +145,7 @@ partial interface IAudioProvider : IDisposable
     /// <param name="alias">The alias.</param>
     /// <param name="warnings">The warnings.</param>
     /// <returns>The <see cref="IInputProvider"/> from the parameter <paramref name="alias"/>.</returns>
-    [MustDisposeResource]
+    [MustDisposeResource, MustUseReturnValue]
 #pragma warning disable IDISP015 // Normally a code smell, but PipeWire.Dispose is a no-op.
     static IAudioProvider FromAlias(scoped ReadOnlySpan<char> alias, out ImmutableArray<Exception> warnings)
 #pragma warning restore IDISP015
@@ -179,4 +175,17 @@ partial interface IAudioProvider : IDisposable
     /// <returns>The raw PCM buffer from the audio provider, or empty if no new data.</returns>
     [MustUseReturnValue]
     ReadOnlySpan<float> PollRaw();
+
+    /// <summary>Polls the audio provider.</summary>
+    /// <remarks><para>This function waits until the next data is ready.</para></remarks>
+    /// <returns>The raw PCM buffer from the audio provider.</returns>
+    [MustUseReturnValue]
+    ReadOnlySpan<float> WaitForRaw()
+    {
+        ReadOnlySpan<float> raw;
+
+        while ((raw = PollRaw()).IsEmpty) { }
+
+        return raw;
+    }
 }

@@ -19,7 +19,10 @@
     <ItemGroup>
         <PackageReference Include="MathNet.Numerics" Version="6.0.0-beta1" />
         <PackageReference Include="Microsoft.ML" Version="4.0.0-preview.24378.1" />
-        <None Update="Source/Sprites/Sprite.tt" Generator="TextTemplatingFileGenerator"/>
+        <None Update="Source/Sprites/Sprite.tt">
+          <Generator>TextTemplatingFileGenerator</Generator>
+          <LastGenOutput>Sprite.g.cs</LastGenOutput>
+        </None>
         <None Update="Source/ML/AudioSegment.tt">
           <Generator>TextTemplatingFileGenerator</Generator>
           <LastGenOutput>AudioSegment.g.cs</LastGenOutput>
@@ -34,6 +37,9 @@
     <ItemGroup>
       <Compile Update="Source\ML\AudioSegment.g.cs">
         <DependentUpon>AudioSegment.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Source\Sprites\Sprite.g.cs">
+        <DependentUpon>Sprite.tt</DependentUpon>
       </Compile>
     </ItemGroup>
     <Target Name="CopyToDestination" AfterTargets="PostBuildEvent">

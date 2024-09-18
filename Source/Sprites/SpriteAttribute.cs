@@ -10,7 +10,7 @@ sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)
     /// <param name="Textures">The loaded textures representing an animation.</param>
     /// <param name="FrameRate">The frame rate to play back the animation.</param>
     [StructLayout(LayoutKind.Auto)]
-    public readonly record struct Loaded(ImmutableArray<Texture2D> Textures, int FrameRate)
+    public readonly record struct Loaded(ImmutableArray<Texture2D> Textures, int FrameRate, bool Loops)
     {
         /// <summary>Gets the <see cref="Loaded"/> for <typeparamref name="T"/>.</summary>
         /// <typeparam name="T">The type of sprites.</typeparam>
@@ -25,6 +25,9 @@ sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)
                .Aggregate(x.GetCustomAttribute<SpriteAttribute>()!, Join)
                .Load(manager);
     }
+
+    /// <summary>Gets or sets whether the animation should loop.</summary>
+    public bool Loops { get; init; }
 
     /// <summary>Gets or sets the number of frames.</summary>
     public int Frames { get; init; }
@@ -42,7 +45,9 @@ sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)
     public static SpriteAttribute Join(SpriteAttribute accumulator, SpriteAttribute? next) =>
         new(Join(accumulator.Path, next?.Path))
         {
-            Frames = Join(accumulator.Frames, next?.Frames), FrameRate = Join(accumulator.FrameRate, next?.FrameRate),
+            Frames = Join(accumulator.Frames, next?.Frames),
+            FrameRate = Join(accumulator.FrameRate, next?.FrameRate),
+            Loops = accumulator.Loops || (next?.Loops ?? false),
         };
 
     /// <summary>Loads itself onto the provided <see cref="ContentManager"/>.</summary>
@@ -51,14 +56,14 @@ sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)
     public Loaded Load(ContentManager manager)
     {
         if (Frames is 0)
-            return new([manager.Load<Texture2D>(Path)], FrameRate);
+            return new([manager.Load<Texture2D>(Path)], FrameRate, Loops);
 
         var textures = new Texture2D[Frames];
 
         for (var i = 0; i < textures.Length; i++)
             textures[i] = manager.Load<Texture2D>($"{Path}/{i + 1}");
 
-        return new(ImmutableCollectionsMarshal.AsImmutableArray(textures), FrameRate);
+        return new(ImmutableCollectionsMarshal.AsImmutableArray(textures), FrameRate, Loops);
     }
 
     /// <inheritdoc cref="Join(SpriteAttribute, SpriteAttribute)"/>

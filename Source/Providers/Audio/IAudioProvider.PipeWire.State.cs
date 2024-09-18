@@ -81,7 +81,7 @@ partial interface IAudioProvider
             /// <param name="data">The state to get the buffer from.</param>
             /// <returns>The current buffer.</returns>
             public static unsafe ReadOnlySpan<float> Current(State* data) =>
-                data->_hasNewData && !(data->_hasNewData = false)
+                data is not null && data->_hasNewData && !(data->_hasNewData = false)
                     ? new Span<float>(data->_buffer + data->_index * Length, Length)
                     : default;
 

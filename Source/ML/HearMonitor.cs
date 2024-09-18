@@ -108,7 +108,7 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
         if (File.Exists(file))
             return ml.Data.LoadFromBinary(file);
 
-        var data = ml.Data.LoadFromEnumerable(s_mouths.Select(Capture(config)).Flatten().ToIList());
+        var data = ml.Data.LoadFromEnumerable(s_mouths.Select(Capture(config)).SelectMany(x => x).ToIList());
         using var stream = File.Open(file, FileMode.OpenOrCreate);
         ml.Data.SaveAsBinary(data, stream);
         return data;
@@ -117,42 +117,61 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
     /// <summary>Creates the function for capturing audio and creating training data from it.</summary>
     /// <param name="config">The configuration.</param>
     /// <returns>The function to create training data.</returns>
-    static Func<Sprite.Mouth, List<AudioSegment>> Capture(Config config) =>
-        keyMouth =>
+    static Func<Sprite.Mouth, ImmutableArray<AudioSegment>> Capture(Config config)
+    {
+        float[] current = new float[IAudioProvider.Length], previous = new float[IAudioProvider.Length];
+        var builder = ImmutableArray.CreateBuilder<AudioSegment>();
+        IAudioProvider audio = config.Audio, blank = IAudioProvider.CreateBlank(current);
+        var training = config.Training;
+
+        void AddWindows(Sprite.Mouth mouth)
         {
-            var audio = config.Audio;
-            var segment = audio.Segment;
-            var training = config.Training;
-            var phonemes = keyMouth.ToIPAs();
-            List<AudioSegment> ret = new(phonemes.Length * (training * IAudioProvider.Length + 1));
+            var raw = audio.WaitForRaw();
+
+            for (var j = 0; j < IAudioProvider.Length; j++)
+            {
+                previous.AsSpan(..^j).CopyTo(current);
+                raw.UnsafelyTake(j).CopyTo(current.AsSpan(^j));
+                builder.Add((blank.Poll() ?? blank.Segment).With(mouth));
+            }
+
+            raw.CopyTo(previous);
+        }
+
+        void ProcessPhoneme(Sprite.Mouth mouth)
+        {
+            var cursor = Console.CursorLeft;
+            Console.Write($" 0 / {training}");
+            Console.ReadKey();
+            audio.WaitForRaw().CopyTo(previous);
+
+            for (var i = 0; i < training; i++)
+            {
+                Console.CursorLeft = cursor;
+                Console.Write($" {i + 1} / {training}");
+                AddWindows(mouth);
+            }
+
+            previous.AsSpan().CopyTo(current);
+            builder.Add((blank.Poll() ?? blank.Segment).With(mouth));
+        }
+
+        ImmutableArray<AudioSegment> Setup(Sprite.Mouth mouth)
+        {
+            using var _ = blank;
+            var phonemes = mouth.ToIPAs();
+            builder.Capacity = phonemes.Length * (training * IAudioProvider.Length + 1);
 
             foreach (var phoneme in phonemes)
             {
                 Console.Write($"Press any button and make \"{phoneme}\" until the next prompt.");
-                var cursor = Console.CursorLeft;
-                Console.Write($" 0 / {ret.Capacity - 1}");
-                Console.ReadKey();
-
-                while (audio.Poll() is null) { }
-
-                var previous = segment.With(keyMouth);
-
-                for (var i = 0; i < training; i++)
-                {
-                    Console.CursorLeft = cursor;
-                    Console.Write($" {ret.Count + 1} / {ret.Capacity - 1}");
-
-                    while (audio.Poll() is null) { }
-
-                    ret.AddRange(previous.With(segment));
-                    previous = segment.With(keyMouth);
-                }
-
-                ret.Add(previous);
-                Console.CursorLeft = cursor;
-                Console.WriteLine($" {ret.Count - 1} / {ret.Capacity - 1}");
+                ProcessPhoneme(mouth);
+                Console.WriteLine();
             }
 
-            return ret;
-        };
+            return builder.MoveToImmutable();
+        }
+
+        return Setup;
+    }
 }

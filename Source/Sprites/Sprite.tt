@@ -37,7 +37,7 @@ sealed partial class Sprite
             Both,
 
             /// <summary><a href="<#= f #>arm l/idle/1.png">Images</a></summary>
-            [Sprite("idle", Frames = 2, FrameRate = 2)]
+            [Sprite("idle", Frames = 2, FrameRate = 2, Loops = true)]
             Idle,
         }
 
@@ -62,7 +62,7 @@ sealed partial class Sprite
             Both,
 
             /// <summary><a href="<#= f #>arm r/idle/1.png">Images</a></summary>
-            [Sprite("idle", Frames = 2, FrameRate = 2)]
+            [Sprite("idle", Frames = 2, FrameRate = 2, Loops = true)]
             Idle,
         }
     }
@@ -194,7 +194,7 @@ sealed partial class Sprite
     public enum Legs : byte
     {
         /// <summary><a href="<#= f #>legs/1.png">Images</a></summary>
-        [Sprite("legs", Frames = 2, FrameRate = 2)]
+        [Sprite("legs", Frames = 2, FrameRate = 2, Loops = true)]
         Neutral,
     }
 

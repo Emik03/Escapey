@@ -21,11 +21,14 @@ sealed class Animation<T> : DrawableGameComponent
     /// <summary>The sprite batch to draw with.</summary>
     public required SpriteBatch Batch { get; init; }
 
-    /// <summary>Gets the last frame of the current sprite.</summary>
-    int LastFrame => CurrentSprite.Textures.Length - 1;
-
     /// <summary>Gets the current sprite.</summary>
     SpriteAttribute.Loaded CurrentSprite => s_sprites[_index];
+
+    /// <summary>Gets the number of frames of the current sprite.</summary>
+    int FrameLength => CurrentSprite.Textures.Length;
+
+    /// <summary>Gets the last frame of the current sprite.</summary>
+    int LastFrame => FrameLength - 1;
 
     /// <summary>Gets the current texture.</summary>
     Texture2D CurrentTexture => CurrentSprite.Textures[_frame];
@@ -38,7 +41,7 @@ sealed class Animation<T> : DrawableGameComponent
         if (s_sprites.IsDefault)
             s_sprites = [..Enum.GetValues<T>().Select(x => SpriteAttribute.Loaded.With(game.Content, x))];
 
-        _frame = CurrentSprite.Textures.Length - 1;
+        _frame = LastFrame;
     }
 
     /// <inheritdoc />
@@ -54,7 +57,7 @@ sealed class Animation<T> : DrawableGameComponent
             _delta.Ticks / interval.Ticks is not 0 and var advance)
         {
             _delta -= interval * advance;
-            _frame = LastFrame.Min(_frame + 1);
+            _frame = CurrentSprite.Loops ? (_frame + 1).Mod(FrameLength) : LastFrame.Min(_frame + 1);
         }
 
         Batch.Draw(CurrentTexture, Vector2.Zero, Color.White);
@@ -69,10 +72,21 @@ sealed class Animation<T> : DrawableGameComponent
             return this;
 
         _index = i;
-        _frame = 0;
-        return this;
+        return Reset(true);
     }
 
     /// <inheritdoc cref="Change(T)"/>
     public Animation<T> Change(T? value) => value is { } v ? Change(v) : this;
+
+    /// <summary>Resets the animation back to the beginning.</summary>
+    /// <returns>The </returns>
+    public Animation<T> Reset(bool condition)
+    {
+        if (!condition)
+            return this;
+
+        _delta = default;
+        _frame = 0;
+        return this;
+    }
 }
