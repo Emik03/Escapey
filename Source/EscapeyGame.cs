@@ -37,6 +37,7 @@ public sealed partial class EscapeyGame : Game
         };
 
         graphics.ApplyChanges();
+        IsMouseVisible = true;
 
         _animations = new Animations(this)
            .Add<Sprite.Legs>()
