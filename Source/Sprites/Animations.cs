@@ -3,13 +3,17 @@ namespace Escapey.Sprites;
 
 /// <summary>Maintains a list of <see cref="Animation{T}"/> instances.</summary>
 /// <param name="game">The game that this component will belong to.</param>
-sealed class Animations(Game game, int width, int height) : DrawableGameComponent(game), IReadOnlyList<DrawableGameComponent>
+sealed class Animations(Game game, int width, int height)
+    : DrawableGameComponent(game), IReadOnlyList<DrawableGameComponent>
 {
     /// <summary>The list of animations.</summary>
     readonly List<DrawableGameComponent> _animations = [];
 
     /// <summary>The render target to draw to.</summary>
     readonly RenderTarget2D _target = new(game.GraphicsDevice, width, height);
+
+    /// <summary>The background color.</summary>
+    Color _background;
 
     /// <inheritdoc />
     public DrawableGameComponent this[int index] => _animations[index];
@@ -27,6 +31,7 @@ sealed class Animations(Game game, int width, int height) : DrawableGameComponen
             return;
 
         GraphicsDevice.SetRenderTarget(_target);
+        GraphicsDevice.Clear(_background);
         Batch.Begin();
         ForEach(gameTime, static (DrawableGameComponent c, GameTime t) => c.Draw(t));
         Batch.End();
@@ -47,6 +52,14 @@ sealed class Animations(Game game, int width, int height) : DrawableGameComponen
         where T : struct, Enum
     {
         _animations.Add(new Animation<T>(Game) { Batch = Batch, Min = min, Visible = visible }.Change(value));
+        return this;
+    }
+
+    /// <summary>Sets the background color.</summary>
+    /// <returns>Itself.</returns>
+    public Animations Background(Color background)
+    {
+        _background = background;
         return this;
     }
 

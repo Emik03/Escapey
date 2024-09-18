@@ -86,7 +86,6 @@ public sealed partial class EscapeyGame : Game
     /// <inheritdoc />
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(_config.Background);
         var columns = _config.Input.Poll().InvertIf(_config.Inverted);
         var sound = _hearMonitor.Poll();
         var flipped = false;
@@ -100,6 +99,7 @@ public sealed partial class EscapeyGame : Game
         };
 
         _animations
+           .Background(_config.Background)
            .Change(columns.ToEyes())
            .Change(sound.IsSpeaking() ? sound : columns.ToMouth(ref _neutral))
            .Change(_areKeysVisible ? columns.ToLeftArm() : Sprite.Arm.Left.Idle)
