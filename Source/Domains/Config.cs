@@ -69,7 +69,11 @@ sealed partial class Config(
 
     /// <summary>Gets the folder where the config is stored.</summary>
     public static string Folder { get; } =
-        Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), nameof(Escapey));
+        Path.Join(
+            Environment.GetEnvironmentVariable("ESCAPEY_CONFIG") ??
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            nameof(Escapey)
+        );
 
     /// <summary>Gets the path to the config file.</summary>
     public static string TextFile { get; } = Path.Join(Folder, "config.ini");
