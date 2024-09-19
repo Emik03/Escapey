@@ -20,7 +20,7 @@ public sealed partial class EscapeyGame : Game
     /// <summary>The mouth to use when the user is not speaking.</summary>
     Sprite.Mouth _neutral = Sprite.Mouth.Happy;
 
-    /// <summary>Whether the keys are visible.</summary>
+    /// <summary>Manages toggle states.</summary>
     Toggle _rainbow, _visible = true;
 
     /// <summary>Initializes a new instance of the <see cref="EscapeyGame"/> class.</summary>
@@ -83,10 +83,12 @@ public sealed partial class EscapeyGame : Game
     /// <inheritdoc />
     protected override void Draw(GameTime gameTime)
     {
-        var sound = _hearMonitor.Poll();
         var columns = _config.Input.Poll().InvertIf(_config.Inverted);
-        var (toggled, unique) = _visible.Accept(!columns.Has(Columns.Hide));
+        var sound = _hearMonitor.Poll();
+        var pushed = columns.Has(Columns.Hide);
+        var (toggled, unique) = _visible.Accept(!pushed);
         var rainbow = _rainbow.Accept(columns.Has(Columns.Rainbow)).Toggled;
+        var time = (int)(gameTime.TotalGameTime.Ticks / TimeSpan.TicksPerMillisecond / _config.Speed);
 
         _animations
            .Background(_config.Background)
@@ -94,15 +96,15 @@ public sealed partial class EscapeyGame : Game
            .Change(sound.IsSpeaking() ? sound : columns.ToMouth(ref _neutral))
            .Change(toggled ? columns.ToLeftArm() : Sprite.Arm.Left.Idle)
            .Change(toggled ? columns.ToRightArm() : Sprite.Arm.Right.Idle)
-           .Colored<Sprite.Eyes>(rainbow ? gameTime.TotalGameTime.Milliseconds.ToColor() : Color.White)
-           .Colored<Sprite.Mouth>(rainbow ? gameTime.TotalGameTime.Milliseconds.ToColor() : Color.White)
+           .Colored<Sprite.Eyes>(rainbow ? time.ToColor() : Color.White)
+           .Colored<Sprite.Mouth>(rainbow ? time.ToColor() : Color.White)
            .SetVisibility<Sprite.Keys.Overlay>(toggled)
            .SetVisibility<Sprite.Keys.Background>(toggled)
            .SetVisibility<Sprite.Keys.First>(toggled && columns.Has(Columns.First))
            .SetVisibility<Sprite.Keys.Second>(toggled && columns.Has(Columns.Second))
            .SetVisibility<Sprite.Keys.Third>(toggled && columns.Has(Columns.Third))
            .SetVisibility<Sprite.Keys.Fourth>(toggled && columns.Has(Columns.Fourth))
-           .Reset<Sprite.Legs>(unique && toggled)
+           .Reset<Sprite.Legs>(unique && toggled && pushed)
            .Draw(gameTime);
     }
 

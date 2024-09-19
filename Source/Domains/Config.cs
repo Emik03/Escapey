@@ -4,7 +4,8 @@ namespace Escapey.Domains;
 /// <summary>Represents the configuration of the application.</summary>
 /// <param name="borderless">Whether to use a borderless window.</param>
 /// <param name="inverted">Whether to invert the columns.</param>
-/// <param name="stabilization">The number of frames to display before allowing animations to change.</param>
+/// <param name="speed">The speed of the rainbow.</param>
+/// <param name="stabilize">The number of frames to display before allowing animations to change.</param>
 /// <param name="training">The amount of training data per phoneme.</param>
 /// <param name="profile">The name of the model.</param>
 /// <param name="background">The background color.</param>
@@ -13,7 +14,8 @@ namespace Escapey.Domains;
 sealed partial class Config(
     bool borderless,
     bool inverted,
-    int stabilization,
+    int speed,
+    int stabilize,
     int training,
     string profile,
     Color background,
@@ -24,8 +26,11 @@ sealed partial class Config(
     /// <summary>The number of columns.</summary>
     public const int ColumnCount = 4;
 
-    /// <summary>The default value for <see cref="Stabilization"/>.</summary>
-    const int DefaultStabilization = 3;
+    /// <summary>The default value for <see cref="Speed"/>.</summary>
+    const int DefaultSpeed = 4;
+
+    /// <summary>The default value for <see cref="Stabilize"/>.</summary>
+    const int DefaultStabilize = 3;
 
     /// <summary>The default value for <see cref="Training"/>.</summary>
     const int DefaultTraining = 20;
@@ -61,35 +66,38 @@ sealed partial class Config(
             Environment.SetEnvironmentVariable("XDG_RUNTIME_DIR", $"/run/user/{uid}");
     }
 
-    /// <summary>The folder where the config is stored.</summary>
+    /// <summary>Gets the folder where the config is stored.</summary>
     public static string Folder { get; } =
         Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), nameof(Escapey));
 
-    /// <summary>The path to the config file.</summary>
+    /// <summary>Gets the path to the config file.</summary>
     public static string TextFile { get; } = Path.Join(Folder, "config.ini");
 
-    /// <summary>Whether to use borderless mode.</summary>
+    /// <summary>Gets value determining whether to use borderless mode.</summary>
     public bool Borderless { get; private set; } = borderless;
 
-    /// <summary>Whether to invert the columns.</summary>
+    /// <summary>Gets a value determining whether to invert the columns.</summary>
     public bool Inverted { get; private set; } = inverted;
 
-    /// <summary>The amount of stabilization frames for the mouth.</summary>
-    public int Stabilization { get; private set; } = stabilization;
+    /// <summary>Gets the speed of the rainbow.</summary>
+    public int Speed { get; private set; } = speed;
 
-    /// <summary>The amount of training data per phoneme.</summary>
+    /// <summary>Gets the number of frames to display before allowing animations to change.</summary>
+    public int Stabilize { get; private set; } = stabilize;
+
+    /// <summary>Gets the amount of training data per phoneme.</summary>
     public int Training { get; private set; } = training;
 
-    /// <summary>The name of the model.</summary>
+    /// <summary>Gets the name of the model.</summary>
     public string Profile { get; private set; } = profile;
 
-    /// <summary>The background color.</summary>
+    /// <summary>Gets the background color.</summary>
     public Color Background { get; private set; } = background;
 
-    /// <summary>The audio provider.</summary>
+    /// <summary>Gets the audio provider.</summary>
     public IAudioProvider Audio { get; private set; } = audio;
 
-    /// <summary>The input provider.</summary>
+    /// <summary>Gets the input provider.</summary>
     public IInputProvider Input { get; private set; } = input;
 
     /// <summary>Loads the config.</summary>
@@ -100,14 +108,14 @@ sealed partial class Config(
         static Config Default(Exception initial, out ImmutableArray<Exception> warnings)
         {
 #pragma warning disable IDISP001
-            var audio = IAudioProvider.Default();
-            var input = IInputProvider.Default(out var inputWarnings);
+            var a = IAudioProvider.Default();
+            var i = IInputProvider.Default(out var inputWarnings);
 #pragma warning restore IDISP001
             var builder = ImmutableArray.CreateBuilder<Exception>();
             builder.Add(initial);
             builder.AddRange(inputWarnings);
             warnings = builder.DrainToImmutable();
-            return new(false, false, DefaultStabilization, DefaultTraining, DefaultProfile, default, audio, input);
+            return new(false, false, DefaultSpeed, DefaultStabilize, DefaultTraining, DefaultProfile, default, a, i);
         }
 
         // ReSharper disable once NullableWarningSuppressionIsUsed
@@ -139,23 +147,24 @@ sealed partial class Config(
         var profile = DefaultProfile;
         ImmutableArray<Exception> defaultWarnings = [];
         var accumulator = ImmutableArray.CreateBuilder<Exception>();
-        int training = DefaultTraining, stabilization = DefaultStabilization;
+        int speed = DefaultSpeed, stabilize = DefaultStabilize, training = DefaultTraining;
         bool borderless = false, implicitInput = false, inverted = false;
 #pragma warning disable IDISP003
         foreach (var line in str.SplitLines())
             _ = SplitKeyValuePair(line, out var value) switch
             {
                 "" => default,
-                var x when x.EqualsIgnoreCase("audio") => ChangeAudio(value, accumulator, ref audio),
-                var x when x.EqualsIgnoreCase("borderless") => ChangeBoolean(value, accumulator, ref borderless),
-                var x when x.EqualsIgnoreCase("color") || x.EqualsIgnoreCase("colour") =>
+                var x when x.EqualsIgnoreCase(nameof(Audio)) => ChangeAudio(value, accumulator, ref audio),
+                var x when x.EqualsIgnoreCase(nameof(Borderless)) => ChangeBoolean(value, accumulator, ref borderless),
+                var x when x.EqualsIgnoreCase(nameof(Color)) || x.EqualsIgnoreCase("colour") =>
                     ChangeColor(value, accumulator, ref color),
-                var x when x.EqualsIgnoreCase("input") => ChangeInput(value, implicitInput, accumulator, ref input),
-                var x when x.EqualsIgnoreCase("inverted") => ChangeBoolean(value, accumulator, ref inverted),
-                var x when x.EqualsIgnoreCase("profile") => ChangeProfile(value, accumulator, ref profile),
-                var x when x.EqualsIgnoreCase("stabilization") || x.EqualsIgnoreCase("stabilisation") =>
-                    ChangeNumber(value, accumulator, ref stabilization),
-                var x when x.EqualsIgnoreCase("training") => ChangeNumber(value, accumulator, ref training),
+                var x when x.EqualsIgnoreCase(nameof(Input)) => ChangeInput(value, implicitInput, accumulator, ref input),
+                var x when x.EqualsIgnoreCase(nameof(Inverted)) => ChangeBoolean(value, accumulator, ref inverted),
+                var x when x.EqualsIgnoreCase(nameof(Profile)) => ChangeProfile(value, accumulator, ref profile),
+                var x when x.EqualsIgnoreCase(nameof(Speed)) => ChangeNumber(value, accumulator, ref speed),
+                var x when x.EqualsIgnoreCase(nameof(Stabilize)) || x.EqualsIgnoreCase("stabilise") =>
+                    ChangeNumber(value, accumulator, ref stabilize),
+                var x when x.EqualsIgnoreCase(nameof(Training)) => ChangeNumber(value, accumulator, ref training),
                 var x when x.TryIntoEnum<Columns>() is { } column =>
                     AddColumn(column, value, accumulator, ref implicitInput, ref input),
                 var x => UnrecognizedKey(x, accumulator),
@@ -165,7 +174,7 @@ sealed partial class Config(
         input ??= IInputProvider.Default(out defaultWarnings);
         accumulator.AddRange(defaultWarnings);
         warnings = accumulator.DrainToImmutable();
-        return new(borderless, inverted, stabilization, training, profile, color, audio, input);
+        return new(borderless, inverted, speed, stabilize, training, profile, color, audio, input);
     }
 
     /// <inheritdoc />
@@ -192,7 +201,8 @@ sealed partial class Config(
         config.Input = Input;
         config.Inverted = Inverted;
         config.Profile = Profile;
-        config.Stabilization = Stabilization;
+        config.Speed = Speed;
+        config.Stabilize = Stabilize;
         config.Training = Training;
     }
 

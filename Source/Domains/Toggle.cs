@@ -6,7 +6,7 @@ namespace Escapey.Domains;
 struct Toggle(bool start)
 {
     /// <summary>The state of the button.</summary>
-    byte _state = (byte)(start.ToByte() << 1);
+    byte _state = (byte)(start.ToByte() * 2);
 
     /// <summary>Gets the state.</summary>
     /// <param name="toggle">The toggle.</param>

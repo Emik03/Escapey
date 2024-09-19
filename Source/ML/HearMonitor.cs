@@ -67,12 +67,12 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
     /// <returns>The current mouth.</returns>
     public Sprite.Mouth Poll()
     {
-        if (config.Stabilization is var stabilization && _order.Length != stabilization)
+        if (config.Stabilize is var stabilize && _order.Length != stabilize)
         {
-            _order = new Sprite.Mouth[stabilization];
+            _order = new Sprite.Mouth[stabilize];
             _order.AsSpan().Fill(Upset);
             _count.AsSpan().Clear();
-            _count[0] = stabilization;
+            _count[0] = stabilize;
         }
 
         ref var count = ref MemoryMarshal.GetArrayDataReference(_count);
