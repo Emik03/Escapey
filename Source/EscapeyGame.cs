@@ -85,7 +85,7 @@ public sealed partial class EscapeyGame : Game
     {
         var sound = _hearMonitor.Poll();
         var columns = _config.Input.Poll().InvertIf(_config.Inverted);
-        var (unique, toggled) = _visible.Accept(columns.Has(Columns.Hide));
+        var (toggled, unique) = _visible.Accept(!columns.Has(Columns.Hide));
         var rainbow = _rainbow.Accept(columns.Has(Columns.Rainbow)).Toggled;
 
         _animations
