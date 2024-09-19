@@ -38,8 +38,10 @@ sealed class Animation<T> : DrawableGameComponent
     public Animation(Game game)
         : base(game)
     {
+        SpriteAttribute.Loaded Load(T x) => SpriteAttribute.Loaded.With(game.Content, x);
+
         if (s_sprites.IsDefault)
-            s_sprites = [..Enum.GetValues<T>().Select(x => SpriteAttribute.Loaded.With(game.Content, x))];
+            s_sprites = ImmutableCollectionsMarshal.AsImmutableArray(Enum.GetValues<T>().ConvertAll(Load));
 
         _frame = LastFrame;
     }
