@@ -24,7 +24,7 @@ partial interface IInputProvider
         readonly bool[] _keyState = new bool[KeyCount];
 
         /// <summary>Contains the state of the keys.</summary>
-        readonly bool[,] _keys = new bool[Config.ColumnCount, KeyCount];
+        readonly bool[,] _keys = new bool[BitOperations.TrailingZeroCount((int)Columns.Upset), KeyCount];
 
         /// <summary>Contains the current input.</summary>
         Columns _col;

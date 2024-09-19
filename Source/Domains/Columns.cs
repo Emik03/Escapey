@@ -75,16 +75,7 @@ static class ColumnExtensions
     /// <param name="column">The column.</param>
     /// <exception cref="ArgumentOutOfRangeException">The column does not have exactly one bit set.</exception>
     /// <returns>The index.</returns>
-    public static byte ToIndex(this Columns column) =>
-        // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
-        column switch
-        {
-            Columns.First => 0,
-            Columns.Second => 1,
-            Columns.Third => 2,
-            Columns.Fourth => 3,
-            _ => throw new ArgumentOutOfRangeException(nameof(column), "Column must have exactly one bit set."),
-        };
+    public static byte ToIndex(this Columns column) => (byte)BitOperations.TrailingZeroCount((int)column);
 
     /// <summary>Inverts the columns.</summary>
     /// <param name="column">The columns to invert.</param>
@@ -140,9 +131,7 @@ static class ColumnExtensions
     /// <param name="column">The <see cref="Columns"/> to convert.</param>
     /// <returns>The <see cref="Sprite.Eyes"/></returns>
     public static Sprite.Eyes ToEyes(this Columns column) =>
-        (Sprite.Eyes)BitOperations.TrailingZeroCount(
-            (ushort)column >> BitOperations.TrailingZeroCount((int)Columns.Angry)
-        );
+        (Sprite.Eyes)BitOperations.TrailingZeroCount((ushort)column >> Columns.Angry.ToIndex());
 
     /// <summary>Converts the <see cref="Columns"/> to the <see cref="Sprite.Mouth"/></summary>
     /// <param name="column">The <see cref="Columns"/> to convert.</param>
@@ -151,7 +140,7 @@ static class ColumnExtensions
     /// The <see cref="Sprite.Mouth"/> of the <see cref="Columns"/>, or <paramref name="fallback"/> if no mouth is set.
     /// </returns>
     public static Sprite.Mouth ToMouth(this Columns column, ref Sprite.Mouth fallback) =>
-        (ushort)column >> BitOperations.TrailingZeroCount((int)Columns.Angry) is not 0 and var shift
+        (ushort)column >> Columns.Angry.ToIndex() is not 0 and var shift
             ? fallback = (Sprite.Mouth)BitOperations.TrailingZeroCount(shift)
             : fallback;
 }

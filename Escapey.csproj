@@ -6,8 +6,8 @@
         <TransformOnBuild>true</TransformOnBuild>
         <ApplicationIcon>Properties/Icon.ico</ApplicationIcon>
         <DisableDefaultDocumentation>true</DisableDefaultDocumentation>
+        <DefineConstants>$(DefineConstants);XNA;RELEASE</DefineConstants>
         <ApplicationManifest>Properties/app.manifest</ApplicationManifest>
-        <DefineConstants>$(DefineConstants);XNA;RELEASE;FORCE_SERILOG</DefineConstants>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)' == 'Android'">
         <ApplicationId>dev.emik.escapey</ApplicationId>

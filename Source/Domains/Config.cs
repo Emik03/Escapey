@@ -393,18 +393,18 @@ sealed partial class Config(
 
     /// <summary>Changes the input provider.</summary>
     /// <param name="value">The alias to use.</param>
-    /// <param name="implicitInput">Whether to warn if the input provider is not defined.</param>
+    /// <param name="setInput">Whether to warn if the input provider is not defined.</param>
     /// <param name="accumulator">The accumulator of warnings.</param>
     /// <param name="input">The input provider to change.</param>
     /// <returns><c>()</c></returns>
     static ValueTuple ChangeInput(
         scoped ReadOnlySpan<char> value,
-        bool implicitInput,
+        bool setInput,
         ImmutableArray<Exception>.Builder accumulator,
         ref IInputProvider? input
     )
     {
-        if (implicitInput)
+        if (setInput)
         {
             accumulator.Add(new FormatException($"Define the input provider before keybindings, ignoring: {value}."));
             return default;

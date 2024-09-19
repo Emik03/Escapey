@@ -36,16 +36,15 @@ partial interface IInputProvider : IDisposable
         if (!OperatingSystem.IsFreeBSD() && !OperatingSystem.IsLinux())
         {
             warnings = [new PlatformNotSupportedException("Evdev is unsupported, falling back to XNA.")];
-
             return new Xna();
         }
 
-        warnings = Environment.IsPrivilegedProcess
-            ? []
-            : [new WarningException("Evdev is not privileged, may not work on some input devices.")];
-
         var evdev = new Evdev(out var evdevWarnings);
-        warnings = warnings.AddRange(evdevWarnings);
+
+        warnings = Environment.IsPrivilegedProcess
+            ? evdevWarnings
+            : [new WarningException("Evdev is not privileged, may not work on some input devices."), ..evdevWarnings];
+
         return evdev;
     }
 

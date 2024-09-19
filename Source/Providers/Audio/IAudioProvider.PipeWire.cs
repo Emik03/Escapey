@@ -110,7 +110,7 @@ partial interface IAudioProvider
         [MustUseReturnValue]
         public AudioSegment? Poll()
         {
-            if (PollRaw() is var current && current is [])
+            if (PollRaw() is var current && current.IsEmpty)
                 return null;
 
             current.CopyTo(Real);
