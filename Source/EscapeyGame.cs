@@ -21,10 +21,7 @@ public sealed partial class EscapeyGame : Game
     Sprite.Mouth _neutral = Sprite.Mouth.Happy;
 
     /// <summary>Whether the keys are visible.</summary>
-    bool _areKeysVisible = true;
-
-    /// <summary>The state of the key visibility.</summary>
-    bool? _keyVisibleState;
+    Toggle _rainbow, _visible = true;
 
     /// <summary>Initializes a new instance of the <see cref="EscapeyGame"/> class.</summary>
     public EscapeyGame()
@@ -86,31 +83,26 @@ public sealed partial class EscapeyGame : Game
     /// <inheritdoc />
     protected override void Draw(GameTime gameTime)
     {
-        var columns = _config.Input.Poll().InvertIf(_config.Inverted);
         var sound = _hearMonitor.Poll();
-        var flipped = false;
-
-        _keyVisibleState = _keyVisibleState switch
-        {
-            true when (flipped = true) && (_areKeysVisible = !_areKeysVisible) is var _ => null,
-            null when !columns.Has(Columns.Hide) => false,
-            false when columns.Has(Columns.Hide) => true,
-            _ => _keyVisibleState,
-        };
+        var columns = _config.Input.Poll().InvertIf(_config.Inverted);
+        var (unique, toggled) = _visible.Accept(columns.Has(Columns.Hide));
+        var rainbow = _rainbow.Accept(columns.Has(Columns.Rainbow)).Toggled;
 
         _animations
            .Background(_config.Background)
            .Change(columns.ToEyes())
            .Change(sound.IsSpeaking() ? sound : columns.ToMouth(ref _neutral))
-           .Change(_areKeysVisible ? columns.ToLeftArm() : Sprite.Arm.Left.Idle)
-           .Change(_areKeysVisible ? columns.ToRightArm() : Sprite.Arm.Right.Idle)
-           .SetVisibility<Sprite.Keys.Overlay>(_areKeysVisible)
-           .SetVisibility<Sprite.Keys.Background>(_areKeysVisible)
-           .SetVisibility<Sprite.Keys.First>(_areKeysVisible && columns.Has(Columns.First))
-           .SetVisibility<Sprite.Keys.Second>(_areKeysVisible && columns.Has(Columns.Second))
-           .SetVisibility<Sprite.Keys.Third>(_areKeysVisible && columns.Has(Columns.Third))
-           .SetVisibility<Sprite.Keys.Fourth>(_areKeysVisible && columns.Has(Columns.Fourth))
-           .Reset<Sprite.Legs>(flipped)
+           .Change(toggled ? columns.ToLeftArm() : Sprite.Arm.Left.Idle)
+           .Change(toggled ? columns.ToRightArm() : Sprite.Arm.Right.Idle)
+           .Colored<Sprite.Eyes>(rainbow ? gameTime.TotalGameTime.Milliseconds.ToColor() : Color.White)
+           .Colored<Sprite.Mouth>(rainbow ? gameTime.TotalGameTime.Milliseconds.ToColor() : Color.White)
+           .SetVisibility<Sprite.Keys.Overlay>(toggled)
+           .SetVisibility<Sprite.Keys.Background>(toggled)
+           .SetVisibility<Sprite.Keys.First>(toggled && columns.Has(Columns.First))
+           .SetVisibility<Sprite.Keys.Second>(toggled && columns.Has(Columns.Second))
+           .SetVisibility<Sprite.Keys.Third>(toggled && columns.Has(Columns.Third))
+           .SetVisibility<Sprite.Keys.Fourth>(toggled && columns.Has(Columns.Fourth))
+           .Reset<Sprite.Legs>(unique && toggled)
            .Draw(gameTime);
     }
 

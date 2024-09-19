@@ -121,7 +121,7 @@ static class ColumnExtensions
             M => ["/m/"],
             Nsl => ["/ə/", "/ɹ/", "/n/", "/s/", "/l/"],
             O => ["/o/", "/ʊ/", "/u/", "/w/"],
-            _ => ["nothing", "keyboard typing", "loud breathing", "chair rocking"],
+            _ => ["nothing", "keyboard typing", "keyboard mashing", "loud breathing", "chair rocking"],
         };
 
     /// <summary>Converts the <see cref="Columns"/> to the <see cref="Sprite.Arm.Left"/>.</summary>
@@ -140,7 +140,9 @@ static class ColumnExtensions
     /// <param name="column">The <see cref="Columns"/> to convert.</param>
     /// <returns>The <see cref="Sprite.Eyes"/></returns>
     public static Sprite.Eyes ToEyes(this Columns column) =>
-        (Sprite.Eyes)BitOperations.TrailingZeroCount((ushort)column >> BitOperations.TrailingZeroCount((int)Angry));
+        (Sprite.Eyes)BitOperations.TrailingZeroCount(
+            (ushort)column >> BitOperations.TrailingZeroCount((int)Columns.Angry)
+        );
 
     /// <summary>Converts the <see cref="Columns"/> to the <see cref="Sprite.Mouth"/></summary>
     /// <param name="column">The <see cref="Columns"/> to convert.</param>
@@ -149,7 +151,7 @@ static class ColumnExtensions
     /// The <see cref="Sprite.Mouth"/> of the <see cref="Columns"/>, or <paramref name="fallback"/> if no mouth is set.
     /// </returns>
     public static Sprite.Mouth ToMouth(this Columns column, ref Sprite.Mouth fallback) =>
-        (ushort)column >> BitOperations.TrailingZeroCount((int)Angry) is not 0 and var shift
+        (ushort)column >> BitOperations.TrailingZeroCount((int)Columns.Angry) is not 0 and var shift
             ? fallback = (Sprite.Mouth)BitOperations.TrailingZeroCount(shift)
             : fallback;
 }
