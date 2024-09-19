@@ -189,8 +189,8 @@ global using global::DotNetProjectFile.Xml;
 global using global::Emik;
 global using global::Emik.Morsels;
 global using global::Escapey;
+global using global::Escapey.Domains;
 global using global::Escapey.ML;
-global using global::Escapey.Preferences;
 global using global::Escapey.Providers;
 global using global::Escapey.Providers.Audio;
 global using global::Escapey.Providers.Input;
@@ -739,9 +739,9 @@ namespace Emik.Morsels { }
 
 namespace Escapey { }
 
-namespace Escapey.ML { }
+namespace Escapey.Domains { }
 
-namespace Escapey.Preferences { }
+namespace Escapey.ML { }
 
 namespace Escapey.Providers { }
 

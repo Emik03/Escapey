@@ -12,6 +12,9 @@ sealed class Animation<T> : DrawableGameComponent
     /// <summary>The current state.</summary>
     int _frame, _index;
 
+    /// <summary>The color to draw with.</summary>
+    Color _color = Color.White;
+
     /// <summary>The elapsed time.</summary>
     TimeSpan _delta;
 
@@ -62,7 +65,7 @@ sealed class Animation<T> : DrawableGameComponent
             _frame = CurrentSprite.Loops ? (_frame + advance).Mod(FrameLength) : LastFrame.Min(_frame + advance);
         }
 
-        Batch.Draw(CurrentTexture, Vector2.Zero, Color.White);
+        Batch.Draw(CurrentTexture, Vector2.Zero, _color);
     }
 
     /// <summary>Changes the state.</summary>
@@ -79,6 +82,14 @@ sealed class Animation<T> : DrawableGameComponent
 
     /// <inheritdoc cref="Change(T)"/>
     public Animation<T> Change(T? value) => value is { } v ? Change(v) : this;
+
+    /// <summary>Changes the color.</summary>
+    /// <returns>Itself.</returns>
+    public Animation<T> Colored(Color color)
+    {
+        _color = color;
+        return this;
+    }
 
     /// <summary>Resets the animation back to the beginning.</summary>
     /// <returns>The </returns>

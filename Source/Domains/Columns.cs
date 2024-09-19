@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MPL-2.0
-namespace Escapey.Preferences;
+namespace Escapey.Domains;
 
 using static Sprite.Mouth;
 
@@ -28,32 +28,35 @@ enum Columns : ushort
     /// <summary>Used to hide the keys.</summary>
     Hide = 1 << 4,
 
+    /// <summary>Used to make the eyes and mouth colorful.</summary>
+    Rainbow = 1 << 5,
+
     /// <summary>Used to indicate the expression be angry.</summary>
-    Angry = 1 << 5,
+    Angry = 1 << 6,
 
     /// <summary>Used to indicate the expression be bored.</summary>
-    Bored = 1 << 6,
+    Bored = 1 << 7,
 
     /// <summary>Used to indicate the expression be concentrated.</summary>
-    Concentrated = 1 << 7,
+    Concentrated = 1 << 8,
 
     /// <summary>Used to indicate the expression be confused.</summary>
-    Confused = 1 << 8,
+    Confused = 1 << 9,
 
     /// <summary>Used to indicate the expression be frowning.</summary>
-    Frown = 1 << 9,
+    Frown = 1 << 10,
 
     /// <summary>Used to indicate the expression be happy.</summary>
-    Happy = 1 << 10,
+    Happy = 1 << 11,
 
     /// <summary>Used to indicate the expression be happy, with a raised eyebrow.</summary>
-    HappyEyebrow = 1 << 11,
+    HappyEyebrow = 1 << 12,
 
     /// <summary>Used to indicate the expression be scared.</summary>
-    Scared = 1 << 12,
+    Scared = 1 << 13,
 
     /// <summary>Used to indicate the expression be upset.</summary>
-    Upset = 1 << 13,
+    Upset = 1 << 14,
 }
 
 /// <summary>Extensions for <see cref="Columns"/>.</summary>

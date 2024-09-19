@@ -72,6 +72,12 @@ sealed class Animations(Game game, int width, int height)
         where T : struct, Enum =>
         ForEach(value, static (Animation<T> a, T v) => a.Change(v));
 
+    /// <summary>Changes all colors for animations of type <typeparamref name="T"/> with the given value.</summary>
+    /// <returns>Itself.</returns>
+    public Animations Colored<T>(Color color)
+        where T : struct, Enum =>
+        ForEach(color, static (Animation<T> a, Color v) => a.Colored(v));
+
     /// <inheritdoc cref="Change{T}(T)"/>
     public Animations Change<T>(T? value)
         where T : struct, Enum =>

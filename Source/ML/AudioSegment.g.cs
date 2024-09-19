@@ -2434,6 +2434,3366 @@ sealed class AudioSegment
         set => _array[299] = value;
     }
 
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E300
+    {
+        get => _array[300];
+        set => _array[300] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E301
+    {
+        get => _array[301];
+        set => _array[301] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E302
+    {
+        get => _array[302];
+        set => _array[302] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E303
+    {
+        get => _array[303];
+        set => _array[303] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E304
+    {
+        get => _array[304];
+        set => _array[304] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E305
+    {
+        get => _array[305];
+        set => _array[305] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E306
+    {
+        get => _array[306];
+        set => _array[306] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E307
+    {
+        get => _array[307];
+        set => _array[307] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E308
+    {
+        get => _array[308];
+        set => _array[308] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E309
+    {
+        get => _array[309];
+        set => _array[309] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E310
+    {
+        get => _array[310];
+        set => _array[310] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E311
+    {
+        get => _array[311];
+        set => _array[311] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E312
+    {
+        get => _array[312];
+        set => _array[312] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E313
+    {
+        get => _array[313];
+        set => _array[313] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E314
+    {
+        get => _array[314];
+        set => _array[314] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E315
+    {
+        get => _array[315];
+        set => _array[315] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E316
+    {
+        get => _array[316];
+        set => _array[316] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E317
+    {
+        get => _array[317];
+        set => _array[317] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E318
+    {
+        get => _array[318];
+        set => _array[318] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E319
+    {
+        get => _array[319];
+        set => _array[319] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E320
+    {
+        get => _array[320];
+        set => _array[320] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E321
+    {
+        get => _array[321];
+        set => _array[321] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E322
+    {
+        get => _array[322];
+        set => _array[322] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E323
+    {
+        get => _array[323];
+        set => _array[323] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E324
+    {
+        get => _array[324];
+        set => _array[324] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E325
+    {
+        get => _array[325];
+        set => _array[325] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E326
+    {
+        get => _array[326];
+        set => _array[326] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E327
+    {
+        get => _array[327];
+        set => _array[327] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E328
+    {
+        get => _array[328];
+        set => _array[328] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E329
+    {
+        get => _array[329];
+        set => _array[329] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E330
+    {
+        get => _array[330];
+        set => _array[330] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E331
+    {
+        get => _array[331];
+        set => _array[331] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E332
+    {
+        get => _array[332];
+        set => _array[332] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E333
+    {
+        get => _array[333];
+        set => _array[333] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E334
+    {
+        get => _array[334];
+        set => _array[334] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E335
+    {
+        get => _array[335];
+        set => _array[335] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E336
+    {
+        get => _array[336];
+        set => _array[336] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E337
+    {
+        get => _array[337];
+        set => _array[337] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E338
+    {
+        get => _array[338];
+        set => _array[338] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E339
+    {
+        get => _array[339];
+        set => _array[339] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E340
+    {
+        get => _array[340];
+        set => _array[340] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E341
+    {
+        get => _array[341];
+        set => _array[341] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E342
+    {
+        get => _array[342];
+        set => _array[342] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E343
+    {
+        get => _array[343];
+        set => _array[343] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E344
+    {
+        get => _array[344];
+        set => _array[344] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E345
+    {
+        get => _array[345];
+        set => _array[345] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E346
+    {
+        get => _array[346];
+        set => _array[346] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E347
+    {
+        get => _array[347];
+        set => _array[347] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E348
+    {
+        get => _array[348];
+        set => _array[348] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E349
+    {
+        get => _array[349];
+        set => _array[349] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E350
+    {
+        get => _array[350];
+        set => _array[350] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E351
+    {
+        get => _array[351];
+        set => _array[351] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E352
+    {
+        get => _array[352];
+        set => _array[352] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E353
+    {
+        get => _array[353];
+        set => _array[353] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E354
+    {
+        get => _array[354];
+        set => _array[354] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E355
+    {
+        get => _array[355];
+        set => _array[355] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E356
+    {
+        get => _array[356];
+        set => _array[356] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E357
+    {
+        get => _array[357];
+        set => _array[357] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E358
+    {
+        get => _array[358];
+        set => _array[358] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E359
+    {
+        get => _array[359];
+        set => _array[359] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E360
+    {
+        get => _array[360];
+        set => _array[360] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E361
+    {
+        get => _array[361];
+        set => _array[361] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E362
+    {
+        get => _array[362];
+        set => _array[362] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E363
+    {
+        get => _array[363];
+        set => _array[363] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E364
+    {
+        get => _array[364];
+        set => _array[364] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E365
+    {
+        get => _array[365];
+        set => _array[365] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E366
+    {
+        get => _array[366];
+        set => _array[366] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E367
+    {
+        get => _array[367];
+        set => _array[367] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E368
+    {
+        get => _array[368];
+        set => _array[368] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E369
+    {
+        get => _array[369];
+        set => _array[369] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E370
+    {
+        get => _array[370];
+        set => _array[370] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E371
+    {
+        get => _array[371];
+        set => _array[371] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E372
+    {
+        get => _array[372];
+        set => _array[372] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E373
+    {
+        get => _array[373];
+        set => _array[373] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E374
+    {
+        get => _array[374];
+        set => _array[374] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E375
+    {
+        get => _array[375];
+        set => _array[375] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E376
+    {
+        get => _array[376];
+        set => _array[376] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E377
+    {
+        get => _array[377];
+        set => _array[377] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E378
+    {
+        get => _array[378];
+        set => _array[378] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E379
+    {
+        get => _array[379];
+        set => _array[379] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E380
+    {
+        get => _array[380];
+        set => _array[380] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E381
+    {
+        get => _array[381];
+        set => _array[381] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E382
+    {
+        get => _array[382];
+        set => _array[382] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E383
+    {
+        get => _array[383];
+        set => _array[383] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E384
+    {
+        get => _array[384];
+        set => _array[384] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E385
+    {
+        get => _array[385];
+        set => _array[385] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E386
+    {
+        get => _array[386];
+        set => _array[386] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E387
+    {
+        get => _array[387];
+        set => _array[387] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E388
+    {
+        get => _array[388];
+        set => _array[388] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E389
+    {
+        get => _array[389];
+        set => _array[389] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E390
+    {
+        get => _array[390];
+        set => _array[390] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E391
+    {
+        get => _array[391];
+        set => _array[391] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E392
+    {
+        get => _array[392];
+        set => _array[392] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E393
+    {
+        get => _array[393];
+        set => _array[393] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E394
+    {
+        get => _array[394];
+        set => _array[394] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E395
+    {
+        get => _array[395];
+        set => _array[395] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E396
+    {
+        get => _array[396];
+        set => _array[396] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E397
+    {
+        get => _array[397];
+        set => _array[397] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E398
+    {
+        get => _array[398];
+        set => _array[398] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E399
+    {
+        get => _array[399];
+        set => _array[399] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E400
+    {
+        get => _array[400];
+        set => _array[400] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E401
+    {
+        get => _array[401];
+        set => _array[401] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E402
+    {
+        get => _array[402];
+        set => _array[402] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E403
+    {
+        get => _array[403];
+        set => _array[403] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E404
+    {
+        get => _array[404];
+        set => _array[404] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E405
+    {
+        get => _array[405];
+        set => _array[405] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E406
+    {
+        get => _array[406];
+        set => _array[406] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E407
+    {
+        get => _array[407];
+        set => _array[407] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E408
+    {
+        get => _array[408];
+        set => _array[408] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E409
+    {
+        get => _array[409];
+        set => _array[409] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E410
+    {
+        get => _array[410];
+        set => _array[410] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E411
+    {
+        get => _array[411];
+        set => _array[411] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E412
+    {
+        get => _array[412];
+        set => _array[412] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E413
+    {
+        get => _array[413];
+        set => _array[413] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E414
+    {
+        get => _array[414];
+        set => _array[414] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E415
+    {
+        get => _array[415];
+        set => _array[415] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E416
+    {
+        get => _array[416];
+        set => _array[416] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E417
+    {
+        get => _array[417];
+        set => _array[417] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E418
+    {
+        get => _array[418];
+        set => _array[418] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E419
+    {
+        get => _array[419];
+        set => _array[419] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E420
+    {
+        get => _array[420];
+        set => _array[420] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E421
+    {
+        get => _array[421];
+        set => _array[421] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E422
+    {
+        get => _array[422];
+        set => _array[422] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E423
+    {
+        get => _array[423];
+        set => _array[423] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E424
+    {
+        get => _array[424];
+        set => _array[424] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E425
+    {
+        get => _array[425];
+        set => _array[425] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E426
+    {
+        get => _array[426];
+        set => _array[426] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E427
+    {
+        get => _array[427];
+        set => _array[427] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E428
+    {
+        get => _array[428];
+        set => _array[428] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E429
+    {
+        get => _array[429];
+        set => _array[429] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E430
+    {
+        get => _array[430];
+        set => _array[430] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E431
+    {
+        get => _array[431];
+        set => _array[431] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E432
+    {
+        get => _array[432];
+        set => _array[432] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E433
+    {
+        get => _array[433];
+        set => _array[433] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E434
+    {
+        get => _array[434];
+        set => _array[434] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E435
+    {
+        get => _array[435];
+        set => _array[435] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E436
+    {
+        get => _array[436];
+        set => _array[436] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E437
+    {
+        get => _array[437];
+        set => _array[437] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E438
+    {
+        get => _array[438];
+        set => _array[438] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E439
+    {
+        get => _array[439];
+        set => _array[439] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E440
+    {
+        get => _array[440];
+        set => _array[440] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E441
+    {
+        get => _array[441];
+        set => _array[441] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E442
+    {
+        get => _array[442];
+        set => _array[442] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E443
+    {
+        get => _array[443];
+        set => _array[443] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E444
+    {
+        get => _array[444];
+        set => _array[444] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E445
+    {
+        get => _array[445];
+        set => _array[445] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E446
+    {
+        get => _array[446];
+        set => _array[446] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E447
+    {
+        get => _array[447];
+        set => _array[447] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E448
+    {
+        get => _array[448];
+        set => _array[448] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E449
+    {
+        get => _array[449];
+        set => _array[449] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E450
+    {
+        get => _array[450];
+        set => _array[450] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E451
+    {
+        get => _array[451];
+        set => _array[451] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E452
+    {
+        get => _array[452];
+        set => _array[452] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E453
+    {
+        get => _array[453];
+        set => _array[453] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E454
+    {
+        get => _array[454];
+        set => _array[454] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E455
+    {
+        get => _array[455];
+        set => _array[455] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E456
+    {
+        get => _array[456];
+        set => _array[456] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E457
+    {
+        get => _array[457];
+        set => _array[457] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E458
+    {
+        get => _array[458];
+        set => _array[458] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E459
+    {
+        get => _array[459];
+        set => _array[459] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E460
+    {
+        get => _array[460];
+        set => _array[460] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E461
+    {
+        get => _array[461];
+        set => _array[461] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E462
+    {
+        get => _array[462];
+        set => _array[462] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E463
+    {
+        get => _array[463];
+        set => _array[463] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E464
+    {
+        get => _array[464];
+        set => _array[464] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E465
+    {
+        get => _array[465];
+        set => _array[465] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E466
+    {
+        get => _array[466];
+        set => _array[466] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E467
+    {
+        get => _array[467];
+        set => _array[467] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E468
+    {
+        get => _array[468];
+        set => _array[468] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E469
+    {
+        get => _array[469];
+        set => _array[469] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E470
+    {
+        get => _array[470];
+        set => _array[470] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E471
+    {
+        get => _array[471];
+        set => _array[471] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E472
+    {
+        get => _array[472];
+        set => _array[472] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E473
+    {
+        get => _array[473];
+        set => _array[473] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E474
+    {
+        get => _array[474];
+        set => _array[474] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E475
+    {
+        get => _array[475];
+        set => _array[475] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E476
+    {
+        get => _array[476];
+        set => _array[476] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E477
+    {
+        get => _array[477];
+        set => _array[477] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E478
+    {
+        get => _array[478];
+        set => _array[478] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E479
+    {
+        get => _array[479];
+        set => _array[479] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E480
+    {
+        get => _array[480];
+        set => _array[480] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E481
+    {
+        get => _array[481];
+        set => _array[481] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E482
+    {
+        get => _array[482];
+        set => _array[482] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E483
+    {
+        get => _array[483];
+        set => _array[483] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E484
+    {
+        get => _array[484];
+        set => _array[484] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E485
+    {
+        get => _array[485];
+        set => _array[485] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E486
+    {
+        get => _array[486];
+        set => _array[486] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E487
+    {
+        get => _array[487];
+        set => _array[487] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E488
+    {
+        get => _array[488];
+        set => _array[488] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E489
+    {
+        get => _array[489];
+        set => _array[489] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E490
+    {
+        get => _array[490];
+        set => _array[490] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E491
+    {
+        get => _array[491];
+        set => _array[491] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E492
+    {
+        get => _array[492];
+        set => _array[492] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E493
+    {
+        get => _array[493];
+        set => _array[493] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E494
+    {
+        get => _array[494];
+        set => _array[494] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E495
+    {
+        get => _array[495];
+        set => _array[495] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E496
+    {
+        get => _array[496];
+        set => _array[496] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E497
+    {
+        get => _array[497];
+        set => _array[497] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E498
+    {
+        get => _array[498];
+        set => _array[498] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E499
+    {
+        get => _array[499];
+        set => _array[499] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E500
+    {
+        get => _array[500];
+        set => _array[500] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E501
+    {
+        get => _array[501];
+        set => _array[501] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E502
+    {
+        get => _array[502];
+        set => _array[502] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E503
+    {
+        get => _array[503];
+        set => _array[503] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E504
+    {
+        get => _array[504];
+        set => _array[504] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E505
+    {
+        get => _array[505];
+        set => _array[505] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E506
+    {
+        get => _array[506];
+        set => _array[506] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E507
+    {
+        get => _array[507];
+        set => _array[507] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E508
+    {
+        get => _array[508];
+        set => _array[508] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E509
+    {
+        get => _array[509];
+        set => _array[509] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E510
+    {
+        get => _array[510];
+        set => _array[510] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E511
+    {
+        get => _array[511];
+        set => _array[511] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E512
+    {
+        get => _array[512];
+        set => _array[512] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E513
+    {
+        get => _array[513];
+        set => _array[513] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E514
+    {
+        get => _array[514];
+        set => _array[514] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E515
+    {
+        get => _array[515];
+        set => _array[515] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E516
+    {
+        get => _array[516];
+        set => _array[516] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E517
+    {
+        get => _array[517];
+        set => _array[517] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E518
+    {
+        get => _array[518];
+        set => _array[518] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E519
+    {
+        get => _array[519];
+        set => _array[519] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E520
+    {
+        get => _array[520];
+        set => _array[520] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E521
+    {
+        get => _array[521];
+        set => _array[521] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E522
+    {
+        get => _array[522];
+        set => _array[522] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E523
+    {
+        get => _array[523];
+        set => _array[523] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E524
+    {
+        get => _array[524];
+        set => _array[524] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E525
+    {
+        get => _array[525];
+        set => _array[525] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E526
+    {
+        get => _array[526];
+        set => _array[526] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E527
+    {
+        get => _array[527];
+        set => _array[527] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E528
+    {
+        get => _array[528];
+        set => _array[528] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E529
+    {
+        get => _array[529];
+        set => _array[529] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E530
+    {
+        get => _array[530];
+        set => _array[530] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E531
+    {
+        get => _array[531];
+        set => _array[531] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E532
+    {
+        get => _array[532];
+        set => _array[532] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E533
+    {
+        get => _array[533];
+        set => _array[533] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E534
+    {
+        get => _array[534];
+        set => _array[534] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E535
+    {
+        get => _array[535];
+        set => _array[535] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E536
+    {
+        get => _array[536];
+        set => _array[536] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E537
+    {
+        get => _array[537];
+        set => _array[537] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E538
+    {
+        get => _array[538];
+        set => _array[538] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E539
+    {
+        get => _array[539];
+        set => _array[539] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E540
+    {
+        get => _array[540];
+        set => _array[540] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E541
+    {
+        get => _array[541];
+        set => _array[541] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E542
+    {
+        get => _array[542];
+        set => _array[542] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E543
+    {
+        get => _array[543];
+        set => _array[543] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E544
+    {
+        get => _array[544];
+        set => _array[544] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E545
+    {
+        get => _array[545];
+        set => _array[545] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E546
+    {
+        get => _array[546];
+        set => _array[546] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E547
+    {
+        get => _array[547];
+        set => _array[547] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E548
+    {
+        get => _array[548];
+        set => _array[548] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E549
+    {
+        get => _array[549];
+        set => _array[549] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E550
+    {
+        get => _array[550];
+        set => _array[550] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E551
+    {
+        get => _array[551];
+        set => _array[551] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E552
+    {
+        get => _array[552];
+        set => _array[552] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E553
+    {
+        get => _array[553];
+        set => _array[553] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E554
+    {
+        get => _array[554];
+        set => _array[554] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E555
+    {
+        get => _array[555];
+        set => _array[555] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E556
+    {
+        get => _array[556];
+        set => _array[556] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E557
+    {
+        get => _array[557];
+        set => _array[557] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E558
+    {
+        get => _array[558];
+        set => _array[558] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E559
+    {
+        get => _array[559];
+        set => _array[559] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E560
+    {
+        get => _array[560];
+        set => _array[560] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E561
+    {
+        get => _array[561];
+        set => _array[561] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E562
+    {
+        get => _array[562];
+        set => _array[562] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E563
+    {
+        get => _array[563];
+        set => _array[563] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E564
+    {
+        get => _array[564];
+        set => _array[564] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E565
+    {
+        get => _array[565];
+        set => _array[565] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E566
+    {
+        get => _array[566];
+        set => _array[566] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E567
+    {
+        get => _array[567];
+        set => _array[567] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E568
+    {
+        get => _array[568];
+        set => _array[568] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E569
+    {
+        get => _array[569];
+        set => _array[569] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E570
+    {
+        get => _array[570];
+        set => _array[570] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E571
+    {
+        get => _array[571];
+        set => _array[571] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E572
+    {
+        get => _array[572];
+        set => _array[572] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E573
+    {
+        get => _array[573];
+        set => _array[573] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E574
+    {
+        get => _array[574];
+        set => _array[574] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E575
+    {
+        get => _array[575];
+        set => _array[575] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E576
+    {
+        get => _array[576];
+        set => _array[576] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E577
+    {
+        get => _array[577];
+        set => _array[577] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E578
+    {
+        get => _array[578];
+        set => _array[578] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E579
+    {
+        get => _array[579];
+        set => _array[579] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E580
+    {
+        get => _array[580];
+        set => _array[580] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E581
+    {
+        get => _array[581];
+        set => _array[581] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E582
+    {
+        get => _array[582];
+        set => _array[582] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E583
+    {
+        get => _array[583];
+        set => _array[583] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E584
+    {
+        get => _array[584];
+        set => _array[584] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E585
+    {
+        get => _array[585];
+        set => _array[585] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E586
+    {
+        get => _array[586];
+        set => _array[586] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E587
+    {
+        get => _array[587];
+        set => _array[587] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E588
+    {
+        get => _array[588];
+        set => _array[588] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E589
+    {
+        get => _array[589];
+        set => _array[589] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E590
+    {
+        get => _array[590];
+        set => _array[590] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E591
+    {
+        get => _array[591];
+        set => _array[591] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E592
+    {
+        get => _array[592];
+        set => _array[592] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E593
+    {
+        get => _array[593];
+        set => _array[593] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E594
+    {
+        get => _array[594];
+        set => _array[594] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E595
+    {
+        get => _array[595];
+        set => _array[595] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E596
+    {
+        get => _array[596];
+        set => _array[596] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E597
+    {
+        get => _array[597];
+        set => _array[597] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E598
+    {
+        get => _array[598];
+        set => _array[598] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E599
+    {
+        get => _array[599];
+        set => _array[599] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E600
+    {
+        get => _array[600];
+        set => _array[600] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E601
+    {
+        get => _array[601];
+        set => _array[601] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E602
+    {
+        get => _array[602];
+        set => _array[602] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E603
+    {
+        get => _array[603];
+        set => _array[603] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E604
+    {
+        get => _array[604];
+        set => _array[604] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E605
+    {
+        get => _array[605];
+        set => _array[605] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E606
+    {
+        get => _array[606];
+        set => _array[606] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E607
+    {
+        get => _array[607];
+        set => _array[607] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E608
+    {
+        get => _array[608];
+        set => _array[608] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E609
+    {
+        get => _array[609];
+        set => _array[609] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E610
+    {
+        get => _array[610];
+        set => _array[610] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E611
+    {
+        get => _array[611];
+        set => _array[611] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E612
+    {
+        get => _array[612];
+        set => _array[612] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E613
+    {
+        get => _array[613];
+        set => _array[613] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E614
+    {
+        get => _array[614];
+        set => _array[614] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E615
+    {
+        get => _array[615];
+        set => _array[615] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E616
+    {
+        get => _array[616];
+        set => _array[616] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E617
+    {
+        get => _array[617];
+        set => _array[617] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E618
+    {
+        get => _array[618];
+        set => _array[618] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E619
+    {
+        get => _array[619];
+        set => _array[619] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E620
+    {
+        get => _array[620];
+        set => _array[620] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E621
+    {
+        get => _array[621];
+        set => _array[621] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E622
+    {
+        get => _array[622];
+        set => _array[622] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E623
+    {
+        get => _array[623];
+        set => _array[623] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E624
+    {
+        get => _array[624];
+        set => _array[624] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E625
+    {
+        get => _array[625];
+        set => _array[625] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E626
+    {
+        get => _array[626];
+        set => _array[626] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E627
+    {
+        get => _array[627];
+        set => _array[627] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E628
+    {
+        get => _array[628];
+        set => _array[628] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E629
+    {
+        get => _array[629];
+        set => _array[629] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E630
+    {
+        get => _array[630];
+        set => _array[630] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E631
+    {
+        get => _array[631];
+        set => _array[631] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E632
+    {
+        get => _array[632];
+        set => _array[632] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E633
+    {
+        get => _array[633];
+        set => _array[633] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E634
+    {
+        get => _array[634];
+        set => _array[634] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E635
+    {
+        get => _array[635];
+        set => _array[635] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E636
+    {
+        get => _array[636];
+        set => _array[636] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E637
+    {
+        get => _array[637];
+        set => _array[637] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E638
+    {
+        get => _array[638];
+        set => _array[638] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E639
+    {
+        get => _array[639];
+        set => _array[639] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E640
+    {
+        get => _array[640];
+        set => _array[640] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E641
+    {
+        get => _array[641];
+        set => _array[641] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E642
+    {
+        get => _array[642];
+        set => _array[642] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E643
+    {
+        get => _array[643];
+        set => _array[643] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E644
+    {
+        get => _array[644];
+        set => _array[644] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E645
+    {
+        get => _array[645];
+        set => _array[645] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E646
+    {
+        get => _array[646];
+        set => _array[646] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E647
+    {
+        get => _array[647];
+        set => _array[647] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E648
+    {
+        get => _array[648];
+        set => _array[648] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E649
+    {
+        get => _array[649];
+        set => _array[649] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E650
+    {
+        get => _array[650];
+        set => _array[650] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E651
+    {
+        get => _array[651];
+        set => _array[651] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E652
+    {
+        get => _array[652];
+        set => _array[652] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E653
+    {
+        get => _array[653];
+        set => _array[653] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E654
+    {
+        get => _array[654];
+        set => _array[654] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E655
+    {
+        get => _array[655];
+        set => _array[655] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E656
+    {
+        get => _array[656];
+        set => _array[656] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E657
+    {
+        get => _array[657];
+        set => _array[657] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E658
+    {
+        get => _array[658];
+        set => _array[658] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E659
+    {
+        get => _array[659];
+        set => _array[659] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E660
+    {
+        get => _array[660];
+        set => _array[660] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E661
+    {
+        get => _array[661];
+        set => _array[661] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E662
+    {
+        get => _array[662];
+        set => _array[662] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E663
+    {
+        get => _array[663];
+        set => _array[663] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E664
+    {
+        get => _array[664];
+        set => _array[664] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E665
+    {
+        get => _array[665];
+        set => _array[665] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E666
+    {
+        get => _array[666];
+        set => _array[666] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E667
+    {
+        get => _array[667];
+        set => _array[667] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E668
+    {
+        get => _array[668];
+        set => _array[668] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E669
+    {
+        get => _array[669];
+        set => _array[669] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E670
+    {
+        get => _array[670];
+        set => _array[670] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E671
+    {
+        get => _array[671];
+        set => _array[671] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E672
+    {
+        get => _array[672];
+        set => _array[672] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E673
+    {
+        get => _array[673];
+        set => _array[673] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E674
+    {
+        get => _array[674];
+        set => _array[674] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E675
+    {
+        get => _array[675];
+        set => _array[675] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E676
+    {
+        get => _array[676];
+        set => _array[676] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E677
+    {
+        get => _array[677];
+        set => _array[677] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E678
+    {
+        get => _array[678];
+        set => _array[678] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E679
+    {
+        get => _array[679];
+        set => _array[679] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E680
+    {
+        get => _array[680];
+        set => _array[680] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E681
+    {
+        get => _array[681];
+        set => _array[681] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E682
+    {
+        get => _array[682];
+        set => _array[682] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E683
+    {
+        get => _array[683];
+        set => _array[683] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E684
+    {
+        get => _array[684];
+        set => _array[684] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E685
+    {
+        get => _array[685];
+        set => _array[685] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E686
+    {
+        get => _array[686];
+        set => _array[686] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E687
+    {
+        get => _array[687];
+        set => _array[687] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E688
+    {
+        get => _array[688];
+        set => _array[688] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E689
+    {
+        get => _array[689];
+        set => _array[689] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E690
+    {
+        get => _array[690];
+        set => _array[690] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E691
+    {
+        get => _array[691];
+        set => _array[691] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E692
+    {
+        get => _array[692];
+        set => _array[692] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E693
+    {
+        get => _array[693];
+        set => _array[693] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E694
+    {
+        get => _array[694];
+        set => _array[694] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E695
+    {
+        get => _array[695];
+        set => _array[695] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E696
+    {
+        get => _array[696];
+        set => _array[696] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E697
+    {
+        get => _array[697];
+        set => _array[697] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E698
+    {
+        get => _array[698];
+        set => _array[698] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E699
+    {
+        get => _array[699];
+        set => _array[699] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E700
+    {
+        get => _array[700];
+        set => _array[700] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E701
+    {
+        get => _array[701];
+        set => _array[701] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E702
+    {
+        get => _array[702];
+        set => _array[702] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E703
+    {
+        get => _array[703];
+        set => _array[703] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E704
+    {
+        get => _array[704];
+        set => _array[704] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E705
+    {
+        get => _array[705];
+        set => _array[705] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E706
+    {
+        get => _array[706];
+        set => _array[706] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E707
+    {
+        get => _array[707];
+        set => _array[707] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E708
+    {
+        get => _array[708];
+        set => _array[708] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E709
+    {
+        get => _array[709];
+        set => _array[709] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E710
+    {
+        get => _array[710];
+        set => _array[710] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E711
+    {
+        get => _array[711];
+        set => _array[711] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E712
+    {
+        get => _array[712];
+        set => _array[712] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E713
+    {
+        get => _array[713];
+        set => _array[713] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E714
+    {
+        get => _array[714];
+        set => _array[714] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E715
+    {
+        get => _array[715];
+        set => _array[715] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E716
+    {
+        get => _array[716];
+        set => _array[716] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E717
+    {
+        get => _array[717];
+        set => _array[717] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E718
+    {
+        get => _array[718];
+        set => _array[718] = value;
+    }
+
+    /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float E719
+    {
+        get => _array[719];
+        set => _array[719] = value;
+    }
+
     /// <summary>Asserts that the buffer is normalized.</summary>
     [Conditional("DEBUG")]
     public void AssertNormalized()

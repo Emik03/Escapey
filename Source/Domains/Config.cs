@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MPL-2.0
-namespace Escapey.Preferences;
+namespace Escapey.Domains;
 
 /// <summary>Represents the configuration of the application.</summary>
 /// <param name="borderless">Whether to use a borderless window.</param>
