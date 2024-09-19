@@ -88,7 +88,9 @@ public sealed partial class EscapeyGame : Game
         var pushed = columns.Has(Columns.Hide);
         var (toggled, unique) = _visible.Accept(!pushed);
         var rainbow = _rainbow.Accept(columns.Has(Columns.Rainbow)).Toggled;
-        var time = (int)(gameTime.TotalGameTime.Ticks / TimeSpan.TicksPerMillisecond / _config.Speed);
+        var brightness = (byte)(_config.RainbowBrightness * byte.MaxValue);
+        var saturation = (byte)(_config.RainbowSaturation * byte.MaxValue);
+        var time = (int)(gameTime.TotalGameTime.Ticks * _config.RainbowSpeed / TimeSpan.TicksPerMillisecond);
 
         _animations
            .Background(_config.Background)
@@ -96,8 +98,8 @@ public sealed partial class EscapeyGame : Game
            .Change(sound.IsSpeaking() ? sound : columns.ToMouth(ref _neutral))
            .Change(toggled ? columns.ToLeftArm() : Sprite.Arm.Left.Idle)
            .Change(toggled ? columns.ToRightArm() : Sprite.Arm.Right.Idle)
-           .Colored<Sprite.Eyes>(rainbow ? time.ToColor() : Color.White)
-           .Colored<Sprite.Mouth>(rainbow ? time.ToColor() : Color.White)
+           .Colored<Sprite.Eyes>(rainbow ? time.ToColor(saturation, brightness) : Color.White)
+           .Colored<Sprite.Mouth>(rainbow ? time.ToColor(saturation, brightness) : Color.White)
            .SetVisibility<Sprite.Keys.Overlay>(toggled)
            .SetVisibility<Sprite.Keys.Background>(toggled)
            .SetVisibility<Sprite.Keys.First>(toggled && columns.Has(Columns.First))

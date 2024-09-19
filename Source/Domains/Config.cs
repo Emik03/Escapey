@@ -4,9 +4,11 @@ namespace Escapey.Domains;
 /// <summary>Represents the configuration of the application.</summary>
 /// <param name="borderless">Whether to use a borderless window.</param>
 /// <param name="inverted">Whether to invert the columns.</param>
-/// <param name="speed">The speed of the rainbow.</param>
 /// <param name="stabilize">The number of frames to display before allowing animations to change.</param>
 /// <param name="training">The amount of training data per phoneme.</param>
+/// <param name="rainbowBrightness">The brightness of the rainbow.</param>
+/// <param name="rainbowSaturation">The saturation of the rainbow.</param>
+/// <param name="rainbowSpeed">The speed of the rainbow.</param>
 /// <param name="profile">The name of the model.</param>
 /// <param name="background">The background color.</param>
 /// <param name="audio">The audio provider.</param>
@@ -14,9 +16,11 @@ namespace Escapey.Domains;
 sealed partial class Config(
     bool borderless,
     bool inverted,
-    int speed,
     int stabilize,
     int training,
+    float rainbowBrightness,
+    float rainbowSaturation,
+    float rainbowSpeed,
     string profile,
     Color background,
     IAudioProvider audio,
@@ -25,9 +29,6 @@ sealed partial class Config(
 {
     /// <summary>The number of columns.</summary>
     public const int ColumnCount = 4;
-
-    /// <summary>The default value for <see cref="Speed"/>.</summary>
-    const int DefaultSpeed = 4;
 
     /// <summary>The default value for <see cref="Stabilize"/>.</summary>
     const int DefaultStabilize = 3;
@@ -79,14 +80,20 @@ sealed partial class Config(
     /// <summary>Gets a value determining whether to invert the columns.</summary>
     public bool Inverted { get; private set; } = inverted;
 
-    /// <summary>Gets the speed of the rainbow.</summary>
-    public int Speed { get; private set; } = speed;
-
     /// <summary>Gets the number of frames to display before allowing animations to change.</summary>
     public int Stabilize { get; private set; } = stabilize;
 
     /// <summary>Gets the amount of training data per phoneme.</summary>
     public int Training { get; private set; } = training;
+
+    /// <summary>Gets the speed of the rainbow.</summary>
+    public float RainbowBrightness { get; private set; } = rainbowBrightness;
+
+    /// <summary>Gets the speed of the rainbow.</summary>
+    public float RainbowSaturation { get; private set; } = rainbowSaturation;
+
+    /// <summary>Gets the speed of the rainbow.</summary>
+    public float RainbowSpeed { get; private set; } = rainbowSpeed;
 
     /// <summary>Gets the name of the model.</summary>
     public string Profile { get; private set; } = profile;
@@ -115,7 +122,7 @@ sealed partial class Config(
             builder.Add(initial);
             builder.AddRange(inputWarnings);
             warnings = builder.DrainToImmutable();
-            return new(false, false, DefaultSpeed, DefaultStabilize, DefaultTraining, DefaultProfile, default, a, i);
+            return new(false, false, DefaultStabilize, DefaultTraining, 1, 1, 1, DefaultProfile, default, a, i);
         }
 
         // ReSharper disable once NullableWarningSuppressionIsUsed
@@ -147,8 +154,9 @@ sealed partial class Config(
         var profile = DefaultProfile;
         ImmutableArray<Exception> defaultWarnings = [];
         var accumulator = ImmutableArray.CreateBuilder<Exception>();
-        int speed = DefaultSpeed, stabilize = DefaultStabilize, training = DefaultTraining;
-        bool borderless = false, implicitInput = false, inverted = false;
+        int stabilize = DefaultStabilize, training = DefaultTraining;
+        float rainbowBrightness = 1, rainbowSaturation = 1, rainbowSpeed = 1;
+        bool borderless = false, setInput = false, inverted = false;
 #pragma warning disable IDISP003
         foreach (var line in str.SplitLines())
             _ = SplitKeyValuePair(line, out var value) switch
@@ -158,15 +166,20 @@ sealed partial class Config(
                 var x when x.EqualsIgnoreCase(nameof(Borderless)) => ChangeBoolean(value, accumulator, ref borderless),
                 var x when x.EqualsIgnoreCase(nameof(Color)) || x.EqualsIgnoreCase("colour") =>
                     ChangeColor(value, accumulator, ref color),
-                var x when x.EqualsIgnoreCase(nameof(Input)) => ChangeInput(value, implicitInput, accumulator, ref input),
+                var x when x.EqualsIgnoreCase(nameof(Input)) => ChangeInput(value, setInput, accumulator, ref input),
                 var x when x.EqualsIgnoreCase(nameof(Inverted)) => ChangeBoolean(value, accumulator, ref inverted),
                 var x when x.EqualsIgnoreCase(nameof(Profile)) => ChangeProfile(value, accumulator, ref profile),
-                var x when x.EqualsIgnoreCase(nameof(Speed)) => ChangeNumber(value, accumulator, ref speed),
+                var x when x.EqualsIgnoreCase(nameof(RainbowBrightness)) =>
+                    ChangeFloat(value, accumulator, ref rainbowBrightness),
+                var x when x.EqualsIgnoreCase(nameof(RainbowSaturation)) =>
+                    ChangeFloat(value, accumulator, ref rainbowSaturation),
+                var x when x.EqualsIgnoreCase(nameof(RainbowSpeed)) =>
+                    ChangeFloat(value, accumulator, ref rainbowSpeed),
                 var x when x.EqualsIgnoreCase(nameof(Stabilize)) || x.EqualsIgnoreCase("stabilise") =>
-                    ChangeNumber(value, accumulator, ref stabilize),
-                var x when x.EqualsIgnoreCase(nameof(Training)) => ChangeNumber(value, accumulator, ref training),
+                    ChangeInt(value, accumulator, ref stabilize),
+                var x when x.EqualsIgnoreCase(nameof(Training)) => ChangeInt(value, accumulator, ref training),
                 var x when x.TryIntoEnum<Columns>() is { } column =>
-                    AddColumn(column, value, accumulator, ref implicitInput, ref input),
+                    AddColumn(column, value, accumulator, ref setInput, ref input),
                 var x => UnrecognizedKey(x, accumulator),
             };
 #pragma warning restore IDISP003
@@ -174,7 +187,20 @@ sealed partial class Config(
         input ??= IInputProvider.Default(out defaultWarnings);
         accumulator.AddRange(defaultWarnings);
         warnings = accumulator.DrainToImmutable();
-        return new(borderless, inverted, speed, stabilize, training, profile, color, audio, input);
+
+        return new(
+            borderless,
+            inverted,
+            stabilize,
+            training,
+            rainbowBrightness,
+            rainbowSaturation,
+            rainbowSpeed,
+            profile,
+            color,
+            audio,
+            input
+        );
     }
 
     /// <inheritdoc />
@@ -201,7 +227,9 @@ sealed partial class Config(
         config.Input = Input;
         config.Inverted = Inverted;
         config.Profile = Profile;
-        config.Speed = Speed;
+        config.RainbowBrightness = RainbowBrightness;
+        config.RainbowSaturation = RainbowSaturation;
+        config.RainbowSpeed = RainbowSpeed;
         config.Stabilize = Stabilize;
         config.Training = Training;
     }
@@ -339,6 +367,30 @@ sealed partial class Config(
         return default;
     }
 
+    /// <summary>Changes the number.</summary>
+    /// <param name="value">The new value.</param>
+    /// <param name="accumulator">The accumulator of warnings.</param>
+    /// <param name="number">The number to change.</param>
+    /// <returns><c>()</c></returns>
+    static ValueTuple ChangeFloat(
+        ReadOnlySpan<char> value,
+        ImmutableArray<Exception>.Builder accumulator,
+        ref float number
+    )
+    {
+        // ReSharper disable once ConvertIfStatementToSwitchStatement
+        if (value.TryInto<float>() is not { } t)
+            accumulator.Add(new FormatException($"Invalid number, ignoring invalid value: {value}"));
+        else if (t < 0)
+            accumulator.Add(new FormatException($"Number must be non-negative, ignoring invalid value: {value}"));
+        else if (t > 1)
+            accumulator.Add(new FormatException($"Number must be less than one, ignoring invalid value: {value}"));
+        else
+            number = t;
+
+        return default;
+    }
+
     /// <summary>Changes the input provider.</summary>
     /// <param name="value">The alias to use.</param>
     /// <param name="implicitInput">Whether to warn if the input provider is not defined.</param>
@@ -369,7 +421,7 @@ sealed partial class Config(
     /// <param name="accumulator">The accumulator of warnings.</param>
     /// <param name="number">The number to change.</param>
     /// <returns><c>()</c></returns>
-    static ValueTuple ChangeNumber(
+    static ValueTuple ChangeInt(
         ReadOnlySpan<char> value,
         ImmutableArray<Exception>.Builder accumulator,
         ref int number
