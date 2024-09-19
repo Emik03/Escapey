@@ -9,6 +9,7 @@ sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)
     /// <summary>Represents a loaded sprite.</summary>
     /// <param name="Textures">The loaded textures representing an animation.</param>
     /// <param name="FrameRate">The frame rate to play back the animation.</param>
+    /// <param name="Loops">Whether the animation should loop.</param>
     [StructLayout(LayoutKind.Auto)]
     public readonly record struct Loaded(ImmutableArray<Texture2D> Textures, int FrameRate, bool Loops)
     {

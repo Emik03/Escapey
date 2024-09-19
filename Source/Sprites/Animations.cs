@@ -3,6 +3,8 @@ namespace Escapey.Sprites;
 
 /// <summary>Maintains a list of <see cref="Animation{T}"/> instances.</summary>
 /// <param name="game">The game that this component will belong to.</param>
+/// <param name="width">The width of the render target.</param>
+/// <param name="height">The height of the render target.</param>
 sealed class Animations(Game game, int width, int height)
     : DrawableGameComponent(game), IReadOnlyList<DrawableGameComponent>
 {
@@ -129,9 +131,10 @@ sealed class Animations(Game game, int width, int height)
     {
         var animations = _animations.AsSpan();
         ref var start = ref MemoryMarshal.GetReference(animations);
-        ref readonly var end = ref Unsafe.Add(ref start, animations.Length);
+        // ReSharper disable NullableWarningSuppressionIsUsed RedundantSuppressNullableWarningExpression
+        ref readonly var end = ref Unsafe.Add(ref start, animations.Length)!;
 
-        for (; Unsafe.IsAddressLessThan(start, end); start = ref Unsafe.Add(ref start, 1))
+        for (; Unsafe.IsAddressLessThan(start, end); start = ref Unsafe.Add(ref start, 1)!)
             if (start is TAnimation a)
                 action(a, state);
 
