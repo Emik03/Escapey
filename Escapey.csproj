@@ -2,6 +2,7 @@
     <PropertyGroup>
         <NoTests>true</NoTests>
         <OutputType>Exe</OutputType>
+        <FileVersion>1.1</FileVersion>
         <IsPackable>false</IsPackable>
         <TargetFramework>net9.0</TargetFramework>
         <TransformOnBuild>true</TransformOnBuild>
