@@ -128,36 +128,36 @@ sealed class Animations(Game game, int width, int height)
     }
 
     /// <summary>Executes an action for each animation.</summary>
-    /// <param name="state">The state to pass to the action.</param>
+    /// <param name="x">The state to pass to the action.</param>
     /// <param name="a">The action to execute.</param>
-    /// <typeparam name="TState">The type of the state.</typeparam>
+    /// <typeparam name="T">The type of the state.</typeparam>
     /// <returns>Itself.</returns>
     [Inline] // ReSharper disable NullableWarningSuppressionIsUsed RedundantSuppressNullableWarningExpression
-    void ForEach<TState>(ref TState state, [RequireStaticDelegate(IsError = true)] Act<DrawableGameComponent, TState> a)
-        where TState : allows ref struct
+    void ForEach<T>(ref T x, [ResolveDelegate, RequireStaticDelegate(IsError = true)] Act<DrawableGameComponent, T> a)
+        where T : allows ref struct
     {
         var animations = _animations.AsSpan();
         ref var start = ref MemoryMarshal.GetReference(animations);
         ref readonly var end = ref Unsafe.Add(ref start, animations.Length)!;
 
         for (; Unsafe.IsAddressLessThan(start, end); start = ref Unsafe.Add(ref start, 1)!)
-            a(start, ref state);
+            a(start, ref x);
     }
 
-    /// <summary>Executes an action for each animation of type <typeparamref name="T"/>.</summary>
-    /// <param name="state">The state to pass to the action.</param>
+    /// <summary>Executes an action for each animation of type <typeparamref name="TA"/>.</summary>
+    /// <param name="x">The state to pass to the action.</param>
     /// <param name="a">The action to execute.</param>
-    /// <typeparam name="T">The type of sprites.</typeparam>
-    /// <typeparam name="TState">The type of the state.</typeparam>
+    /// <typeparam name="T">The type of the state.</typeparam>
+    /// <typeparam name="TA">The type of sprites.</typeparam>
     /// <returns>Itself.</returns>
     [Inline]
-    Animations ForEach<T, TState>(ref TState state, [RequireStaticDelegate(IsError = true)] Act<Animation<T>, TState> a)
-        where T : struct, Enum
-        where TState : allows ref struct
+    Animations ForEach<T, TA>(ref T x, [ResolveDelegate, RequireStaticDelegate(IsError = true)] Act<Animation<TA>, T> a)
+        where T : allows ref struct
+        where TA : struct, Enum
     {
-        if (Animation<T>.Instance is { } instance)
+        if (Animation<TA>.Instance is { } instance)
         {
-            a(instance, ref state);
+            a(instance, ref x);
             return this;
         }
 
@@ -166,8 +166,8 @@ sealed class Animations(Game game, int width, int height)
         ref readonly var end = ref Unsafe.Add(ref start, animations.Length)!;
 
         for (; Unsafe.IsAddressLessThan(start, end); start = ref Unsafe.Add(ref start, 1)!)
-            if (start is Animation<T>)
-                a(Unsafe.As<Animation<T>>(start), ref state);
+            if (start is Animation<TA>)
+                a(Unsafe.As<Animation<TA>>(start), ref x);
 
         return this;
     }
