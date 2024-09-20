@@ -61,6 +61,16 @@ public sealed partial class EscapeyGame : Game
         _watcher.Changed += LoadConfig; // Re-read only after HearMonitor loads; causes undefined behavior otherwise.
     }
 
+    /// <summary>Sets appropriate environment variables to ensure providers will always work.</summary>
+    static EscapeyGame()
+    {
+        Environment.SetEnvironmentVariable("LC_ALL", "en.US.UTF-8");
+
+        if ((OperatingSystem.IsMacOS() || OperatingSystem.IsLinux() || OperatingSystem.IsFreeBSD()) &&
+            (Environment.GetEnvironmentVariable("SUDO_UID") ?? $"{Euid()}") is var uid)
+            Environment.SetEnvironmentVariable("XDG_RUNTIME_DIR", $"/run/user/{uid}");
+    }
+
     /// <summary>Runs the game.</summary>
     public static void Go()
     {
@@ -139,4 +149,10 @@ public sealed partial class EscapeyGame : Game
            .Change((Sprite.Keys.Third)_config.Inverted.ToByte())
            .Change((Sprite.Keys.Fourth)_config.Inverted.ToByte());
     }
+
+    [LibraryImport("c", EntryPoint = "geteuid"),
+     SupportedOSPlatform("freebsd"),
+     SupportedOSPlatform("linux"),
+     SupportedOSPlatform("macos")]
+    private static partial uint Euid();
 }

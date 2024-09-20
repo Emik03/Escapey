@@ -57,23 +57,10 @@ sealed partial class Config(
     /// <summary>Contains the contents for the last time the config file was read.</summary>
     static string? s_lastContents;
 
-    /// <summary>Sets appropriate environment variables to ensure providers will always work.</summary>
-    static Config()
-    {
-        Environment.SetEnvironmentVariable("LC_ALL", "en.US.UTF-8");
-
-        if ((OperatingSystem.IsMacOS() || OperatingSystem.IsLinux() || OperatingSystem.IsFreeBSD()) &&
-            (Environment.GetEnvironmentVariable("SUDO_UID") ?? $"{Euid()}") is var uid)
-            Environment.SetEnvironmentVariable("XDG_RUNTIME_DIR", $"/run/user/{uid}");
-    }
-
     /// <summary>Gets the folder where the config is stored.</summary>
     public static string Folder { get; } =
-        Path.Join(
-            Environment.GetEnvironmentVariable("ESCAPEY_CONFIG") ??
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            nameof(Escapey)
-        );
+        Environment.GetEnvironmentVariable("ESCAPEY_CONFIG") ??
+        Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), nameof(Escapey));
 
     /// <summary>Gets the path to the config file.</summary>
     public static string TextFile { get; } = Path.Join(Folder, "config.ini");
@@ -469,10 +456,4 @@ sealed partial class Config(
         accumulator.Add(new FormatException($"Unrecognized key, ignoring: {key}"));
         return default;
     }
-
-    [LibraryImport("c", EntryPoint = "geteuid"),
-     SupportedOSPlatform("macos"),
-     SupportedOSPlatform("linux"),
-     SupportedOSPlatform("freebsd")]
-    private static partial uint Euid();
 }

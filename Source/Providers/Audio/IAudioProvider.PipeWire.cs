@@ -110,6 +110,7 @@ partial interface IAudioProvider
         [MustUseReturnValue]
         public AudioSegment? Poll()
         {
+            // ReSharper disable once MergeIntoPattern
             if (PollRaw() is var current && current.IsEmpty)
                 return null;
 
