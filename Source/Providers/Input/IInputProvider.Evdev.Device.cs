@@ -14,8 +14,8 @@ partial interface IInputProvider
             /// <summary>The library name to link against.</summary>
             const string Lib = "libevdev.so.2";
 
-            /// <summary>Whether the next call to <see cref="Next"/> is synchronous.</summary>
-            bool _syncNext;
+            /// <summary>Whether the next call to <see cref="Next"/> is asynchronous.</summary>
+            bool _async = true;
 
             /// <summary>The file descriptor.</summary>
             int _fd;
@@ -105,10 +105,10 @@ partial interface IInputProvider
             /// <summary>Gets the next input.</summary>
             public InputEvent? Next() =>
                 OperatingSystem.IsFreeBSD() || OperatingSystem.IsLinux()
-                    ? NextEvent(_device, (!_syncNext).ToByte() + 1, out var ev) switch
+                    ? NextEvent(_device, _async.ToByte() + 1, out var ev) switch
                     {
-                        1 when (_syncNext = true) is var _ => ev,
-                        >= 0 when (_syncNext = false) is var _ => ev,
+                        1 when (_async = false) is var _ => ev,
+                        >= 0 when (_async = true) is var _ => ev,
                         _ => null,
                     }
                     : null;

@@ -8,6 +8,12 @@ namespace Escapey.Sprites;
 sealed class Animations(Game game, int width, int height)
     : DrawableGameComponent(game), IReadOnlyList<DrawableGameComponent>
 {
+    /// <summary>Executes an action for each animation of type <typeparamref name="T"/>.</summary>
+    /// <typeparam name="T">The type of sprites.</typeparam>
+    /// <typeparam name="TState">The type of the state.</typeparam>
+    delegate void Act<in T, TState>(T a, ref TState state)
+        where TState : allows ref struct;
+
     /// <summary>The list of animations.</summary>
     readonly List<DrawableGameComponent> _animations = [];
 
@@ -35,7 +41,7 @@ sealed class Animations(Game game, int width, int height)
         GraphicsDevice.SetRenderTarget(_target);
         GraphicsDevice.Clear(_background);
         Batch.Begin();
-        ForEach(gameTime, static (DrawableGameComponent c, GameTime t) => c.Draw(t));
+        ForEach(ref gameTime, static (DrawableGameComponent c, ref GameTime t) => c.Draw(t));
         Batch.End();
         GraphicsDevice.SetRenderTarget(null);
         GraphicsDevice.Clear(_background);
@@ -72,26 +78,18 @@ sealed class Animations(Game game, int width, int height)
     /// <returns>Itself.</returns>
     public Animations Change<T>(T value)
         where T : struct, Enum =>
-        ForEach(value, static (Animation<T> a, T v) => a.Change(v));
+        ForEach(ref value, static (Animation<T> a, ref T v) => a.Change(v));
 
     /// <summary>Changes all colors for animations of type <typeparamref name="T"/> with the given value.</summary>
     /// <returns>Itself.</returns>
     public Animations Colored<T>(Color color)
         where T : struct, Enum =>
-        ForEach(color, static (Animation<T> a, Color v) => a.Colored(v));
+        ForEach(ref color, static (Animation<T> a, ref Color v) => a.Colored(v));
 
     /// <inheritdoc cref="Change{T}(T)"/>
     public Animations Change<T>(T? value)
         where T : struct, Enum =>
         value is { } v ? Change(v) : this;
-
-    /// <summary>Resets the animation from the start.</summary>
-    /// <typeparam name="T">The type of sprites.</typeparam>
-    /// <param name="reset">Whether to reset the animation.</param>
-    /// <returns>Itself.</returns>
-    public Animations Reset<T>(bool reset)
-        where T : struct, Enum =>
-        ForEach(reset, static (Animation<T> a, bool v) => a.Reset(v));
 
     /// <summary>Sets the visibility of all animations of type <typeparamref name="T"/>.</summary>
     /// <typeparam name="T">The type of sprites.</typeparam>
@@ -99,7 +97,20 @@ sealed class Animations(Game game, int width, int height)
     /// <returns>Itself.</returns>
     public Animations SetVisibility<T>(bool visible)
         where T : struct, Enum =>
-        ForEach(visible, static (Animation<T> a, bool v) => a.Visible = v);
+        ForEach(ref visible, static (Animation<T> a, ref bool v) => a.Visible = v);
+
+    /// <summary>Syncs the animations.</summary>
+    /// <typeparam name="T">The type of sprites.</typeparam>
+    /// <typeparam name="TOther">The type of sprites.</typeparam>
+    /// <returns>Itself.</returns>
+    public Animations Sync<T, TOther>()
+        where T : struct, Enum
+        where TOther : struct, Enum
+    {
+        Animation<TOther>? v = default;
+        ForEach(ref v, static (Animation<TOther> a, ref Animation<TOther>? v) => v = a);
+        return ForEach(ref v, static (Animation<T> a, ref Animation<TOther>? v) => a.Sync(v));
+    }
 
     /// <inheritdoc />
     public IEnumerator<DrawableGameComponent> GetEnumerator() => _animations.GetEnumerator();
@@ -116,27 +127,47 @@ sealed class Animations(Game game, int width, int height)
         base.Dispose(disposing);
     }
 
-    /// <summary>Executes an action for each animation of type <typeparamref name="TAnimation"/>.</summary>
+    /// <summary>Executes an action for each animation.</summary>
     /// <param name="state">The state to pass to the action.</param>
-    /// <param name="action">The action to execute.</param>
-    /// <typeparam name="TAnimation">The type of sprites.</typeparam>
+    /// <param name="a">The action to execute.</param>
     /// <typeparam name="TState">The type of the state.</typeparam>
     /// <returns>Itself.</returns>
-    [Inline]
-    Animations ForEach<TAnimation, TState>(
-        TState state,
-        [RequireStaticDelegate(IsError = true)] Action<TAnimation, TState> action
-    )
-        where TAnimation : DrawableGameComponent
+    [Inline] // ReSharper disable NullableWarningSuppressionIsUsed RedundantSuppressNullableWarningExpression
+    void ForEach<TState>(ref TState state, [RequireStaticDelegate(IsError = true)] Act<DrawableGameComponent, TState> a)
+        where TState : allows ref struct
     {
         var animations = _animations.AsSpan();
         ref var start = ref MemoryMarshal.GetReference(animations);
-        // ReSharper disable NullableWarningSuppressionIsUsed RedundantSuppressNullableWarningExpression
         ref readonly var end = ref Unsafe.Add(ref start, animations.Length)!;
 
         for (; Unsafe.IsAddressLessThan(start, end); start = ref Unsafe.Add(ref start, 1)!)
-            if (start is TAnimation a)
-                action(a, state);
+            a(start, ref state);
+    }
+
+    /// <summary>Executes an action for each animation of type <typeparamref name="T"/>.</summary>
+    /// <param name="state">The state to pass to the action.</param>
+    /// <param name="a">The action to execute.</param>
+    /// <typeparam name="T">The type of sprites.</typeparam>
+    /// <typeparam name="TState">The type of the state.</typeparam>
+    /// <returns>Itself.</returns>
+    [Inline]
+    Animations ForEach<T, TState>(ref TState state, [RequireStaticDelegate(IsError = true)] Act<Animation<T>, TState> a)
+        where T : struct, Enum
+        where TState : allows ref struct
+    {
+        if (Animation<T>.Instance is { } instance)
+        {
+            a(instance, ref state);
+            return this;
+        }
+
+        var animations = _animations.AsSpan();
+        ref var start = ref MemoryMarshal.GetReference(animations);
+        ref readonly var end = ref Unsafe.Add(ref start, animations.Length)!;
+
+        for (; Unsafe.IsAddressLessThan(start, end); start = ref Unsafe.Add(ref start, 1)!)
+            if (start is Animation<T>)
+                a(Unsafe.As<Animation<T>>(start), ref state);
 
         return this;
     }

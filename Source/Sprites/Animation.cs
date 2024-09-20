@@ -6,14 +6,22 @@ namespace Escapey.Sprites;
 sealed class Animation<T> : DrawableGameComponent
     where T : struct, Enum
 {
+    /// <summary>Determines whether exactly 1 instance of <see cref="Animation{T}"/> exists.</summary>
+    static bool s_hasOneInstance;
+
     /// <summary>The loaded sprites.</summary>
     static ImmutableArray<SpriteAttribute.Loaded> s_sprites;
+
+    public static Animation<T>? Instance { get; private set; }
 
     /// <summary>The current state.</summary>
     int _frame, _index;
 
     /// <summary>The color to draw with.</summary>
     Color _color = Color.White;
+
+    /// <summary>The synchronization function.</summary>
+    Func<int>? _sync;
 
     /// <summary>The elapsed time.</summary>
     TimeSpan _delta;
@@ -43,6 +51,14 @@ sealed class Animation<T> : DrawableGameComponent
     {
         SpriteAttribute.Loaded Load(T x) => SpriteAttribute.Loaded.With(game.Content, x);
 
+        if (!s_hasOneInstance)
+        {
+            if (Instance is not null)
+                s_hasOneInstance = true;
+
+            Instance = Instance is null ? this : null;
+        }
+
         if (s_sprites.IsDefault)
             s_sprites = ImmutableCollectionsMarshal.AsImmutableArray(Enum.GetValues<T>().ConvertAll(Load));
 
@@ -55,14 +71,18 @@ sealed class Animation<T> : DrawableGameComponent
         if (!Visible)
             return;
 
-        _delta += time.ElapsedGameTime;
-
-        if (CurrentSprite.FrameRate is not 0 and var frameRate &&
-            TimeSpan.FromSeconds(1) / frameRate is var interval &&
-            (int)(_delta.Ticks / interval.Ticks) is not 0 and var advance)
+        if (_sync is not null)
+            SetFrame(_sync());
+        else if (CurrentSprite.FrameRate is not 0 and var frameRate)
         {
-            _delta -= interval * advance;
-            _frame = CurrentSprite.Loops ? (_frame + advance).Mod(FrameLength) : LastFrame.Min(_frame + advance);
+            var interval = TimeSpan.FromSeconds(1) / frameRate;
+            _delta += time.ElapsedGameTime;
+
+            if ((int)(_delta.Ticks / interval.Ticks) is > 0 and var advance)
+            {
+                _delta -= interval * advance;
+                SetFrame(_frame + advance);
+            }
         }
 
         Batch.Draw(CurrentTexture, Vector2.Zero, _color);
@@ -102,4 +122,22 @@ sealed class Animation<T> : DrawableGameComponent
         _frame = 0;
         return this;
     }
+
+    /// <summary>Synchronizes the animation with another animation.</summary>
+    /// <param name="other">The other animation to synchronize with.</param>
+    /// <returns>Itself.</returns>
+    public Animation<T> Sync<TOther>(Animation<TOther>? other)
+        where TOther : struct, Enum
+    {
+        _sync = other is null ? null : other.GetFrame;
+        return this;
+    }
+
+    /// <summary>Sets the current frame.</summary>
+    /// <param name="value">The new frame.</param>
+    void SetFrame(int value) => _frame = CurrentSprite.Loops ? value.Mod(FrameLength) : value.Min(LastFrame);
+
+    /// <summary>Gets the current frame.</summary>
+    /// <returns>The current frame.</returns>
+    int GetFrame() => _frame;
 }

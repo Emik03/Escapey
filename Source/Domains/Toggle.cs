@@ -26,17 +26,17 @@ struct Toggle(bool start)
     /// <summary>Converts the held state to the toggled state.</summary>
     /// <param name="value">The held state.</param>
     /// <returns>The toggled state.</returns>
-    public (bool Toggled, bool Unique) Accept(bool value) =>
+    public bool Accept(bool value) =>
         (_state, value) switch
         {
-            (0, false) => (false, false),
-            (0, true) when (_state = 1) is var _ => (true, true),
-            (1, true) => (true, false),
-            (1, false) when (_state = 2) is var _ => (true, true),
-            (2, false) => (true, false),
-            (2, true) when (_state = 3) is var _ => (false, true),
-            (3, true) => (false, false),
-            (3, false) when (_state = 0) is var _ => (false, true),
-            _ => (false, false),
+            (0, false) => false,
+            (0, true) when (_state = 1) is var _ => true,
+            (1, true) => true,
+            (1, false) when (_state = 2) is var _ => true,
+            (2, false) => true,
+            (2, true) when (_state = 3) is var _ => false,
+            (3, true) => false,
+            (3, false) when (_state = 0) is var _ => false,
+            _ => false,
         };
 }

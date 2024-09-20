@@ -45,7 +45,8 @@ public sealed partial class EscapeyGame : Game
            .Add<Sprite.Keys.Fourth>(visible: false)
            .Add<Sprite.Keys.Overlay>()
            .Add<Sprite.Arm.Right>()
-           .Add<Sprite.Arm.Left>();
+           .Add<Sprite.Arm.Left>()
+           .Sync<Sprite.Legs, Sprite.Arm.Left>();
 
         _watcher = new(Path.GetDirectoryName(Config.TextFile).OrEmpty(), Path.GetFileName(Config.TextFile))
         {
@@ -86,8 +87,8 @@ public sealed partial class EscapeyGame : Game
         var columns = _config.Input.Poll().InvertIf(_config.Inverted);
         var sound = _hearMonitor.Poll();
         var pushed = columns.Has(Columns.Hide);
-        var (toggled, unique) = _visible.Accept(!pushed);
-        var rainbow = _rainbow.Accept(columns.Has(Columns.Rainbow)).Toggled;
+        var toggled = _visible.Accept(!pushed);
+        var rainbow = _rainbow.Accept(columns.Has(Columns.Rainbow));
         var brightness = (byte)(_config.RainbowBrightness * byte.MaxValue);
         var saturation = (byte)(_config.RainbowSaturation * byte.MaxValue);
         var time = (int)(gameTime.TotalGameTime.Ticks * _config.RainbowSpeed / TimeSpan.TicksPerMillisecond);
@@ -106,7 +107,6 @@ public sealed partial class EscapeyGame : Game
            .SetVisibility<Sprite.Keys.Second>(toggled && columns.Has(Columns.Second))
            .SetVisibility<Sprite.Keys.Third>(toggled && columns.Has(Columns.Third))
            .SetVisibility<Sprite.Keys.Fourth>(toggled && columns.Has(Columns.Fourth))
-           .Reset<Sprite.Legs>(unique && toggled && pushed)
            .Draw(gameTime);
     }
 

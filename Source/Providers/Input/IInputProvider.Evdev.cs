@@ -97,15 +97,17 @@ partial interface IInputProvider
         public override string ToString() => $"[{_devices.Conjoin()}]";
 
         /// <inheritdoc />
+        // ReSharper disable once CognitiveComplexity
         public Columns Poll()
         {
             Span2D<bool> keys = _keys;
 
             foreach (var device in _devices)
-                while (device.Next() is ({ } state, var code))
-                    for (int _ = (_keyState[code] = state is Pressed).ToByte(), i = 0; i < keys.Height; i++)
-                        if (keys[i, code])
-                            _col = state is Pressed ? _col | i.ToColumns() : _col & ~i.ToColumns();
+                while (device.Next() is var (state, code))
+                    if (state is not null && (_keyState[code] = state is Pressed) is var _)
+                        for (var i = 0; i < keys.Height; i++)
+                            if (keys[i, code])
+                                _col = state is Pressed ? _col | i.ToColumns() : _col & ~i.ToColumns();
 
             return _col;
         }
