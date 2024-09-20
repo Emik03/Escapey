@@ -31,32 +31,35 @@ enum Columns : ushort
     /// <summary>Used to make the eyes and mouth colorful.</summary>
     Rainbow = 1 << 5,
 
+    /// <summary>Reserved for future use.</summary>
+    Reserved = 1 << 6,
+
     /// <summary>Used to indicate the expression be angry.</summary>
-    Angry = 1 << 6,
+    Angry = 1 << 7,
 
     /// <summary>Used to indicate the expression be bored.</summary>
-    Bored = 1 << 7,
+    Bored = 1 << 8,
 
     /// <summary>Used to indicate the expression be concentrated.</summary>
-    Concentrated = 1 << 8,
+    Concentrated = 1 << 9,
 
     /// <summary>Used to indicate the expression be confused.</summary>
-    Confused = 1 << 9,
+    Confused = 1 << 10,
 
     /// <summary>Used to indicate the expression be frowning.</summary>
-    Frown = 1 << 10,
+    Frown = 1 << 11,
 
     /// <summary>Used to indicate the expression be happy.</summary>
-    Happy = 1 << 11,
+    Happy = 1 << 12,
 
     /// <summary>Used to indicate the expression be happy, with a raised eyebrow.</summary>
-    HappyEyebrow = 1 << 12,
+    HappyEyebrow = 1 << 13,
 
     /// <summary>Used to indicate the expression be scared.</summary>
-    Scared = 1 << 13,
+    Scared = 1 << 14,
 
     /// <summary>Used to indicate the expression be upset.</summary>
-    Upset = 1 << 14,
+    Upset = 1 << 15,
 }
 
 /// <summary>Extensions for <see cref="Columns"/>.</summary>
@@ -69,17 +72,19 @@ static class ColumnExtensions
     /// <returns>
     /// The value <see langword="true"/> if the mouth is speaking; otherwise, <see langword="false"/>.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsSpeaking(this Sprite.Mouth mouth) => mouth is Ah or Dz or E or F or M or Nsl or O;
 
     /// <summary>Converts the column to the index.</summary>
     /// <param name="column">The column.</param>
-    /// <exception cref="ArgumentOutOfRangeException">The column does not have exactly one bit set.</exception>
     /// <returns>The index.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static byte ToIndex(this Columns column) => (byte)BitOperations.TrailingZeroCount((int)column);
 
     /// <summary>Inverts the columns.</summary>
     /// <param name="column">The columns to invert.</param>
     /// <returns>The inverted columns.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Columns Invert(this Columns column) =>
         column & ~Columns.All ^
         (Columns)(((ushort)column & 1) << 3) ^
@@ -91,12 +96,13 @@ static class ColumnExtensions
     /// <param name="column">The columns to invert.</param>
     /// <param name="condition">The condition on whether to invert.</param>
     /// <returns>The inverted columns.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Columns InvertIf(this Columns column, bool condition) => condition ? column.Invert() : column;
 
     /// <summary>Converts the index to the column.</summary>
     /// <param name="index">The index.</param>
-    /// <exception cref="ArgumentOutOfRangeException">The index is not within 0-3.</exception>
     /// <returns>The column.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Columns ToColumns(this int index) => (Columns)(1 << index);
 
     /// <summary>Converts the <see cref="Sprite.Mouth"/> to the IPA representations.</summary>
@@ -118,18 +124,21 @@ static class ColumnExtensions
     /// <summary>Converts the <see cref="Columns"/> to the <see cref="Sprite.Arm.Left"/>.</summary>
     /// <param name="column">The <see cref="Columns"/> to convert.</param>
     /// <returns>The <see cref="Sprite.Arm.Left"/></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Sprite.Arm.Left ToLeftArm(this Columns column) =>
         (Sprite.Arm.Left)(column.Has(Columns.First).ToByte() + column.Has(Columns.Second).ToByte() * 2);
 
     /// <summary>Converts the <see cref="Columns"/> to the <see cref="Sprite.Arm.Right"/>.</summary>
     /// <param name="column">The <see cref="Columns"/> to convert.</param>
     /// <returns>The <see cref="Sprite.Arm.Right"/></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Sprite.Arm.Right ToRightArm(this Columns column) =>
         (Sprite.Arm.Right)(column.Has(Columns.Third).ToByte() + column.Has(Columns.Fourth).ToByte() * 2);
 
     /// <summary>Converts the <see cref="Columns"/> to the <see cref="Sprite.Eyes"/></summary>
     /// <param name="column">The <see cref="Columns"/> to convert.</param>
     /// <returns>The <see cref="Sprite.Eyes"/></returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Sprite.Eyes ToEyes(this Columns column) =>
         (Sprite.Eyes)BitOperations.TrailingZeroCount((ushort)column >> Columns.Angry.ToIndex());
 
@@ -139,6 +148,7 @@ static class ColumnExtensions
     /// <returns>
     /// The <see cref="Sprite.Mouth"/> of the <see cref="Columns"/>, or <paramref name="fallback"/> if no mouth is set.
     /// </returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Sprite.Mouth ToMouth(this Columns column, ref Sprite.Mouth fallback) =>
         (ushort)column >> Columns.Angry.ToIndex() is not 0 and var shift
             ? fallback = (Sprite.Mouth)BitOperations.TrailingZeroCount(shift)

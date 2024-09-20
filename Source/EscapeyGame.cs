@@ -21,7 +21,7 @@ public sealed partial class EscapeyGame : Game
     Sprite.Mouth _neutral = Sprite.Mouth.Happy;
 
     /// <summary>Manages toggle states.</summary>
-    Toggle _rainbow, _visible = true;
+    Toggle _rainbow, _visible;
 
     /// <summary>Initializes a new instance of the <see cref="EscapeyGame"/> class.</summary>
     public EscapeyGame()

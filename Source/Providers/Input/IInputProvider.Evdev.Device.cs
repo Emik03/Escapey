@@ -25,27 +25,15 @@ partial interface IInputProvider
 
             /// <summary>Initializes a new instance of the <see cref="Device"/> class.</summary>
             /// <param name="fd">The file descriptor.</param>
-            /// <param name="dev">The device pointer.</param>
-            Device(int fd, nint dev) => (_fd, _device) = (fd, dev);
+            /// <param name="device">The device pointer.</param>
+            Device(int fd, nint device) => (_fd, _device) = (fd, device);
+
+            /// <summary>Gets a value indicating whether the device is initialized.</summary>
+            [SupportedOSPlatformGuard("freebsd"), SupportedOSPlatformGuard("linux")]
+            bool IsInitialized => _device is not 0;
 
             /// <summary>Gets the name of the device.</summary>
-            [SupportedOSPlatform("freebsd"), SupportedOSPlatform("linux")]
-            string? Name => Marshal.PtrToStringUTF8(_device is not 0 ? DeviceName(_device) : 0);
-
-            /// <inheritdoc />
-            public override string ToString() =>
-                (OperatingSystem.IsFreeBSD() || OperatingSystem.IsLinux() ? Name : null) ?? "<null device pointer>";
-
-            /// <summary>Gets the next input.</summary>
-            public InputEvent? Next =>
-                OperatingSystem.IsFreeBSD() || OperatingSystem.IsLinux()
-                    ? NextEvent(_device, _syncNext && !((_syncNext = false) is var _) ? 1u : 2, out var ev) switch
-                    {
-                        1 when (_syncNext = true) is var _ => ev,
-                        >= 0 => ev,
-                        _ => null,
-                    }
-                    : null;
+            string? Name => Marshal.PtrToStringUTF8(IsInitialized ? DeviceName(_device) : 0);
 
             /// <summary>Attempts to create a new <see cref="Evdev"/> from <paramref name="device"/>.</summary>
             /// <param name="inputPath">The path to the input device, typically within <c>/dev/input/</c>.</param>
@@ -60,41 +48,34 @@ partial interface IInputProvider
                 [NotNullWhen(false)] out Exception? error
             )
             {
-                device = null;
-
                 if (!OperatingSystem.IsLinux() && !OperatingSystem.IsFreeBSD())
                 {
-                    error = new PlatformNotSupportedException(
-                        "'evdev' is not supported outside of Linux or FreeBSD. Please use 'sdl' instead."
-                    );
-
+                    const string E = "'evdev' is not supported outside of Linux or FreeBSD. Please use 'sdl' instead.";
+                    (device, error) = (null, new PlatformNotSupportedException(E));
                     return false;
                 }
 
                 if (inputPath is null)
                 {
-                    error = new ArgumentNullException(nameof(inputPath));
+                    (device, error) = (null, new ArgumentNullException(nameof(inputPath)));
                     return false;
                 }
 
-                if (OpenFileDescriptor(inputPath, 0x800) is var file && file < 0)
+                if (OpenFile(inputPath, 0x800) is var file && file < 0)
                 {
-                    error = new Win32Exception();
+                    (device, error) = (null, new Win32Exception());
                     return false;
                 }
 
-                var e = DeviceFromFileDescriptor(file, out var dev);
-
-                if (e is not 0)
+                if (FromFile(file, out var d) is var e and not 0)
                 {
                     // `libevdev_new_from_fd` automatically calls `libevdev_free` on failure, no need to call it here.
-                    CloseFileDescriptor(file);
-                    error = new IOException($"'libevdev_new_from_fd' failed with error code {e}.");
+                    CloseFile(file);
+                    (device, error) = (null, new IOException($"'libevdev_new_from_fd' failed with error code {e}."));
                     return false;
                 }
 
-                device = new(file, dev);
-                error = null;
+                (device, error) = (new(file, d), null);
                 return true;
             }
 
@@ -113,17 +94,32 @@ partial interface IInputProvider
                 if (_fd is 0)
                     return;
 
-                CloseFileDescriptor(_fd);
+                CloseFile(_fd);
                 _fd = 0;
             }
 
+            /// <inheritdoc />
+            public override string ToString() =>
+                (OperatingSystem.IsFreeBSD() || OperatingSystem.IsLinux() ? Name : null) ?? "<null device pointer>";
+
+            /// <summary>Gets the next input.</summary>
+            public InputEvent? Next() =>
+                OperatingSystem.IsFreeBSD() || OperatingSystem.IsLinux()
+                    ? NextEvent(_device, (!_syncNext).ToByte() + 1, out var ev) switch
+                    {
+                        1 when (_syncNext = true) is var _ => ev,
+                        >= 0 when (_syncNext = false) is var _ => ev,
+                        _ => null,
+                    }
+                    : null;
+
             [LibraryImport(C, EntryPoint = "close"), SupportedOSPlatform("freebsd"), SupportedOSPlatform("linux")]
-            private static partial void CloseFileDescriptor(int fd);
+            private static partial void CloseFile(int fd);
 
             [LibraryImport(C, EntryPoint = "open", SetLastError = true, StringMarshalling = StringMarshalling.Utf8),
              SupportedOSPlatform("freebsd"),
              SupportedOSPlatform("linux")]
-            private static partial int OpenFileDescriptor(string path, int flags);
+            private static partial int OpenFile(string path, int flags);
 
             [LibraryImport(Lib, EntryPoint = "libevdev_free"),
              SupportedOSPlatform("freebsd"),
@@ -133,12 +129,12 @@ partial interface IInputProvider
             [LibraryImport(Lib, EntryPoint = "libevdev_new_from_fd"),
              SupportedOSPlatform("freebsd"),
              SupportedOSPlatform("linux")]
-            private static partial int DeviceFromFileDescriptor(int fd, out nint device);
+            private static partial int FromFile(int fd, out nint device);
 
             [LibraryImport(Lib, EntryPoint = "libevdev_next_event"),
              SupportedOSPlatform("freebsd"),
              SupportedOSPlatform("linux")]
-            private static partial int NextEvent(nint dev, uint flags, out InputEvent ev);
+            private static partial int NextEvent(nint dev, int flags, out InputEvent ev);
 
             [LibraryImport(Lib, EntryPoint = "libevdev_get_name"),
              SupportedOSPlatform("freebsd"),

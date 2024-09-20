@@ -22,14 +22,18 @@ partial interface IInputProvider
 
                 /// <summary>Gets the value indicating the button state.</summary>
                 public ButtonState? KeyState =>
-                    Type is EvKeyType
-                        ? Value switch
-                        {
-                            0 => ButtonState.Released,
-                            1 => ButtonState.Pressed,
-                            _ => null,
-                        }
-                        : null;
+                    Value switch
+                    {
+                        0 when Type is EvKeyType => ButtonState.Released,
+                        1 when Type is EvKeyType => ButtonState.Pressed,
+                        _ => null,
+                    };
+
+                /// <summary>Deconstructs the <see cref="InputEvent"/>.</summary>
+                /// <param name="keyState">The key state.</param>
+                /// <param name="code">The code.</param>
+                public void Deconstruct(out ButtonState? keyState, out ushort code) =>
+                    (keyState, code) = (KeyState, Code);
 
                 /// <inheritdoc />
                 public override string ToString() =>

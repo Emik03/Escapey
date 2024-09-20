@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey.Providers.Input;
 
+using static ButtonState;
+
 partial interface IInputProvider
 {
     /// <summary>Provides audio implementation with evdev.</summary>
@@ -10,21 +12,24 @@ partial interface IInputProvider
         /// <summary>The upper limit of <see cref="KeyEventCodes"/></summary>
         const int KeyCount = 0x300;
 
+        /// <summary>The prefix for keyboard key codes.</summary>
+        const string KeyPrefix = "KEY_";
+
         /// <summary>Contains the shortened aliases for <see cref="KeyEventCodes"/>.</summary>
         static readonly ImmutableArray<(KeyEventCodes Code, string Alias)> s_aliases =
         [
             ..Enum
                .GetValues<KeyEventCodes>()
-               .Select(x => (Code: x, Alias: $"{x}".ToLowerInvariant()))
-               .Where(x => x.Alias.StartsWith("btn_"))
-               .Select(x => x with { Alias = x.Alias[4..] }),
+               .Select(x => (Code: x, Alias: $"{x}"))
+               .Where(x => x.Alias.StartsWith(KeyPrefix))
+               .Select(x => x with { Alias = x.Alias[KeyPrefix.Length..] }),
         ];
 
         /// <summary>Contains the state of the keys.</summary>
         readonly bool[] _keyState = new bool[KeyCount];
 
         /// <summary>Contains the state of the keys.</summary>
-        readonly bool[,] _keys = new bool[BitOperations.TrailingZeroCount((int)Columns.Upset), KeyCount];
+        readonly bool[,] _keys = new bool[sizeof(Columns) * BitsInByte, KeyCount];
 
         /// <summary>Contains the current input.</summary>
         Columns _col;
@@ -68,21 +73,6 @@ partial interface IInputProvider
         }
 
         /// <inheritdoc />
-        public bool Add<TSeparator, TStrategy>(Columns key, scoped SplitSpan<char, TSeparator, TStrategy> values)
-        {
-            Span2D<bool> keys = _keys;
-            var flag = true;
-
-            foreach (var value in values)
-                if (TryParse(value) is { } code)
-                    keys[key.ToIndex(), (int)code] = true;
-                else
-                    flag = false;
-
-            return flag;
-        }
-
-        /// <inheritdoc />
         public void Dispose()
         {
             foreach (var device in _devices)
@@ -92,20 +82,30 @@ partial interface IInputProvider
         }
 
         /// <inheritdoc />
+        public bool Add<TSeparator, TStrategy>(Columns key, scoped SplitSpan<char, TSeparator, TStrategy> values)
+        {
+            Span2D<bool> keys = _keys;
+            var flag = true;
+
+            foreach (var value in values)
+                _ = TryParse(value) is { } code ? keys[key.ToIndex(), (int)code] = true : flag = false;
+
+            return flag;
+        }
+
+        /// <inheritdoc />
         public override string ToString() => $"[{_devices.Conjoin()}]";
 
         /// <inheritdoc />
-        // ReSharper disable once CognitiveComplexity
         public Columns Poll()
         {
             Span2D<bool> keys = _keys;
 
             foreach (var device in _devices)
-                if (device.Next is { KeyState: { } state, Code: var code } &&
-                    (_keyState[code] = state is ButtonState.Pressed) is var _)
-                    for (var i = 0; i < Config.ColumnCount; i++)
+                while (device.Next() is ({ } state, var code))
+                    for (int _ = (_keyState[code] = state is Pressed).ToByte(), i = 0; i < keys.Height; i++)
                         if (keys[i, code])
-                            _ = state is ButtonState.Pressed ? _col |= i.ToColumns() : _col &= ~i.ToColumns();
+                            _col = state is Pressed ? _col | i.ToColumns() : _col & ~i.ToColumns();
 
             return _col;
         }
@@ -115,14 +115,11 @@ partial interface IInputProvider
         /// <returns>The parsed <see cref="KeyEventCodes"/> if successful; otherwise, <see langword="null"/>.</returns>
         static KeyEventCodes? TryParse(scoped ReadOnlySpan<char> value)
         {
-            if (value.TryIntoEnum<KeyEventCodes>() is { } match)
-                return match;
-
             foreach (var (code, alias) in s_aliases)
                 if (alias.EqualsIgnoreCase(value))
                     return code;
 
-            return null;
+            return value.TryIntoEnum<KeyEventCodes>();
         }
     }
 }
