@@ -13,7 +13,7 @@ partial interface IAudioProvider
             static readonly string s_latency = $"{Length}/48000";
 
             /// <summary>The temporary buffers.</summary>
-            unsafe fixed float _buffer[4800];
+            unsafe fixed float _buffer[5040];
 
             /// <summary>The pointers to PipeWire objects.</summary>
             nint _loop, _stream;
@@ -98,7 +98,7 @@ partial interface IAudioProvider
             {
                 if (DequeueBuffer(data->_stream) is var buffer && buffer->AsSpan is not [] and var span)
                 {
-                    var i = (data->_index + 1).Mod(4800 / Length);
+                    var i = (data->_index + 1).Mod(5040 / Length);
                     span.CopyTo(new(data->_buffer + i * Length, Length));
                     data->_index = i;
                     data->_hasNewData = true;
