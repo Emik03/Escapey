@@ -56,27 +56,18 @@ partial interface IInputProvider
                 }
 
                 if (inputPath is null)
-                {
-                    (device, error) = (null, new ArgumentNullException(nameof(inputPath)));
-                    return false;
-                }
+                    return !(((device, error) = (null, new ArgumentNullException(nameof(inputPath)))) is var _);
 
                 if (OpenFile(inputPath, 0x800) is var file && file < 0)
-                {
-                    (device, error) = (null, new Win32Exception());
-                    return false;
-                }
+                    return !(((device, error) = (null, new Win32Exception())) is var _);
 
-                if (FromFile(file, out var d) is var e and not 0)
-                {
-                    // `libevdev_new_from_fd` automatically calls `libevdev_free` on failure, no need to call it here.
-                    CloseFile(file);
-                    (device, error) = (null, new IOException($"'libevdev_new_from_fd' failed with error code {e}."));
-                    return false;
-                }
+                if (FromFile(file, out var d) is not (var e and not 0))
+                    return ((device, error) = (new(file, d), null)) is var _;
 
-                (device, error) = (new(file, d), null);
-                return true;
+                // `libevdev_new_from_fd` automatically calls `libevdev_free` on failure, no need to call it here.
+                CloseFile(file);
+                (device, error) = (null, new IOException($"'libevdev_new_from_fd' failed with error code {e}."));
+                return false;
             }
 
             /// <inheritdoc />
@@ -99,12 +90,11 @@ partial interface IInputProvider
             }
 
             /// <inheritdoc />
-            public override string ToString() =>
-                (OperatingSystem.IsFreeBSD() || OperatingSystem.IsLinux() ? Name : null) ?? "<null device pointer>";
+            public override string ToString() => Name ?? "<null device pointer>";
 
             /// <summary>Gets the next input.</summary>
             public InputEvent? Next() =>
-                OperatingSystem.IsFreeBSD() || OperatingSystem.IsLinux()
+                IsInitialized
                     ? NextEvent(_device, _async.ToByte() + 1, out var ev) switch
                     {
                         1 when (_async = false) is var _ => ev,
