@@ -48,15 +48,24 @@ partial interface IInputProvider : IDisposable
         return evdev;
     }
 
+    /// <summary>Adds an input.</summary>
+    /// <param name="key">The key.</param>
+    /// <param name="value">The value.</param>
+    /// <returns>Whether the operation succeeded.</returns>
+    bool Add(Columns key, scoped ReadOnlySpan<char> value);
+
+    void Add<TSeparator, TStrategy>(
+        Columns key,
+        SplitSpan<char, TSeparator, TStrategy> values,
+        ImmutableArray<Exception>.Builder accumulator
+    )
+    {
+        foreach (var value in values)
+            if (!Add(key, value.Trim()))
+                accumulator.Add(new FormatException($"Unrecognized input, ignoring invalid value: {value}"));
+    }
+
     /// <summary>Gets the next input.</summary>
     /// <returns>The next input.</returns>
     Columns Poll();
-
-    /// <summary>Adds an input.</summary>
-    /// <typeparam name="TSeparator">The type of separator for separating values.</typeparam>
-    /// <typeparam name="TStrategy">The type of strategy for separating values.</typeparam>
-    /// <param name="key">The key.</param>
-    /// <param name="values">The values.</param>
-    /// <returns>Whether the operation succeeded.</returns>
-    bool Add<TSeparator, TStrategy>(Columns key, scoped SplitSpan<char, TSeparator, TStrategy> values);
 }

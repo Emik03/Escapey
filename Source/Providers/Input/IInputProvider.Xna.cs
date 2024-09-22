@@ -8,7 +8,7 @@ partial interface IInputProvider
     private sealed partial class Xna : IInputProvider
     {
         /// <summary>The list of binds.</summary>
-        readonly List<(Columns Columns, Input Input)> _keys = [];
+        readonly List<KeyValuePair<Columns, Input>> _keys = [];
 
         /// <inheritdoc />
         public Columns Poll()
@@ -29,17 +29,13 @@ partial interface IInputProvider
         }
 
         /// <inheritdoc />
-        public bool Add<TSeparator, TStrategy>(Columns key, SplitSpan<char, TSeparator, TStrategy> values)
+        public bool Add(Columns key, ReadOnlySpan<char> value)
         {
-            var flag = true;
+            if (value.TryInto<Input>() is not { } input)
+                return false;
 
-            foreach (var value in values)
-                if (value.TryInto<Input>() is { } input)
-                    _keys.Add((key, input));
-                else
-                    flag = false;
-
-            return flag;
+            _keys.Add(new(key, input));
+            return true;
         }
 
         /// <inheritdoc />

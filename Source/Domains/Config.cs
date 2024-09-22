@@ -50,7 +50,7 @@ sealed partial class Config(
     /// <summary>Parses the syntax.</summary>
     static readonly SearchValues<char>
         s_assignment = SearchValues.Create("="),
-        s_comment = SearchValues.Create("#"),
+        s_comment = SearchValues.Create("#;"),
         s_invalidFileName = SearchValues.Create(Path.GetInvalidFileNameChars()),
         s_separator = SearchValues.Create(",");
 
@@ -297,9 +297,7 @@ sealed partial class Config(
             implicitInput = true;
         }
 
-        if (!input.Add(column, value.SplitOn(s_separator)))
-            accumulator.Add(new FormatException($"Unrecognized inputs, ignoring invalid values: {value}"));
-
+        input.Add(column, value.SplitOn(s_separator), accumulator);
         return default;
     }
 

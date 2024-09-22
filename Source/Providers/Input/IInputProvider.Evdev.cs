@@ -82,15 +82,14 @@ partial interface IInputProvider
         }
 
         /// <inheritdoc />
-        public bool Add<TSeparator, TStrategy>(Columns key, scoped SplitSpan<char, TSeparator, TStrategy> values)
+        public bool Add(Columns key, scoped ReadOnlySpan<char> value)
         {
+            if (TryParse(value) is not { } code)
+                return false;
+
             Span2D<bool> keys = _keys;
-            var flag = true;
-
-            foreach (var value in values)
-                _ = TryParse(value) is { } code ? keys[key.ToIndex(), (int)code] = true : flag = false;
-
-            return flag;
+            keys[key.ToIndex(), (int)code] = true;
+            return true;
         }
 
         /// <inheritdoc />
