@@ -267,7 +267,7 @@ sealed partial class Config(
     /// <returns>The key section.</returns>
     static ReadOnlySpan<char> SplitKeyValuePair(ReadOnlySpan<char> line, out ReadOnlySpan<char> values)
     {
-        if (line is [var first, ..] && s_comment.Contains(first))
+        if (line is [var first, ..] && (s_comment.Contains(first) || s_assignment.Contains(first)))
             return values = default;
 
         var (key, value) = line.SplitOn(s_comment).First.SplitOn(s_assignment);
