@@ -14,6 +14,9 @@ partial interface IInputProvider
             /// <summary>The library name to link against.</summary>
             const string Lib = "libevdev.so.2";
 
+            /// <summary>The error code that indicates that reading should be repeated.</summary>
+            static readonly int s_eAgain = OperatingSystem.IsFreeBSD() ? 35 : 11;
+
             /// <summary>Whether the next call to <see cref="Next"/> is asynchronous.</summary>
             bool _async = true;
 
@@ -99,9 +102,18 @@ partial interface IInputProvider
                     {
                         1 when (_async = false) is var _ => ev,
                         >= 0 when (_async = true) is var _ => ev,
-                        _ => null,
+                        var x when x == -s_eAgain => null,
+                        _ => Fail(),
                     }
                     : null;
+
+            /// <summary>Frees up resources.</summary>
+            /// <returns>The value <see langword="null"/>.</returns>
+            InputEvent? Fail()
+            {
+                Dispose();
+                return null;
+            }
 
             [LibraryImport(C, EntryPoint = "close"), SupportedOSPlatform("freebsd"), SupportedOSPlatform("linux")]
             private static partial void CloseFile(int fd);

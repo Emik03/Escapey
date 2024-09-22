@@ -31,16 +31,25 @@ partial interface IInputProvider
         /// <summary>Contains the state of the keys.</summary>
         readonly bool[,] _keys = new bool[sizeof(Columns) * BitsInByte, KeyCount];
 
+        /// <summary>Watches over <c>/dev/input</c> for new devices to listen to.</summary>
+        readonly FileSystemWatcher? _watcher;
+
         /// <summary>Contains the current input.</summary>
         Columns _col;
 
-        /// <summary>Contains every device that can be polled.</summary>
-        ImmutableArray<Device> _devices;
+        /// <summary>Contains every input device.</summary>
+        List<Device> _devices = [];
 
         /// <summary>Initializes a new instance of the <see cref="IInputProvider.Evdev"/> class.</summary>
         /// <param name="warnings">The warnings.</param>
         public Evdev(out ImmutableArray<Exception> warnings)
         {
+            void InputFileCreated(object caller, FileSystemEventArgs e)
+            {
+                if (Device.TryOpen(e.FullPath, out var dev, out _))
+                    _devices.Add(dev);
+            }
+
             if (!OperatingSystem.IsLinux() && !OperatingSystem.IsFreeBSD())
             {
                 warnings = [new PlatformNotSupportedException("'evdev' is only supported on Linux and FreeBSD.")];
@@ -55,20 +64,18 @@ partial interface IInputProvider
             if (Go(() => Directory.EnumerateFiles("/dev/input", "event*"), out var e, out var paths))
             {
                 accumulator.Add(e);
-                _devices = [];
                 warnings = accumulator.DrainToImmutable();
                 return;
             }
 
-            var devices = ImmutableArray.CreateBuilder<Device>();
-
             foreach (var device in paths)
                 if (Device.TryOpen(device, out var dev, out e))
-                    devices.Add(dev);
+                    _devices.Add(dev);
                 else
                     accumulator.Add(e);
 
-            _devices = devices.DrainToImmutable();
+            _watcher = new("/dev/input", "event*") { EnableRaisingEvents = true };
+            _watcher.Created += InputFileCreated;
             warnings = accumulator.DrainToImmutable();
         }
 
@@ -101,7 +108,7 @@ partial interface IInputProvider
         {
             Span2D<bool> keys = _keys;
 
-            foreach (var device in _devices)
+            foreach (var device in _devices.AsSpan())
                 while (device.Next() is var (state, code))
                     if (state is not null && (_keyState[code] = state is Pressed) is var _)
                         for (var i = 0; i < keys.Height; i++)
