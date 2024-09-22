@@ -19,7 +19,7 @@ partial interface IInputProvider
             var keyboard = Keyboard.GetState();
 
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
-            foreach (var (columns, input) in _keys)
+            foreach (var (columns, input) in _keys.AsSpan())
                 if (input.IsButton && gamepads.IsButtonDown(input.Button) ||
                     input.IsMouse && mouse.ToMouseButtons().Has(input.Mouse) ||
                     input.IsKey && keyboard.IsKeyDown(input.Key))
