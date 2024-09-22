@@ -2,12 +2,11 @@
     <PropertyGroup>
         <NoTests>true</NoTests>
         <OutputType>Exe</OutputType>
-        <FileVersion>1.1</FileVersion>
         <IsPackable>false</IsPackable>
+        <FileVersion>1.1.1</FileVersion>
         <TargetFramework>net9.0</TargetFramework>
         <TransformOnBuild>true</TransformOnBuild>
         <ApplicationIcon>Properties/Icon.ico</ApplicationIcon>
-        <DisableDefaultDocumentation>true</DisableDefaultDocumentation>
         <ApplicationManifest>Properties/app.manifest</ApplicationManifest>
         <DefineConstants>$(DefineConstants);XNA;RELEASE;FORCE_SERILOG</DefineConstants>
     </PropertyGroup>
