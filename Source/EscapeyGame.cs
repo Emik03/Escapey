@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey;
 
+using static OperatingSystem;
+
 /// <summary>The application for drawing the adorable character Escapey.</summary>
 [CLSCompliant(false)]
 public sealed partial class EscapeyGame : Game
@@ -127,10 +129,7 @@ public sealed partial class EscapeyGame : Game
             Debug.WriteLine(warning);
         }
 
-        if (OperatingSystem.IsWindows() ||
-            OperatingSystem.IsMacOS() ||
-            OperatingSystem.IsLinux() ||
-            OperatingSystem.IsFreeBSD()) // `IsBorderless` is only supported on DesktopGL.
+        if (IsWindows() || IsMacOS() || IsLinux() || IsFreeBSD()) // `IsBorderless` is only supported on DesktopGL.
             Window.IsBorderless = _config.Borderless;
 
         _animations
