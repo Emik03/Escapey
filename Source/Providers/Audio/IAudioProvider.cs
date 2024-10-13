@@ -9,6 +9,9 @@ partial interface IAudioProvider : IDisposable
     /// <summary>The length of the audio buffer for training.</summary>
     const int Length = 720;
 
+    /// <summary>The Bluestein transform.</summary>
+    static (ImmutableArray<float> Real, ImmutableArray<float> Imaginary) Bluestein { get; } = Length.Bluestein<float>();
+
     /// <summary>Gets the imaginary part of the sample vector.</summary>
     float[] Imaginary { get; }
 
@@ -34,7 +37,7 @@ partial interface IAudioProvider : IDisposable
         Debug.Assert(imaginary.All(x => x is 0));
         Debug.Assert(imaginary.Length >= Length);
         Debug.Assert(real.Length >= Length);
-        Fourier.Forward(real, imaginary);
+        Bluestein.FFT(real, imaginary);
 
         var max = MaxHypot(that);
         ref var current = ref segment.Head;

@@ -7,6 +7,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <TransformOnBuild>true</TransformOnBuild>
         <ApplicationIcon>Properties/Icon.ico</ApplicationIcon>
+        <DisableDefaultDocumentation>true</DisableDefaultDocumentation>
         <DefineConstants>$(DefineConstants);XNA;RELEASE</DefineConstants>
         <ApplicationManifest>Properties/app.manifest</ApplicationManifest>
     </PropertyGroup>
@@ -18,10 +19,11 @@
         <ApplicationDisplayVersion>$(FileVersion)</ApplicationDisplayVersion>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="MathNet.Numerics" Version="6.0.0-beta1" />
         <Compile Update="Source/Sprites/Sprite.g.cs" DependentUpon="Sprite.tt"/>
         <PackageReference Include="Microsoft.ML" Version="4.0.0-preview.24378.1" />
         <Compile Update="Source/ML/AudioSegment.g.cs" DependentUpon="AudioSegment.tt"/>
+        <PackageReference Include="System.Net.Http" Version="[4.3.4,)" PrivateAssets="all"/>
+        <PackageReference Include="System.Text.RegularExpressions" Version="[4.3.1,)" PrivateAssets="all"/>
         <None Update="Source/Sprites/Sprite.tt" Generator="TextTemplatingFileGenerator" LastGenOutput="Sprite.g.cs"/>
         <None Update="Source/ML/AudioSegment.tt" Generator="TextTemplatingFileGenerator" LastGenOutput="AudioSegment.g.cs"/>
     </ItemGroup>
