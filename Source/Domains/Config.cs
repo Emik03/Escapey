@@ -4,25 +4,31 @@ namespace Escapey.Domains;
 /// <summary>Represents the configuration of the application.</summary>
 /// <param name="borderless">Whether to use a borderless window.</param>
 /// <param name="inverted">Whether to invert the columns.</param>
+/// <param name="frequencyScale">The scale of the frequency graph.</param>
 /// <param name="stabilize">The number of frames to display before allowing animations to change.</param>
 /// <param name="training">The amount of training data per phoneme.</param>
+/// <param name="frequencyWidth">The width of the frequency graph.</param>
 /// <param name="rainbowBrightness">The brightness of the rainbow.</param>
 /// <param name="rainbowSaturation">The saturation of the rainbow.</param>
 /// <param name="rainbowSpeed">The speed of the rainbow.</param>
 /// <param name="profile">The name of the model.</param>
 /// <param name="background">The background color.</param>
+/// <param name="frequencyGraph">The color of the frequency graph.</param>
 /// <param name="audio">The audio provider.</param>
 /// <param name="input">The input provider.</param>
 sealed partial class Config(
     bool borderless,
     bool inverted,
+    int frequencyScale,
     int stabilize,
     int training,
+    float frequencyWidth,
     float rainbowBrightness,
     float rainbowSaturation,
     float rainbowSpeed,
     string profile,
     Color background,
+    Color frequencyGraph,
     IAudioProvider audio,
     IInputProvider input
 ) : IDisposable
@@ -31,13 +37,13 @@ sealed partial class Config(
     public const int ColumnCount = 4;
 
     /// <summary>The default value for <see cref="Stabilize"/>.</summary>
-    const int DefaultStabilize = 3;
+    const int MainStabilize = 3;
 
     /// <summary>The default value for <see cref="Training"/>.</summary>
-    const int DefaultTraining = 20;
+    const int MainTraining = 20;
 
     /// <summary>The default value for <see cref="Profile"/>.</summary>
-    const string DefaultProfile = "main.mlnet";
+    const string MainProfile = "main.mlnet";
 
     /// <summary>The aliases for <see cref="Color"/> instances.</summary>
     static readonly FrozenDictionary<string, Color>.AlternateLookup<ReadOnlySpan<char>> s_knownColors = typeof(Color)
@@ -71,11 +77,17 @@ sealed partial class Config(
     /// <summary>Gets a value determining whether to invert the columns.</summary>
     public bool Inverted { get; private set; } = inverted;
 
+    /// <summary>Gets the scaling factor of the frequency graph.</summary>
+    public int FrequencyScale { get; private set; } = frequencyScale;
+
     /// <summary>Gets the number of frames to display before allowing animations to change.</summary>
     public int Stabilize { get; private set; } = stabilize;
 
     /// <summary>Gets the amount of training data per phoneme.</summary>
     public int Training { get; private set; } = training;
+
+    /// <summary>Gets the width of the frequency graph.</summary>
+    public float FrequencyWidth { get; private set; } = frequencyWidth;
 
     /// <summary>Gets the speed of the rainbow.</summary>
     public float RainbowBrightness { get; private set; } = rainbowBrightness;
@@ -91,6 +103,9 @@ sealed partial class Config(
 
     /// <summary>Gets the background color.</summary>
     public Color Background { get; private set; } = background;
+
+    /// <summary>Gets the frequency graph color.</summary>
+    public Color FrequencyGraph { get; private set; } = frequencyGraph;
 
     /// <summary>Gets the audio provider.</summary>
     public IAudioProvider Audio { get; private set; } = audio;
@@ -113,7 +128,7 @@ sealed partial class Config(
             builder.Add(initial);
             builder.AddRange(inputWarnings);
             warnings = builder.DrainToImmutable();
-            return new(false, false, DefaultStabilize, DefaultTraining, 1, 1, 1, DefaultProfile, default, a, i);
+            return new(false, false, 1, MainStabilize, MainTraining, 1, 1, 1, 1, MainProfile, default, default, a, i);
         }
 
         // ReSharper disable once NullableWarningSuppressionIsUsed
@@ -137,16 +152,17 @@ sealed partial class Config(
     /// <param name="warnings">The warnings.</param>
     /// <returns>The config.</returns>
     // ReSharper disable once CognitiveComplexity
+#pragma warning disable MA0051
     public static Config Parse(scoped ReadOnlySpan<char> str, out ImmutableArray<Exception> warnings)
+#pragma warning restore MA0051
     {
-        Color color = default;
+        Color background = default, frequencyGraph = default;
         IAudioProvider? audio = null;
         IInputProvider? input = null;
-        var profile = DefaultProfile;
-        ImmutableArray<Exception> defaultWarnings = [];
+        var profile = MainProfile;
         var accumulator = ImmutableArray.CreateBuilder<Exception>();
-        int stabilize = DefaultStabilize, training = DefaultTraining;
-        float rainbowBrightness = 1, rainbowSaturation = 1, rainbowSpeed = 1;
+        int frequencyScale = 1, stabilize = MainStabilize, training = MainTraining;
+        float frequencyWidth = 1, rainbowBrightness = 1, rainbowSaturation = 1, rainbowSpeed = 1;
         bool borderless = false, setInput = false, inverted = false;
 #pragma warning disable IDISP003
         foreach (var line in str.SplitLines())
@@ -155,8 +171,13 @@ sealed partial class Config(
                 "" => default,
                 var x when x.EqualsIgnoreCase(nameof(Audio)) => ChangeAudio(value, accumulator, ref audio),
                 var x when x.EqualsIgnoreCase(nameof(Borderless)) => ChangeBoolean(value, accumulator, ref borderless),
-                var x when x.EqualsIgnoreCase(nameof(Color)) || x.EqualsIgnoreCase("colour") =>
-                    ChangeColor(value, accumulator, ref color),
+                var x when x.EqualsIgnoreCase(nameof(Background)) => ChangeColor(value, accumulator, ref background),
+                var x when x.EqualsIgnoreCase(nameof(FrequencyGraph)) =>
+                    ChangeColor(value, accumulator, ref frequencyGraph),
+                var x when x.EqualsIgnoreCase(nameof(frequencyScale)) =>
+                    ChangeInt(value, accumulator, ref frequencyScale),
+                var x when x.EqualsIgnoreCase(nameof(FrequencyWidth)) =>
+                    ChangeFloat(value, accumulator, ref frequencyWidth),
                 var x when x.EqualsIgnoreCase(nameof(Input)) => ChangeInput(value, setInput, accumulator, ref input),
                 var x when x.EqualsIgnoreCase(nameof(Inverted)) => ChangeBoolean(value, accumulator, ref inverted),
                 var x when x.EqualsIgnoreCase(nameof(Profile)) => ChangeProfile(value, accumulator, ref profile),
@@ -175,20 +196,24 @@ sealed partial class Config(
             };
 #pragma warning restore IDISP003
         audio ??= IAudioProvider.Default();
-        input ??= IInputProvider.Default(out defaultWarnings);
-        accumulator.AddRange(defaultWarnings);
+        ImmutableArray<Exception> inputWarnings = [];
+        input ??= IInputProvider.Default(out inputWarnings);
+        accumulator.AddRange(inputWarnings);
         warnings = accumulator.DrainToImmutable();
 
         return new(
             borderless,
             inverted,
+            frequencyScale,
             stabilize,
             training,
+            frequencyWidth,
             rainbowBrightness,
             rainbowSaturation,
             rainbowSpeed,
             profile,
-            color,
+            background,
+            frequencyGraph,
             audio,
             input
         );
@@ -215,6 +240,9 @@ sealed partial class Config(
         config.Audio = Audio;
         config.Background = Background;
         config.Borderless = Borderless;
+        config.FrequencyScale = FrequencyScale;
+        config.FrequencyGraph = FrequencyGraph;
+        config.FrequencyWidth = FrequencyWidth;
         config.Input = Input;
         config.Inverted = Inverted;
         config.Profile = Profile;
@@ -241,13 +269,13 @@ sealed partial class Config(
         chars switch
         {
             _ when s_knownColors.TryGetValue(chars, out var knownColor) => knownColor,
-            [var r, var g, var b] when (P(r), P(b), P(g)) is ({ } pr, { } pb, { } pg) => new(pr, pg, pb),
-            [var r, var g, var b, var a] when (P(r), P(b), P(g), P(a)) is ({ } pr, { } pb, { } pg, { } pa)
-                => new(pr, pb, pg, pa),
+            [var r, var g, var b] when (P(r), P(b), P(g)) is ({ } pr, { } pg, { } pb) => new(pr, pg, pb),
+            [var r, var g, var b, var a] when (P(r), P(b), P(g), P(a)) is ({ } pr, { } pg, { } pb, { } pa)
+                => new(pr, pg, pb, pa),
             [var r, var rp, var g, var gp, var b, var bp]
-                when (P(r, rp), P(g, gp), P(b, bp)) is ({ } pr, { } pb, { } pg) => new(pr, pg, pb),
+                when (P(r, rp), P(g, gp), P(b, bp)) is ({ } pr, { } pg, { } pb) => new(pr, pg, pb),
             [var r, var rp, var g, var gp, var b, var bp, var a, var ap]
-                when (P(r, rp), P(g, gp), P(b, bp), P(a, ap)) is ({ } pr, { } pb, { } pg, { } pa)
+                when (P(r, rp), P(g, gp), P(b, bp), P(a, ap)) is ({ } pr, { } pg, { } pb, { } pa)
                 => new(pr, pg, pb, pa),
             _ => null,
         };

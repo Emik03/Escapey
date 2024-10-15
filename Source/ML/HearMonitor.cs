@@ -4,10 +4,12 @@ namespace Escapey.ML;
 using static Sprite.Mouth;
 
 /// <summary>Encapsulates the model for predicting phonemes.</summary>
+/// <param name="game">The game that this component will belong to.</param>
 /// <param name="ml">The machine learning context.</param>
 /// <param name="transformer">The transformer for the model.</param>
 /// <param name="config">The configuration.</param>
-sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer transformer, Config config) : IDisposable
+sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITransformer transformer, Config config)
+    : DrawableGameComponent(game), IDisposable
 {
     /// <summary>The phonemes to train and predict.</summary>
     static readonly ImmutableArray<Sprite.Mouth> s_mouths = [Upset, Ah, Dz, E, F, M, Nsl, O];
@@ -19,24 +21,40 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
     /// <summary>The number of occurrences of each mouth state.</summary>
     readonly int[] _count = new int[s_mouths.Length];
 
+    /// <summary>The sprite batch to draw with.</summary>
+    readonly SpriteBatch _batch = new(game.GraphicsDevice);
+
+    /// <summary>The font to draw with.</summary>
+    readonly SpriteFont _font = game.Content.Load<SpriteFont>("Fonts/main");
+
+    /// <summary>The audio segment to predict.</summary>
+    AudioSegment _segment = new();
+
+    /// <summary>The previous color used to draw frequency graph.</summary>
+    Color _last;
+
     /// <summary>The current prediction.</summary>
     Prediction _prediction = new();
 
     /// <summary>The previous mouth states.</summary>
     Sprite.Mouth[] _order = [];
 
+    /// <summary>The texture to draw with.</summary>
+    Texture2D? _texture;
+
     /// <summary>Creates the new <see cref="HearMonitor"/>.</summary>
+    /// <param name="game">The game that this component will belong to.</param>
     /// <param name="config">The configuration.</param>
     /// <returns>The new <see cref="HearMonitor"/>.</returns>
     [MustDisposeResource]
-    public static HearMonitor From(Config config)
+    public static HearMonitor From(Game game, Config config)
     {
         var modelFile = Path.Join(Config.Folder, config.Profile);
         var dataFile = Path.ChangeExtension(modelFile, ".dat");
         MLContext ml = new();
 
         if (File.Exists(modelFile))
-            return new(ml, ml.Model.Load(modelFile, out _), config);
+            return new(game, ml, ml.Model.Load(modelFile, out _), config);
 
         var trainer = ml.MulticlassClassification.Trainers.OneVersusAll(
             ml.BinaryClassification.Trainers.LbfgsLogisticRegression()
@@ -57,11 +75,8 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
            .Fit(data);
 
         ml.Model.Save(transformer, data.Schema, modelFile);
-        return new(ml, transformer, config);
+        return new(game, ml, transformer, config);
     }
-
-    /// <inheritdoc />
-    public void Dispose() => _engine.Dispose();
 
     /// <summary>Polls for the current mouth.</summary>
     /// <returns>The current mouth.</returns>
@@ -80,7 +95,7 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
         if (config.Audio.Poll() is { } segment)
         {
             var last = _order.Length - 1;
-            _engine.Predict(segment, ref _prediction);
+            _engine.Predict(_segment = segment, ref _prediction);
             ref var order = ref MemoryMarshal.GetArrayDataReference(_order);
             Unsafe.Add(ref count, order - Upset)--;
             MemoryMarshal.CreateReadOnlySpan(Unsafe.Add(ref order, 1), last).CopyTo(_order);
@@ -96,6 +111,49 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
                 max = ref step;
 
         return (Sprite.Mouth)(Unsafe.ByteOffset(count, max) / sizeof(int) + (nint)Upset);
+    }
+
+    /// <inheritdoc />
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _engine.Dispose();
+            _texture?.Dispose();
+        }
+
+        base.Dispose(disposing);
+    }
+
+    /// <inheritdoc />
+    public override void Draw(GameTime gameTime)
+    {
+        if (!Visible || config.FrequencyGraph.A is 0 || config.FrequencyWidth is 0)
+            return;
+
+        if (_texture is null || _last != config.FrequencyGraph)
+        {
+            _texture?.Dispose();
+            _texture = new(GraphicsDevice, 1, 1);
+            _texture.SetData([_last = config.FrequencyGraph]);
+        }
+
+        _batch.Begin(blendState: BlendState.NonPremultiplied);
+        ref var start = ref _segment.Head;
+        var length = IAudioProvider.Length / config.FrequencyScale;
+        ref var end = ref Unsafe.Add(ref start, length);
+
+        for (var i = 0f; Unsafe.IsAddressLessThan(ref start, ref end); start = ref Unsafe.Add(ref start, 1), i++)
+            _batch.Draw(_texture, Box(i, start * _segment.NormalizationFactor.Sqrt(), config.FrequencyScale), _last);
+
+        _batch.DrawString(
+            _font,
+            _prediction.ToString(),
+            new((Game.Window.ClientBounds.Width - 72) / 2f, Game.Window.ClientBounds.Height - 108),
+            _last
+        );
+
+        _batch.End();
     }
 
     /// <summary>Loads or saves the data.</summary>
@@ -174,4 +232,17 @@ sealed class HearMonitor(MLContext ml, [HandlesResourceDisposal] ITransformer tr
 
         return Setup;
     }
+
+    /// <summary>Creates the box for the frequency graph.</summary>
+    /// <param name="i">The index of the box.</param>
+    /// <param name="amount">The length of the box.</param>
+    /// <param name="scale">The scaling factor for the box.</param>
+    /// <returns></returns>
+    Rectangle Box(float i, float amount, int scale) => // ReSharper disable PossibleLossOfFraction
+        new(
+            0,
+            (int)(i / (IAudioProvider.Length / scale) * Game.Window.ClientBounds.Height),
+            (int)(config.FrequencyWidth * amount * Game.Window.ClientBounds.Width),
+            (int)(1f / (IAudioProvider.Length / scale) * Game.Window.ClientBounds.Height)
+        );
 }

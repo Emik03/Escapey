@@ -58,7 +58,7 @@ public sealed partial class EscapeyGame : Game
         LoadConfig();
         IsMouseVisible = true;
         Window.AllowUserResizing = true;
-        _hearMonitor = HearMonitor.From(_config);
+        _hearMonitor = HearMonitor.From(this, _config);
         GraphicsDevice.BlendState = BlendState.NonPremultiplied;
         _watcher.Changed += LoadConfig; // Re-read only after HearMonitor loads; causes undefined behavior otherwise.
     }
@@ -110,6 +110,8 @@ public sealed partial class EscapeyGame : Game
            .SetVisibility<Sprite.Keys.Third>(toggled && columns.Has(Columns.Third))
            .SetVisibility<Sprite.Keys.Fourth>(toggled && columns.Has(Columns.Fourth))
            .Draw(gameTime);
+
+        _hearMonitor.Draw(gameTime);
     }
 
     /// <inheritdoc />

@@ -10,4 +10,18 @@ sealed class Prediction
 
     /// <summary>Gets or sets the predicted label.</summary>
     public float PredictedLabel { get; set; }
+
+    /// <inheritdoc />
+    public override string ToString() =>
+        Mouth switch
+        {
+            Sprite.Mouth.Ah => "a",
+            Sprite.Mouth.Dz => "z",
+            Sprite.Mouth.E => "e",
+            Sprite.Mouth.F => "f",
+            Sprite.Mouth.M => "m",
+            Sprite.Mouth.Nsl => "s",
+            Sprite.Mouth.O => "o",
+            _ => "",
+        };
 }
