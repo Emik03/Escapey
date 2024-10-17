@@ -1,6 +1,5 @@
 ﻿// SPDX-License-Identifier: MPL-2.0
-namespace Escapey.ML;
-
+namespace Escapey.ML; // ReSharper disable PossibleLossOfFraction
 using static Sprite.Mouth;
 
 /// <summary>Encapsulates the model for predicting phonemes.</summary>
@@ -61,12 +60,10 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
         );
 
         var data = LoadOrSaveData(ml, config, dataFile);
-
-        string[] features = [..IAudioProvider.Length.For(x => $"E{x}"), nameof(AudioSegment.NormalizationFactor)];
+        string[] features = [..AudioSegment.Length.For(x => $"E{x}"), nameof(AudioSegment.NormalizationFactor)];
 #pragma warning disable IDISP001
-        var transformer = ml
+        var transformer = ml.Transforms
 #pragma warning restore IDISP001
-           .Transforms
            .ReplaceMissingValues(features.ConvertAll(x => new InputOutputColumnPair(x)))
            .Append(ml.Transforms.Concatenate("Features", features))
            .Append(ml.Transforms.Conversion.MapValueToKey(nameof(AudioSegment.Label), maximumNumberOfKeys: O - Upset))
@@ -138,21 +135,15 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
             _texture.SetData([_last = config.FrequencyGraph]);
         }
 
-        _batch.Begin(blendState: BlendState.NonPremultiplied);
         ref var start = ref _segment.Head;
-        var length = IAudioProvider.Length / config.FrequencyScale;
-        ref var end = ref Unsafe.Add(ref start, length);
+        ref var end = ref Unsafe.Add(ref start, AudioSegment.Length / config.FrequencyScale);
+        _batch.Begin(blendState: BlendState.NonPremultiplied);
 
         for (var i = 0f; Unsafe.IsAddressLessThan(ref start, ref end); start = ref Unsafe.Add(ref start, 1), i++)
             _batch.Draw(_texture, Box(i, start * _segment.NormalizationFactor.Sqrt(), config.FrequencyScale), _last);
 
-        _batch.DrawString(
-            _font,
-            _prediction.ToString(),
-            new((Game.Window.ClientBounds.Width - 72) / 2f, Game.Window.ClientBounds.Height - 108),
-            _last
-        );
-
+        Vector2 position = new((GraphicsDevice.Width() - 72) / 2, GraphicsDevice.Height() - 108);
+        _batch.DrawString(_font, _prediction.ToString(), position, _last);
         _batch.End();
     }
 
@@ -238,11 +229,11 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
     /// <param name="amount">The length of the box.</param>
     /// <param name="scale">The scaling factor for the box.</param>
     /// <returns></returns>
-    Rectangle Box(float i, float amount, int scale) => // ReSharper disable PossibleLossOfFraction
+    Rectangle Box(float i, float amount, int scale) =>
         new(
             0,
-            (int)(i / (IAudioProvider.Length / scale) * Game.Window.ClientBounds.Height),
-            (int)(config.FrequencyWidth * amount * Game.Window.ClientBounds.Width),
-            (int)(1f / (IAudioProvider.Length / scale) * Game.Window.ClientBounds.Height)
+            (int)(i / (AudioSegment.Length / scale) * GraphicsDevice.Height()),
+            (int)(config.FrequencyWidth * amount * GraphicsDevice.Width()),
+            (int)(1f / (AudioSegment.Length / scale) * GraphicsDevice.Height())
         );
 }

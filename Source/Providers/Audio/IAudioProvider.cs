@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey.Providers.Audio;
 
-using SingleVector = System.Numerics.Vector<float>;
-
 /// <summary>Represents the provider for polling audio.</summary>
 partial interface IAudioProvider : IDisposable
 {
     /// <summary>The length of the audio buffer for training.</summary>
-    const int Length = 720;
+    const int Length = 1536;
 
     /// <summary>The Bluestein transform.</summary>
     static (ImmutableArray<float> Real, ImmutableArray<float> Imaginary) Bluestein { get; } = Length.Bluestein<float>();
@@ -26,10 +24,6 @@ partial interface IAudioProvider : IDisposable
     static void FFT<T>(T that)
         where T : IAudioProvider
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int SingleVectorEndOffset() =>
-            SingleVector.IsSupported && Vector.IsHardwareAccelerated ? Length - SingleVector.Count + 1 : 0;
-
         // This implementation is a bit evil, but is about as fast as it gets.
         // To say I've optimized this algorithm is a bit of an understatement.
         var (real, imaginary, segment) = (that.Real, that.Imaginary, that.Segment);
@@ -37,29 +31,30 @@ partial interface IAudioProvider : IDisposable
         Debug.Assert(imaginary.All(x => x is 0));
         Debug.Assert(imaginary.Length >= Length);
         Debug.Assert(real.Length >= Length);
-        Bluestein.FFT(real, imaginary);
 
+        Bluestein.FFT(real, imaginary);
         var max = MaxHypot(that);
-        ref var current = ref segment.Head;
-        ref readonly var end = ref Unsafe.Add(ref current, Length);
-        ref readonly var endVector = ref Unsafe.Add(ref current, SingleVectorEndOffset());
 
         // Ensures in range of [0, 1]. It is possible to exceed 2 by shouting. We choose to clamp the value since it's
         // far more important to distinguish the difference between quiet and loud rather than loud and even louder.
         // Sounds like /f/ will sound very similar to silence, with a subtle volume difference being the largest factor.
         segment.NormalizationFactor = max.Min(1);
 
-        while (Unsafe.IsAddressLessThan(current, endVector))
-        {
-            Vector.Divide(Vector.LoadUnsafe(current), max).StoreUnsafe(ref current);
-            current = ref Unsafe.Add(ref current, SingleVector.Count);
-        }
+        ref var current = ref segment.Head;
+        ref readonly var end = ref Unsafe.Add(ref current, AudioSegment.Length);
 
-        while (Unsafe.IsAddressLessThan(current, end))
-        {
+        ref readonly var endVector = ref Unsafe.Add(
+            ref current,
+            Vector<float>.IsSupported && Vector.IsHardwareAccelerated
+                ? AudioSegment.Length - Vector<float>.Count + 1
+                : 0
+        );
+
+        for (; Unsafe.IsAddressLessThan(current, endVector); current = ref Unsafe.Add(ref current, Vector<float>.Count))
+            Vector.Divide(Vector.LoadUnsafe(current), max).StoreUnsafe(ref current);
+
+        for (; Unsafe.IsAddressLessThan(current, end); current = ref Unsafe.Add(ref current, 1))
             current /= max;
-            current = ref Unsafe.Add(ref current, 1);
-        }
 
         imaginary.AsSpan().Clear();
         segment.AssertNormalized();
@@ -73,7 +68,7 @@ partial interface IAudioProvider : IDisposable
         where T : IAudioProvider
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static void StoreUnsafe(in float real, in float imaginary, ref float segment, ref SingleVector maxVector)
+        static void StoreUnsafe(in float real, in float imaginary, ref float segment, ref Vector<float> maxVector)
         {
             var hypot = Vector.Hypot(Vector.LoadUnsafe(real), Vector.LoadUnsafe(imaginary));
             maxVector = Vector.Max(maxVector, hypot);
@@ -86,11 +81,11 @@ partial interface IAudioProvider : IDisposable
         ref var segment = ref segmentBuffer.Head;
         ref var real = ref MemoryMarshal.GetArrayDataReference(realBuffer);
         ref var imaginary = ref MemoryMarshal.GetArrayDataReference(imaginaryBuffer);
-        Debug.Assert(realBuffer.Length >= Length && imaginaryBuffer.Length >= Length);
+        Debug.Assert(realBuffer.Length >= AudioSegment.Length && imaginaryBuffer.Length >= AudioSegment.Length);
 
-        if (!SingleVector.IsSupported || !Vector.IsHardwareAccelerated || SingleVector.Count > Length)
+        if (!Vector<float>.IsSupported || !Vector.IsHardwareAccelerated || Vector<float>.Count > AudioSegment.Length)
         {
-            ref readonly var end = ref Unsafe.Add(ref segment, Length);
+            ref readonly var end = ref Unsafe.Add(ref segment, AudioSegment.Length);
 
             while (Unsafe.IsAddressLessThan(segment, end))
             {
@@ -104,29 +99,29 @@ partial interface IAudioProvider : IDisposable
             return max;
         }
 
-        ref var segmentLast = ref Unsafe.Add(ref segment, Length - SingleVector.Count);
-        ref readonly var realLast = ref Unsafe.Add(ref real, Length - SingleVector.Count);
-        ref readonly var imaginaryLast = ref Unsafe.Add(ref imaginary, Length - SingleVector.Count);
+        ref var segmentLast = ref Unsafe.Add(ref segment, AudioSegment.Length - Vector<float>.Count);
+        ref readonly var realLast = ref Unsafe.Add(ref real, AudioSegment.Length - Vector<float>.Count);
+        ref readonly var imaginaryLast = ref Unsafe.Add(ref imaginary, AudioSegment.Length - Vector<float>.Count);
 
-        var maxVector = SingleVector.Zero;
+        var maxVector = Vector<float>.Zero;
         StoreUnsafe(real, imaginary, ref segment, ref maxVector);
 
-        real = ref Unsafe.Add(ref real, SingleVector.Count);
-        segment = ref Unsafe.Add(ref segment, SingleVector.Count);
-        imaginary = ref Unsafe.Add(ref imaginary, SingleVector.Count);
+        real = ref Unsafe.Add(ref real, Vector<float>.Count);
+        segment = ref Unsafe.Add(ref segment, Vector<float>.Count);
+        imaginary = ref Unsafe.Add(ref imaginary, Vector<float>.Count);
 
         while (Unsafe.IsAddressLessThan(segment, segmentLast))
         {
             StoreUnsafe(real, imaginary, ref segment, ref maxVector);
 
-            real = ref Unsafe.Add(ref real, SingleVector.Count);
-            segment = ref Unsafe.Add(ref segment, SingleVector.Count);
-            imaginary = ref Unsafe.Add(ref imaginary, SingleVector.Count);
+            real = ref Unsafe.Add(ref real, Vector<float>.Count);
+            segment = ref Unsafe.Add(ref segment, Vector<float>.Count);
+            imaginary = ref Unsafe.Add(ref imaginary, Vector<float>.Count);
         }
 
         StoreUnsafe(realLast, imaginaryLast, ref segmentLast, ref maxVector);
 
-        for (var index = 0; index < SingleVector.Count; index++)
+        for (var index = 0; index < Vector<float>.Count; index++)
             max = max.Max(maxVector[index]);
 
         return max;

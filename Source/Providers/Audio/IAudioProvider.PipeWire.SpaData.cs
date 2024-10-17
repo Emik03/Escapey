@@ -27,9 +27,6 @@ partial interface IAudioProvider
             /// <summary>Gets the <see cref="float"/> array.</summary>
             /// <returns>The <see cref="float"/> array.</returns>
             public ReadOnlySpan<float> AsSpan => _data is null ? default : new(_data, _chunk->_size / sizeof(float));
-
-            /// <inheritdoc />
-            public override string ToString() => $"[{AsSpan.ToArray().Conjoin()}]";
         }
     }
 }

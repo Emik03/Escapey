@@ -20,9 +20,6 @@ partial interface IAudioProvider
 
             /// <summary>Padding.</summary>
             readonly nint _drained, _command, _triggerDone;
-
-            /// <inheritdoc />
-            public override string ToString() => ((nint)_process).ToHexString();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Escapey.ML;
 sealed class AudioSegment
 {
     /// <summary>The inlined array.</summary>
-    [InlineArray(IAudioProvider.Length)]
+    [InlineArray(Length)]
     public struct Array
     {
         /// <summary>The first element of the buffer.</summary>
@@ -20,6 +20,9 @@ sealed class AudioSegment
         /// <inheritdoc cref="Span{T}.CopyTo"/>
         public void CopyTo(Span<float> destination) => ((ReadOnlySpan<float>)this).CopyTo(destination);
     }
+
+    /// <summary>The length of this buffer.</summary>
+    public const int Length = IAudioProvider.Length / 2;
 
     /// <summary>The inlined array.</summary>
     Array _array;
@@ -47,7 +50,7 @@ sealed class AudioSegment
         !int.TryParse(match.Groups[1].Value, out var length))
         throw new FormatException("Failed to parse the length.");
 
-    for (var i = 0; i < length; i++)
+    for (var i = 0; i < length / 2; i++)
     {
 #>
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
@@ -68,7 +71,7 @@ sealed class AudioSegment
     public void AssertNormalized()
     {
         ref var start = ref Head;
-        ref readonly var end = ref Unsafe.Add(ref start, IAudioProvider.Length);
+        ref readonly var end = ref Unsafe.Add(ref start, Length);
 
         while (Unsafe.IsAddressLessThan(start, end))
         {
@@ -87,10 +90,10 @@ sealed class AudioSegment
     /// <returns>The cloned buffers.</returns>
     public ImmutableArray<AudioSegment> With(AudioSegment other)
     {
-        var result = new AudioSegment[IAudioProvider.Length];
+        var result = new AudioSegment[Length];
         result[0] = this;
 
-        for (var i = 1; i < IAudioProvider.Length; i++)
+        for (var i = 1; i < Length; i++)
         {
             AudioSegment slice = new() { Label = Label };
             ((ReadOnlySpan<float>)_array)[..^i].CopyTo(slice._array[..^i]);

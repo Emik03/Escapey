@@ -31,29 +31,29 @@ enum Columns : ushort
     /// <summary>Used to make the eyes and mouth colorful.</summary>
     Rainbow = 1 << 5,
 
-    /// <summary>Reserved for future use.</summary>
-    Reserved = 1 << 6,
-
     /// <summary>Used to indicate the expression be angry.</summary>
-    Angry = 1 << 7,
+    Angry = 1 << 6,
 
     /// <summary>Used to indicate the expression be bored.</summary>
-    Bored = 1 << 8,
+    Bored = 1 << 7,
 
     /// <summary>Used to indicate the expression be concentrated.</summary>
-    Concentrated = 1 << 9,
+    Concentrated = 1 << 8,
 
     /// <summary>Used to indicate the expression be confused.</summary>
-    Confused = 1 << 10,
+    Confused = 1 << 9,
 
     /// <summary>Used to indicate the expression be frowning.</summary>
-    Frown = 1 << 11,
+    Frown = 1 << 10,
 
     /// <summary>Used to indicate the expression be happy.</summary>
-    Happy = 1 << 12,
+    Happy = 1 << 11,
 
     /// <summary>Used to indicate the expression be happy, with a raised eyebrow.</summary>
-    HappyEyebrow = 1 << 13,
+    HappyEyebrow = 1 << 12,
+
+    /// <summary>Used to indicate the expression be laughter.</summary>
+    Laughter = 1 << 13,
 
     /// <summary>Used to indicate the expression be scared.</summary>
     Scared = 1 << 14,
@@ -116,9 +116,9 @@ static class ColumnExtensions
             E => ["/ɛ/", "/e/", "/i/", "/y/", "/ŋ/"],
             F => ["/f/", "/v/"],
             M => ["/m/"],
-            Nsl => ["/ə/", "/ɹ/", "/n/", "/s/", "/l/"],
+            Nsl => ["/ɹ/", "/n/", "/s/", "/l/"],
             O => ["/o/", "/ʊ/", "/u/", "/w/"],
-            _ => ["nothing", "keyboard typing", "keyboard mashing", "loud breathing", "chair rocking"],
+            _ => ["nothing", "keyboard typing", "keyboard mashing", "loud breathing", "foot tapping", "chair rocking"],
         };
 
     /// <summary>Converts the <see cref="Columns"/> to the <see cref="Sprite.Arm.Left"/>.</summary>

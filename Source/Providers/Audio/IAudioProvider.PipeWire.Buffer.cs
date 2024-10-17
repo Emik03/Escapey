@@ -21,9 +21,6 @@ partial interface IAudioProvider
             /// <summary>Gets the <see cref="float"/> array.</summary>
             /// <returns>The <see cref="float"/> array.</returns>
             public unsafe ReadOnlySpan<float> AsSpan => _buffer->_datas->AsSpan;
-
-            /// <inheritdoc />
-            public override unsafe string ToString() => _buffer->ToString();
         }
     }
 }

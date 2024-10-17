@@ -20,9 +20,6 @@ partial interface IAudioProvider
 
             /// <summary>Contains the pointer to the array.</summary>
             internal readonly SpaData* _datas;
-
-            /// <inheritdoc />
-            public override string ToString() => _datas->ToString();
         }
     }
 }

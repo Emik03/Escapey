@@ -19,13 +19,23 @@
         <ApplicationDisplayVersion>$(FileVersion)</ApplicationDisplayVersion>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Update="Source/Sprites/Sprite.g.cs" DependentUpon="Sprite.tt"/>
+        <Compile Update="Source/Sprites/Sprite.g.cs">
+          <DependentUpon>Sprite.tt</DependentUpon>
+        </Compile>
         <PackageReference Include="Microsoft.ML" Version="4.0.0-preview.24378.1" />
-        <Compile Update="Source/ML/AudioSegment.g.cs" DependentUpon="AudioSegment.tt"/>
+        <Compile Update="Source/ML/AudioSegment.g.cs">
+          <DependentUpon>AudioSegment.tt</DependentUpon>
+        </Compile>
         <PackageReference Include="System.Net.Http" Version="[4.3.4,)" PrivateAssets="all"/>
         <PackageReference Include="System.Text.RegularExpressions" Version="[4.3.1,)" PrivateAssets="all"/>
-        <None Update="Source/Sprites/Sprite.tt" Generator="TextTemplatingFileGenerator" LastGenOutput="Sprite.g.cs"/>
-        <None Update="Source/ML/AudioSegment.tt" Generator="TextTemplatingFileGenerator" LastGenOutput="AudioSegment.g.cs"/>
+        <None Update="Source/Sprites/Sprite.tt">
+          <Generator>TextTemplatingFileGenerator</Generator>
+          <LastGenOutput>Sprite.g.cs</LastGenOutput>
+        </None>
+        <None Update="Source/ML/AudioSegment.tt">
+          <Generator>TextTemplatingFileGenerator</Generator>
+          <LastGenOutput>AudioSegment.g.cs</LastGenOutput>
+        </None>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' != 'Android'">
         <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.2.1105"/>

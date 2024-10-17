@@ -14,9 +14,6 @@ partial interface IAudioProvider
 
             /// <summary>Contains the size of the <see cref="float"/> array.</summary>
             internal readonly int _size;
-
-            /// <inheritdoc />
-            public override string ToString() => _size.ToString();
         }
     }
 }
