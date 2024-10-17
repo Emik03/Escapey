@@ -171,6 +171,7 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
         float[] current = new float[IAudioProvider.Length], previous = new float[IAudioProvider.Length];
         var builder = ImmutableArray.CreateBuilder<AudioSegment>();
         IAudioProvider audio = config.Audio, blank = IAudioProvider.CreateBlank(current);
+        var ipa = Environment.GetEnvironmentVariable("ESCAPEY_IPA").OrEmpty();
         var training = config.Training;
 
         void AddWindows(Sprite.Mouth mouth)
@@ -208,7 +209,11 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
         ImmutableArray<AudioSegment> Setup(Sprite.Mouth mouth)
         {
             using var _ = blank;
-            var phonemes = mouth.ToIPAs();
+
+            var phonemes = ipa.Contains(',')
+                ? [..mouth.ToIPAs().Where(x => ipa.SplitOn(',').Any(y => y.Span.Trim().Trim('"').SequenceEqual(x)))]
+                : mouth.ToIPAs();
+
             builder.Capacity = phonemes.Length * (training * IAudioProvider.Length + 1);
 
             foreach (var phoneme in phonemes)

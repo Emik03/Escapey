@@ -5,7 +5,7 @@ namespace Escapey.Providers.Audio;
 partial interface IAudioProvider : IDisposable
 {
     /// <summary>The length of the audio buffer for training.</summary>
-    const int Length = 1536;
+    const int Length = 512;
 
     /// <summary>The Bluestein transform.</summary>
     static (ImmutableArray<float> Real, ImmutableArray<float> Imaginary) Bluestein { get; } = Length.Bluestein<float>();
@@ -51,7 +51,7 @@ partial interface IAudioProvider : IDisposable
         );
 
         for (; Unsafe.IsAddressLessThan(current, endVector); current = ref Unsafe.Add(ref current, Vector<float>.Count))
-            Vector.Divide(Vector.LoadUnsafe(current), max).StoreUnsafe(ref current);
+            (Vector.LoadUnsafe(current) / max).StoreUnsafe(ref current);
 
         for (; Unsafe.IsAddressLessThan(current, end); current = ref Unsafe.Add(ref current, 1))
             current /= max;

@@ -40,7 +40,7 @@ sealed partial class Config(
     const int MainStabilize = 3;
 
     /// <summary>The default value for <see cref="Training"/>.</summary>
-    const int MainTraining = 20;
+    const int MainTraining = 200;
 
     /// <summary>The default value for <see cref="Profile"/>.</summary>
     const string MainProfile = "main.mlnet";

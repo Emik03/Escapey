@@ -84,23 +84,4 @@ sealed class AudioSegment
     /// <param name="mouth">The label.</param>
     /// <returns>The cloned buffer.</returns>
     public AudioSegment With(Sprite.Mouth mouth) => new() { _array = _array, Label = mouth - Sprite.Mouth.Upset };
-
-    /// <summary>Clones the buffers with the given label.</summary>
-    /// <param name="other">The other buffer.</param>
-    /// <returns>The cloned buffers.</returns>
-    public ImmutableArray<AudioSegment> With(AudioSegment other)
-    {
-        var result = new AudioSegment[Length];
-        result[0] = this;
-
-        for (var i = 1; i < Length; i++)
-        {
-            AudioSegment slice = new() { Label = Label };
-            ((ReadOnlySpan<float>)_array)[..^i].CopyTo(slice._array[..^i]);
-            ((ReadOnlySpan<float>)other._array)[^i..].CopyTo(slice._array[^i..]);
-            result[i] = slice;
-        }
-
-        return ImmutableCollectionsMarshal.AsImmutableArray(result);
-    }
 }
