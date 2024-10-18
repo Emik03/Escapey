@@ -24,10 +24,10 @@ sealed partial class Config(
     IInputProvider input,
     bool borderless = false,
     bool inverted = false,
-    int frequencyScale = 1,
+    int frequencyScale = Config.DefaultFrequencyScale,
     int stabilize = Config.DefaultStabilize,
     int trainingLength = Config.DefaultTrainingLength,
-    int trainingSkip = 1,
+    int trainingSkip = Config.DefaultTrainingSkip,
     float frequencyWidth = 1,
     float rainbowBrightness = 1,
     float rainbowSaturation = 1,
@@ -40,11 +40,17 @@ sealed partial class Config(
     /// <summary>The number of columns.</summary>
     public const int ColumnCount = 4;
 
+    /// <summary>The default value for <see cref="FrequencyScale"/>.</summary>
+    const int DefaultFrequencyScale = 20;
+
     /// <summary>The default value for <see cref="Stabilize"/>.</summary>
     const int DefaultStabilize = 3;
 
     /// <summary>The default value for <see cref="TrainingLength"/>.</summary>
     const int DefaultTrainingLength = 100;
+
+    /// <summary>The default value for <see cref="TrainingSkip"/>.</summary>
+    const int DefaultTrainingSkip = 5;
 
     /// <summary>The default value for <see cref="Profile"/>.</summary>
     const string DefaultProfile = "main.mlnet";
@@ -171,9 +177,13 @@ sealed partial class Config(
         IInputProvider? input = null;
         var profile = DefaultProfile;
         var accumulator = ImmutableArray.CreateBuilder<Exception>();
-        int frequencyScale = 1, stabilize = DefaultStabilize, trainingSkip = 1, trainingLength = DefaultTrainingLength;
         float frequencyWidth = 1, rainbowBrightness = 1, rainbowSaturation = 1, rainbowSpeed = 1;
         bool borderless = false, setInput = false, inverted = false;
+
+        int frequencyScale = DefaultFrequencyScale,
+            stabilize = DefaultStabilize,
+            trainingSkip = DefaultTrainingSkip,
+            trainingLength = DefaultTrainingLength;
 #pragma warning disable IDISP003
         foreach (var line in str.SplitLines())
             _ = SplitKeyValuePair(line, out var value) switch
@@ -548,14 +558,14 @@ sealed partial class Config(
     /// <param name="mouth">The current mouth.</param>
     void AddWindows(ConcurrentBag<AudioSegment> bag, ICollection<Task> tasks, float[] prev, Sprite.Mouth mouth)
     {
-        var raw = Audio.WaitForRaw();
+        var raw = Audio.WaitForRaw().ToImmutableArray();
         var upper = IAudioProvider.Length / TrainingSkip;
 
         for (var i = 0; i < upper; i++)
         {
             var current = new float[IAudioProvider.Length];
             prev.AsSpan(..^i).CopyTo(current);
-            raw.UnsafelyTake(i).CopyTo(current.AsSpan(^i));
+            raw.AsSpan().UnsafelyTake(i).CopyTo(current.AsSpan(^i));
 
             async Task? AddAsync()
             {

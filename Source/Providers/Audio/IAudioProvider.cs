@@ -55,14 +55,14 @@ partial interface IAudioProvider : IDisposable
     /// <summary>Polls the audio provider.</summary>
     /// <returns>The raw PCM buffer from the audio provider, or empty if no new data.</returns>
     [MustUseReturnValue]
-    ReadOnlySpan<float> PollRaw();
+    Span<float> PollRaw();
 
     /// <summary>Polls the audio provider.</summary>
     /// <returns>The raw PCM buffer from the audio provider, blocking until the next data is available.</returns>
     [MustUseReturnValue]
-    ReadOnlySpan<float> WaitForRaw()
+    Span<float> WaitForRaw()
     {
-        ReadOnlySpan<float> raw;
+        Span<float> raw;
 
         while ((raw = PollRaw()).IsEmpty) { }
 

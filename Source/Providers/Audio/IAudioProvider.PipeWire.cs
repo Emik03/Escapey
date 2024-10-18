@@ -26,9 +26,6 @@ partial interface IAudioProvider
         /// </para></remarks>
         static PipeWire? s_pw;
 
-        /// <summary>The real buffer.</summary>
-        readonly float[] _real = new float[Length];
-
         /// <summary>The pointer to the stack-allocated <see cref="State"/> within the <see cref="_task"/>.</summary>
         /// <remarks><para>
         /// Do not dereference this pointer if the <see cref="_task"/> returns <see langword="true"/>
@@ -110,14 +107,15 @@ partial interface IAudioProvider
             if (PollRaw() is not { IsEmpty: false } current)
                 return null;
 
-            current.CopyTo(_real);
-            Segment.Forward(_real);
+            using var _ = Length.Alloc<float>(out var real);
+            current.CopyTo(real);
+            Segment.Forward(real);
             return Segment;
         }
 
         /// <inheritdoc />
         [MustUseReturnValue]
-        public unsafe ReadOnlySpan<float> PollRaw() =>
+        public unsafe Span<float> PollRaw() =>
             _task.IsCompleted ? _task.Exception is { } e ? throw e : [] : State.Current(_state);
 
         /// <summary>

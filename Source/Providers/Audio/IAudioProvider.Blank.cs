@@ -23,6 +23,6 @@ partial interface IAudioProvider
 
         /// <inheritdoc />
         [MustUseReturnValue, Pure]
-        public ReadOnlySpan<float> PollRaw() => real;
+        public Span<float> PollRaw() => real;
     }
 }

@@ -9,11 +9,14 @@ partial interface IAudioProvider
         [StructLayout(LayoutKind.Auto)]
         partial struct State // ReSharper disable UnassignedField.Local
         {
+            /// <summary>The length of the temporary buffer.</summary>
+            const int StackLength = Length * 5;
+
             /// <summary>The amount of latency.</summary>
             static readonly string s_latency = $"{Length}/48000";
 
             /// <summary>The temporary buffers.</summary>
-            unsafe fixed float _buffer[5040];
+            unsafe fixed float _buffer[StackLength];
 
             /// <summary>The pointers to PipeWire objects.</summary>
             nint _loop, _stream;
@@ -80,7 +83,7 @@ partial interface IAudioProvider
             /// <summary>Gets the current buffer.</summary>
             /// <param name="data">The state to get the buffer from.</param>
             /// <returns>The current buffer.</returns>
-            public static unsafe ReadOnlySpan<float> Current(State* data) =>
+            public static unsafe Span<float> Current(State* data) =>
                 data is not null && data->_hasNewData && !(data->_hasNewData = false)
                     ? new Span<float>(data->_buffer + data->_index * Length, Length)
                     : default;
@@ -98,7 +101,7 @@ partial interface IAudioProvider
             {
                 if (DequeueBuffer(data->_stream) is var buffer && buffer->AsSpan is not [] and var span)
                 {
-                    var i = (data->_index + 1).Mod(5040 / Length);
+                    var i = (data->_index + 1) % (StackLength / Length);
                     span.CopyTo(new(data->_buffer + i * Length, Length));
                     data->_index = i;
                     data->_hasNewData = true;

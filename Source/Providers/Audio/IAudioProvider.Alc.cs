@@ -53,7 +53,7 @@ partial interface IAudioProvider
 
         /// <inheritdoc />
         [MustUseReturnValue]
-        public ReadOnlySpan<float> PollRaw()
+        public Span<float> PollRaw()
         {
             if ((_i += Microphone.Default.GetData(_pcm, _i, _pcm.Length - _i)) < Length * sizeof(short))
                 return [];
