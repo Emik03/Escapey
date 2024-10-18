@@ -111,7 +111,7 @@ static class ColumnExtensions
     public static ImmutableArray<string> ToIPAs(this Sprite.Mouth mouth) =>
         mouth switch
         {
-            Ah => ["/æ/", "/a/", "/ä/", "/ɑ/"],
+            Ah => ["/æ/", "/a/", "/ä/"],
             Dz => ["/z/", "/ʒ/", "/ʃ/"],
             E => ["/e/", "/i/", "/y/"],
             F => ["/f/", "/v/"],
