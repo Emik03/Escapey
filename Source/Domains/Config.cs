@@ -314,6 +314,7 @@ sealed partial class Config(
 
             Console.CursorLeft = cursor;
             Console.WriteLine($"Done processing {bag.Count} / {capacity}.");
+            Console.WriteLine("Hear Monitor will now train on your data. This may take a while, so please be patient!");
         }
 
         tasks.Add(Task.Run(ShowProgress));
