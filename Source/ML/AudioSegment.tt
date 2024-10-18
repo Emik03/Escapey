@@ -7,6 +7,8 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey.ML;
 
+using Bluestein = (ImmutableArray<float> Real, ImmutableArray<float> Imaginary);
+
 /// <summary>The input class for <see cref="HearMonitor"/>.</summary>
 sealed class AudioSegment
 {
@@ -23,6 +25,9 @@ sealed class AudioSegment
 
     /// <summary>The length of this buffer.</summary>
     public const int Length = IAudioProvider.Length / 2;
+
+    /// <summary>The Bluestein transform.</summary>
+    public static Bluestein Bluestein { get; } = IAudioProvider.Length.Bluestein<float>();
 
     /// <summary>The inlined array.</summary>
     Array _array;
@@ -66,9 +71,54 @@ sealed class AudioSegment
 
 
 #>
+
+    /// <summary>Writes the Fast Fourier Transform to this instance.</summary>
+    /// <param name="realBuffer">The real buffer.</param>
+    public void Forward(scoped Span<float> realBuffer)
+    {
+        // This implementation is a bit evil, but is about as fast as it gets.
+        // To say I've optimized this algorithm is a bit of an understatement.
+        Debug.Assert(realBuffer.Length >= Length);
+        Debug.Assert(realBuffer.ToImmutableArray().All(x => x is <= 1 and >= -1));
+        var max = Bluestein.MaxHypotFFT(realBuffer);
+        ref var current = ref Head;
+        ref var real = ref MemoryMarshal.GetReference(realBuffer);
+        ref readonly var end = ref Unsafe.Add(ref current, Length);
+
+        ref readonly var endVector = ref Unsafe.Add(
+            ref current,
+            Vector<float>.IsSupported && Vector.IsHardwareAccelerated ? Length - Vector<float>.Count + 1 : 0
+        );
+
+        while (Unsafe.IsAddressLessThan(current, endVector))
+        {
+            (Vector.LoadUnsafe(real) / max).StoreUnsafe(ref current);
+            real = ref Unsafe.Add(ref real, Vector<float>.Count);
+            current = ref Unsafe.Add(ref current, Vector<float>.Count);
+        }
+
+        while (Unsafe.IsAddressLessThan(current, end))
+        {
+            current = real / max;
+            real = ref Unsafe.Add(ref real, 1);
+            current = ref Unsafe.Add(ref current, 1);
+        }
+
+        // Ensures in range of [0, 1]. It is possible to exceed 2 by shouting. We choose to clamp the value since it's
+        // far more important to distinguish the difference between quiet and loud rather than loud and even louder.
+        // Sounds like /f/ will sound very similar to silence, with a subtle volume difference being the largest factor.
+        NormalizationFactor = max.Min(1);
+        AssertNormalized();
+    }
+
+    /// <summary>Clones the buffer with the given label.</summary>
+    /// <param name="mouth">The label.</param>
+    /// <returns>The cloned buffer.</returns>
+    public AudioSegment With(Sprite.Mouth mouth) => new() { _array = _array, Label = mouth - Sprite.Mouth.Upset };
+
     /// <summary>Asserts that the buffer is normalized.</summary>
     [Conditional("DEBUG")]
-    public void AssertNormalized()
+    void AssertNormalized()
     {
         ref var start = ref Head;
         ref readonly var end = ref Unsafe.Add(ref start, Length);
@@ -79,9 +129,4 @@ sealed class AudioSegment
             start = ref Unsafe.Add(ref start, 1);
         }
     }
-
-    /// <summary>Clones the buffer with the given label.</summary>
-    /// <param name="mouth">The label.</param>
-    /// <returns>The cloned buffer.</returns>
-    public AudioSegment With(Sprite.Mouth mouth) => new() { _array = _array, Label = mouth - Sprite.Mouth.Upset };
 }

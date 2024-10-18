@@ -8,15 +8,6 @@ partial interface IAudioProvider
     private sealed class Blank(float[] real) : IAudioProvider
     {
         /// <inheritdoc />
-        public float[] Imaginary { get; } = new float[Length];
-
-        /// <inheritdoc />
-        public float[] Real =>
-            real.Length is Length
-                ? real
-                : throw new ArgumentOutOfRangeException(nameof(real), real.Length, $"Must be {Length} elements long.");
-
-        /// <inheritdoc />
         public AudioSegment Segment { get; } = new();
 
         /// <inheritdoc />
@@ -26,7 +17,7 @@ partial interface IAudioProvider
         [MustUseReturnValue]
         public AudioSegment Poll()
         {
-            FFT(this);
+            Segment.Forward(real);
             return Segment;
         }
 

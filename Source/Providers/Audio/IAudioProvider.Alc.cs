@@ -12,6 +12,9 @@ partial interface IAudioProvider
         /// <summary>Contains the raw PCM data.</summary>
         readonly byte[] _pcm = new byte[8820];
 
+        /// <summary>Contains the PCM data converted to <see cref="float"/>.</summary>
+        readonly float[] _real = new float[Length];
+
         /// <summary>Determines whether this instance is disposed.</summary>
         bool _disposed;
 
@@ -26,12 +29,6 @@ partial interface IAudioProvider
             Microphone.Default.Start();
             s_references++;
         }
-
-        /// <inheritdoc />
-        public float[] Imaginary { get; } = new float[Length];
-
-        /// <inheritdoc />
-        public float[] Real { get; } = new float[Length];
 
         /// <inheritdoc />
         public AudioSegment Segment { get; } = new();
@@ -50,7 +47,7 @@ partial interface IAudioProvider
             if (PollRaw().IsEmpty)
                 return null;
 
-            FFT(this);
+            Segment.Forward(_real);
             return Segment;
         }
 
@@ -62,7 +59,7 @@ partial interface IAudioProvider
                 return [];
 
             ref var end = ref Unsafe.As<byte, short>(ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(_pcm), _i));
-            ref var real = ref MemoryMarshal.GetArrayDataReference(Real);
+            ref var real = ref MemoryMarshal.GetArrayDataReference(_real);
             ref var pcm = ref Unsafe.Add(ref end, -Length);
             _i = 0;
 
@@ -73,7 +70,7 @@ partial interface IAudioProvider
                 pcm = ref Unsafe.Add(ref pcm, 1);
             }
 
-            return Real;
+            return _real;
         }
     }
 }

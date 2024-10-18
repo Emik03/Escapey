@@ -112,11 +112,11 @@ static class ColumnExtensions
         mouth switch
         {
             Ah => ["/æ/", "/a/", "/ä/", "/ɑ/"],
-            Dz => ["/z/", "/ʃ/", "/ʒ/", "/θ/"],
-            E => ["/ɛ/", "/e/", "/i/", "/y/", "/ŋ/"],
+            Dz => ["/z/", "/ʒ/", "/ʃ/"],
+            E => ["/e/", "/i/", "/y/"],
             F => ["/f/", "/v/"],
             M => ["/m/"],
-            Nsl => ["/ɹ/", "/n/", "/s/", "/l/"],
+            Nsl => ["/s/", "/l/"],
             O => ["/o/", "/ʊ/", "/u/", "/w/"],
             _ => ["nothing", "keyboard typing", "keyboard mashing", "loud breathing", "foot tapping", "chair rocking"],
         };

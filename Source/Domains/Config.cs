@@ -1,12 +1,17 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey.Domains;
 
+using static Sprite.Mouth;
+
 /// <summary>Represents the configuration of the application.</summary>
+/// <param name="audio">The audio provider.</param>
+/// <param name="input">The input provider.</param>
 /// <param name="borderless">Whether to use a borderless window.</param>
 /// <param name="inverted">Whether to invert the columns.</param>
 /// <param name="frequencyScale">The scale of the frequency graph.</param>
 /// <param name="stabilize">The number of frames to display before allowing animations to change.</param>
-/// <param name="training">The amount of training data per phoneme.</param>
+/// <param name="trainingLength">The amount of training data per phoneme.</param>
+/// <param name="trainingSkip">How many other slices to save and treat as separate training data.</param>
 /// <param name="frequencyWidth">The width of the frequency graph.</param>
 /// <param name="rainbowBrightness">The brightness of the rainbow.</param>
 /// <param name="rainbowSaturation">The saturation of the rainbow.</param>
@@ -14,36 +19,35 @@ namespace Escapey.Domains;
 /// <param name="profile">The name of the model.</param>
 /// <param name="background">The background color.</param>
 /// <param name="frequencyGraph">The color of the frequency graph.</param>
-/// <param name="audio">The audio provider.</param>
-/// <param name="input">The input provider.</param>
 sealed partial class Config(
-    bool borderless,
-    bool inverted,
-    int frequencyScale,
-    int stabilize,
-    int training,
-    float frequencyWidth,
-    float rainbowBrightness,
-    float rainbowSaturation,
-    float rainbowSpeed,
-    string profile,
-    Color background,
-    Color frequencyGraph,
     IAudioProvider audio,
-    IInputProvider input
+    IInputProvider input,
+    bool borderless = false,
+    bool inverted = false,
+    int frequencyScale = 1,
+    int stabilize = Config.DefaultStabilize,
+    int trainingLength = Config.DefaultTrainingLength,
+    int trainingSkip = 1,
+    float frequencyWidth = 1,
+    float rainbowBrightness = 1,
+    float rainbowSaturation = 1,
+    float rainbowSpeed = 1,
+    string profile = Config.DefaultProfile,
+    Color background = default,
+    Color frequencyGraph = default
 ) : IDisposable
 {
     /// <summary>The number of columns.</summary>
     public const int ColumnCount = 4;
 
     /// <summary>The default value for <see cref="Stabilize"/>.</summary>
-    const int MainStabilize = 3;
+    const int DefaultStabilize = 3;
 
-    /// <summary>The default value for <see cref="Training"/>.</summary>
-    const int MainTraining = 200;
+    /// <summary>The default value for <see cref="TrainingLength"/>.</summary>
+    const int DefaultTrainingLength = 100;
 
     /// <summary>The default value for <see cref="Profile"/>.</summary>
-    const string MainProfile = "main.mlnet";
+    const string DefaultProfile = "main.mlnet";
 
     /// <summary>The aliases for <see cref="Color"/> instances.</summary>
     static readonly FrozenDictionary<string, Color>.AlternateLookup<ReadOnlySpan<char>> s_knownColors = typeof(Color)
@@ -71,6 +75,9 @@ sealed partial class Config(
     /// <summary>Gets the path to the config file.</summary>
     public static string TextFile { get; } = Path.Join(Folder, "config.ini");
 
+    /// <summary>Gets the phonemes to train and predict.</summary>
+    public static ImmutableArray<Sprite.Mouth> Mouths { get; } = [Upset, Ah, Dz, E, F, M, Nsl, O];
+
     /// <summary>Gets value determining whether to use borderless mode.</summary>
     public bool Borderless { get; private set; } = borderless;
 
@@ -84,7 +91,10 @@ sealed partial class Config(
     public int Stabilize { get; private set; } = stabilize;
 
     /// <summary>Gets the amount of training data per phoneme.</summary>
-    public int Training { get; private set; } = training;
+    public int TrainingLength { get; private set; } = trainingLength;
+
+    /// <summary>Gets the amount of other slices to save and treat as separate training data.</summary>
+    public int TrainingSkip { get; private set; } = trainingSkip;
 
     /// <summary>Gets the width of the frequency graph.</summary>
     public float FrequencyWidth { get; private set; } = frequencyWidth;
@@ -128,7 +138,7 @@ sealed partial class Config(
             builder.Add(initial);
             builder.AddRange(inputWarnings);
             warnings = builder.DrainToImmutable();
-            return new(false, false, 1, MainStabilize, MainTraining, 1, 1, 1, 1, MainProfile, default, default, a, i);
+            return new(a, i);
         }
 
         // ReSharper disable once NullableWarningSuppressionIsUsed
@@ -159,9 +169,9 @@ sealed partial class Config(
         Color background = default, frequencyGraph = default;
         IAudioProvider? audio = null;
         IInputProvider? input = null;
-        var profile = MainProfile;
+        var profile = DefaultProfile;
         var accumulator = ImmutableArray.CreateBuilder<Exception>();
-        int frequencyScale = 1, stabilize = MainStabilize, training = MainTraining;
+        int frequencyScale = 1, stabilize = DefaultStabilize, trainingSkip = 1, trainingLength = DefaultTrainingLength;
         float frequencyWidth = 1, rainbowBrightness = 1, rainbowSaturation = 1, rainbowSpeed = 1;
         bool borderless = false, setInput = false, inverted = false;
 #pragma warning disable IDISP003
@@ -189,7 +199,10 @@ sealed partial class Config(
                     ChangeFloat(value, accumulator, ref rainbowSpeed),
                 var x when x.EqualsIgnoreCase(nameof(Stabilize)) || x.EqualsIgnoreCase("stabilise") =>
                     ChangeInt(value, accumulator, ref stabilize),
-                var x when x.EqualsIgnoreCase(nameof(Training)) => ChangeInt(value, accumulator, ref training),
+                var x when x.EqualsIgnoreCase(nameof(TrainingLength)) =>
+                    ChangeInt(value, accumulator, ref trainingLength),
+                var x when x.EqualsIgnoreCase(nameof(TrainingSkip)) =>
+                    ChangeInt(value, accumulator, ref trainingSkip),
                 var x when x.TryIntoEnum<Columns>() is { } column =>
                     AddColumn(column, value, accumulator, ref setInput, ref input),
                 var x => UnrecognizedKey(x, accumulator),
@@ -202,20 +215,21 @@ sealed partial class Config(
         warnings = accumulator.DrainToImmutable();
 
         return new(
+            audio,
+            input,
             borderless,
             inverted,
             frequencyScale,
             stabilize,
-            training,
+            trainingLength,
+            trainingSkip,
             frequencyWidth,
             rainbowBrightness,
             rainbowSaturation,
             rainbowSpeed,
             profile,
             background,
-            frequencyGraph,
-            audio,
-            input
+            frequencyGraph
         );
     }
 
@@ -250,7 +264,51 @@ sealed partial class Config(
         config.RainbowSaturation = RainbowSaturation;
         config.RainbowSpeed = RainbowSpeed;
         config.Stabilize = Stabilize;
-        config.Training = Training;
+        config.TrainingLength = TrainingLength;
+        config.TrainingSkip = TrainingSkip;
+    }
+
+    /// <summary>Captures audio and creates training data from it.</summary>
+    /// <returns>The training data.</returns>
+    public ConcurrentBag<AudioSegment> Capture()
+    {
+        ConcurrentBag<AudioSegment> bag = [];
+        List<Task> tasks = new(TrainingLength);
+        var previous = new float[IAudioProvider.Length];
+        var ipa = Environment.GetEnvironmentVariable("ESCAPEY_IPA").OrEmpty();
+
+        IList<(Sprite.Mouth Mouth, string Phoneme)> phonemes =
+            [..Mouths.SelectMany(x => x.ToIPAs().Select(y => (x, y)))];
+
+        if (ipa.Contains(','))
+            phonemes.Retain(x => ipa.SplitOn(',').Any(y => y.Span.Trim().Trim('"').SequenceEqual(x.Phoneme)));
+
+        foreach (var (mouth, phoneme) in phonemes)
+        {
+            Console.Write($"Press any button and make \"{phoneme}\" until the next prompt.");
+            CaptureTrainingData(bag, tasks, previous, mouth);
+            Console.WriteLine();
+        }
+
+        void ShowProgress()
+        {
+            var cursor = Console.CursorLeft;
+            var upper = IAudioProvider.Length / TrainingSkip;
+            var capacity = phonemes.Count * TrainingLength * upper;
+
+            while (bag.Count < capacity)
+            {
+                Console.CursorLeft = cursor;
+                Console.Write($"Processing {bag.Count} / {capacity}.");
+            }
+
+            Console.CursorLeft = cursor;
+            Console.WriteLine($"Done processing {bag.Count} / {capacity}.");
+        }
+
+        tasks.Add(Task.Run(ShowProgress));
+        Task.WaitAll(tasks);
+        return bag;
     }
 
     /// <summary>Attempts to parse a hex number from the provided inputs.</summary>
@@ -481,5 +539,54 @@ sealed partial class Config(
     {
         accumulator.Add(new FormatException($"Unrecognized key, ignoring: {key}"));
         return default;
+    }
+
+    /// <summary>Adds every view between the two audio buffers captured to the bag.</summary>
+    /// <param name="bag">The bag to add the views to.</param>
+    /// <param name="tasks">The list to add the immediately-running tasks that execute the FFT transforms.</param>
+    /// <param name="prev">The previous audio data.</param>
+    /// <param name="mouth">The current mouth.</param>
+    void AddWindows(ConcurrentBag<AudioSegment> bag, ICollection<Task> tasks, float[] prev, Sprite.Mouth mouth)
+    {
+        var raw = Audio.WaitForRaw();
+        var upper = IAudioProvider.Length / TrainingSkip;
+
+        for (var i = 0; i < upper; i++)
+        {
+            var current = new float[IAudioProvider.Length];
+            prev.AsSpan(..^i).CopyTo(current);
+            raw.UnsafelyTake(i).CopyTo(current.AsSpan(^i));
+
+            async Task? AddAsync()
+            {
+                await Task.Yield();
+                using var blank = IAudioProvider.CreateBlank(current);
+                bag.Add((blank.Poll() ?? blank.Segment).With(mouth));
+            }
+
+            tasks.Add(Task.Run(AddAsync));
+        }
+
+        raw.CopyTo(prev);
+    }
+
+    /// <summary>Captures one set of training data.</summary>
+    /// <param name="bag">The bag to add the views to.</param>
+    /// <param name="tasks">The list to add the immediately-running tasks that execute the FFT transforms.</param>
+    /// <param name="prev">The previous audio data.</param>
+    /// <param name="mouth">The current mouth.</param>
+    void CaptureTrainingData(ConcurrentBag<AudioSegment> bag, ICollection<Task> tasks, float[] prev, Sprite.Mouth mouth)
+    {
+        var cursor = Console.CursorLeft;
+        Console.Write($" 0 / {TrainingLength}");
+        Console.ReadKey();
+        Audio.WaitForRaw().CopyTo(prev);
+
+        for (var i = 0; i < TrainingLength; i++)
+        {
+            Console.CursorLeft = cursor;
+            Console.Write($" {i + 1} / {TrainingLength}");
+            AddWindows(bag, tasks, prev, mouth);
+        }
     }
 }

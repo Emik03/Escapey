@@ -26,6 +26,9 @@ partial interface IAudioProvider
         /// </para></remarks>
         static PipeWire? s_pw;
 
+        /// <summary>The real buffer.</summary>
+        readonly float[] _real = new float[Length];
+
         /// <summary>The pointer to the stack-allocated <see cref="State"/> within the <see cref="_task"/>.</summary>
         /// <remarks><para>
         /// Do not dereference this pointer if the <see cref="_task"/> returns <see langword="true"/>
@@ -38,12 +41,6 @@ partial interface IAudioProvider
 
         /// <summary>Initializes a new instance of the <see cref="IAudioProvider.PipeWire"/> class.</summary>
         PipeWire() { }
-
-        /// <inheritdoc />
-        public float[] Imaginary { get; } = new float[Length];
-
-        /// <inheritdoc />
-        public float[] Real { get; } = new float[Length];
 
         /// <inheritdoc />
         public AudioSegment Segment { get; } = new();
@@ -113,8 +110,8 @@ partial interface IAudioProvider
             if (PollRaw() is not { IsEmpty: false } current)
                 return null;
 
-            current.CopyTo(Real);
-            FFT(this);
+            current.CopyTo(_real);
+            Segment.Forward(_real);
             return Segment;
         }
 
@@ -132,9 +129,7 @@ partial interface IAudioProvider
             if (s_pw is not null)
             {
                 s_pw._state->Stop();
-#pragma warning disable VSTHRD002
                 s_pw._task.Wait();
-#pragma warning restore VSTHRD002
             }
 
             DeinitUnsafe();

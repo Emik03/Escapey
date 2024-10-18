@@ -1,6 +1,5 @@
 ﻿// SPDX-License-Identifier: MPL-2.0
-namespace Escapey.ML; // ReSharper disable PossibleLossOfFraction
-using static Sprite.Mouth;
+namespace Escapey.ML;
 
 /// <summary>Encapsulates the model for predicting phonemes.</summary>
 /// <param name="game">The game that this component will belong to.</param>
@@ -10,15 +9,12 @@ using static Sprite.Mouth;
 sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITransformer transformer, Config config)
     : DrawableGameComponent(game), IDisposable
 {
-    /// <summary>The phonemes to train and predict.</summary>
-    static readonly ImmutableArray<Sprite.Mouth> s_mouths = [Upset, Ah, Dz, E, F, M, Nsl, O];
-
     /// <summary>The prediction engine.</summary>
     readonly PredictionEngine<AudioSegment, Prediction> _engine =
         ml.Model.CreatePredictionEngine<AudioSegment, Prediction>(transformer);
 
     /// <summary>The number of occurrences of each mouth state.</summary>
-    readonly int[] _count = new int[s_mouths.Length];
+    readonly int[] _count = new int[Config.Mouths.Length];
 
     /// <summary>The sprite batch to draw with.</summary>
     readonly SpriteBatch _batch = new(game.GraphicsDevice);
@@ -56,7 +52,7 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
             return new(game, ml, ml.Model.Load(modelFile, out _), config);
 
         var trainer = ml.MulticlassClassification.Trainers.OneVersusAll(
-            ml.BinaryClassification.Trainers.LbfgsLogisticRegression()
+            ml.BinaryClassification.Trainers.LbfgsLogisticRegression(optimizationTolerance: 1e-10f)
         );
 
         var data = LoadOrSaveData(ml, config, dataFile);
@@ -66,9 +62,9 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
 #pragma warning restore IDISP001
            .ReplaceMissingValues(features.ConvertAll(x => new InputOutputColumnPair(x)))
            .Append(ml.Transforms.Concatenate("Features", features))
-           .Append(ml.Transforms.Conversion.MapValueToKey(nameof(AudioSegment.Label), maximumNumberOfKeys: O - Upset))
+           .Append(ml.Transforms.Conversion.MapValueToKey("Label", maximumNumberOfKeys: Config.Mouths.Length))
            .Append(trainer)
-           .Append(ml.Transforms.Conversion.MapKeyToValue(nameof(Prediction.PredictedLabel)))
+           .Append(ml.Transforms.Conversion.MapKeyToValue("PredictedLabel"))
            .Fit(data);
 
         ml.Model.Save(transformer, data.Schema, modelFile);
@@ -79,10 +75,12 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
     /// <returns>The current mouth.</returns>
     public Sprite.Mouth Poll()
     {
+        const Sprite.Mouth Neutral = Sprite.Mouth.Upset;
+
         if (config.Stabilize is var stabilize && _order.Length != stabilize)
         {
             _order = new Sprite.Mouth[stabilize];
-            _order.AsSpan().Fill(Upset);
+            _order.AsSpan().Fill(Neutral);
             _count.AsSpan().Clear();
             _count[0] = stabilize;
         }
@@ -94,9 +92,9 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
             var last = _order.Length - 1;
             _engine.Predict(_segment = segment, ref _prediction);
             ref var order = ref MemoryMarshal.GetArrayDataReference(_order);
-            Unsafe.Add(ref count, order - Upset)--;
+            Unsafe.Add(ref count, order - Neutral)--;
             MemoryMarshal.CreateReadOnlySpan(Unsafe.Add(ref order, 1), last).CopyTo(_order);
-            Unsafe.Add(ref count, (Unsafe.Add(ref order, last) = _prediction.Mouth) - Upset)++;
+            Unsafe.Add(ref count, (Unsafe.Add(ref order, last) = _prediction.Mouth) - Neutral)++;
         }
 
         ref readonly var max = ref count;
@@ -107,7 +105,7 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
             if (max < step)
                 max = ref step;
 
-        return (Sprite.Mouth)(Unsafe.ByteOffset(count, max) / sizeof(int) + (nint)Upset);
+        return (Sprite.Mouth)(Unsafe.ByteOffset(count, max) / sizeof(int) + (nint)Neutral);
     }
 
     /// <inheritdoc />
@@ -142,7 +140,7 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
         for (var i = 0f; Unsafe.IsAddressLessThan(ref start, ref end); start = ref Unsafe.Add(ref start, 1), i++)
             _batch.Draw(_texture, Box(i, start * _segment.NormalizationFactor.Sqrt(), config.FrequencyScale), _last);
 
-        Vector2 position = new((GraphicsDevice.Width() - 72) / 2, GraphicsDevice.Height() - 108);
+        Vector2 position = new((GraphicsDevice.Width() - 72) / 2f, GraphicsDevice.Height() - 108);
         _batch.DrawString(_font, _prediction.ToString(), position, _last);
         _batch.End();
     }
@@ -157,88 +155,26 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
         if (File.Exists(file))
             return ml.Data.LoadFromBinary(file);
 
-        var data = ml.Data.LoadFromEnumerable(s_mouths.Select(Capture(config)).SelectMany(x => x).ToIList());
+        var data = ml.Data.LoadFromEnumerable(config.Capture());
         using var stream = File.Open(file, FileMode.OpenOrCreate);
         ml.Data.SaveAsBinary(data, stream);
         return data;
-    }
-
-    /// <summary>Creates the function for capturing audio and creating training data from it.</summary>
-    /// <param name="config">The configuration.</param>
-    /// <returns>The function to create training data.</returns>
-    static Func<Sprite.Mouth, ImmutableArray<AudioSegment>> Capture(Config config)
-    {
-        float[] current = new float[IAudioProvider.Length], previous = new float[IAudioProvider.Length];
-        var builder = ImmutableArray.CreateBuilder<AudioSegment>();
-        IAudioProvider audio = config.Audio, blank = IAudioProvider.CreateBlank(current);
-        var ipa = Environment.GetEnvironmentVariable("ESCAPEY_IPA").OrEmpty();
-        var training = config.Training;
-
-        void AddWindows(Sprite.Mouth mouth)
-        {
-            var raw = audio.WaitForRaw();
-
-            for (var j = 0; j < IAudioProvider.Length; j++)
-            {
-                previous.AsSpan(..^j).CopyTo(current);
-                raw.UnsafelyTake(j).CopyTo(current.AsSpan(^j));
-                builder.Add((blank.Poll() ?? blank.Segment).With(mouth));
-            }
-
-            raw.CopyTo(previous);
-        }
-
-        void ProcessPhoneme(Sprite.Mouth mouth)
-        {
-            var cursor = Console.CursorLeft;
-            Console.Write($" 0 / {training}");
-            Console.ReadKey();
-            audio.WaitForRaw().CopyTo(previous);
-
-            for (var i = 0; i < training; i++)
-            {
-                Console.CursorLeft = cursor;
-                Console.Write($" {i + 1} / {training}");
-                AddWindows(mouth);
-            }
-
-            previous.AsSpan().CopyTo(current);
-            builder.Add((blank.Poll() ?? blank.Segment).With(mouth));
-        }
-
-        ImmutableArray<AudioSegment> Setup(Sprite.Mouth mouth)
-        {
-            using var _ = blank;
-
-            var phonemes = ipa.Contains(',')
-                ? [..mouth.ToIPAs().Where(x => ipa.SplitOn(',').Any(y => y.Span.Trim().Trim('"').SequenceEqual(x)))]
-                : mouth.ToIPAs();
-
-            builder.Capacity = phonemes.Length * (training * IAudioProvider.Length + 1);
-
-            foreach (var phoneme in phonemes)
-            {
-                Console.Write($"Press any button and make \"{phoneme}\" until the next prompt.");
-                ProcessPhoneme(mouth);
-                Console.WriteLine();
-            }
-
-            return builder.MoveToImmutable();
-        }
-
-        return Setup;
     }
 
     /// <summary>Creates the box for the frequency graph.</summary>
     /// <param name="i">The index of the box.</param>
     /// <param name="amount">The length of the box.</param>
     /// <param name="scale">The scaling factor for the box.</param>
-    /// <returns></returns>
-    Rectangle Box(float i, float amount, int scale) =>
-        new(
+    /// <returns>The box where height represents pitch and width represents amplitude.</returns>
+    Rectangle Box(float i, float amount, int scale)
+    {
+        var max = AudioSegment.Length / scale;
+
+        return new(
             0,
-            (int)(i / (AudioSegment.Length / scale) * GraphicsDevice.Height()),
+            (int)(i / max * GraphicsDevice.Height()),
             (int)(config.FrequencyWidth * amount * GraphicsDevice.Width()),
-            (int)(1f / (AudioSegment.Length / scale) * GraphicsDevice.Height())
+            (int)(1f / max * GraphicsDevice.Height())
         );
+    }
 }
