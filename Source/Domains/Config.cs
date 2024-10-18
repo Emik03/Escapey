@@ -13,6 +13,7 @@ using static Sprite.Mouth;
 /// <param name="trainingLength">The amount of training data per phoneme.</param>
 /// <param name="trainingSkip">How many other slices to save and treat as separate training data.</param>
 /// <param name="frequencyWidth">The width of the frequency graph.</param>
+/// <param name="orderWidth">The width of the order graph.</param>
 /// <param name="rainbowBrightness">The brightness of the rainbow.</param>
 /// <param name="rainbowSaturation">The saturation of the rainbow.</param>
 /// <param name="rainbowSpeed">The speed of the rainbow.</param>
@@ -29,6 +30,7 @@ sealed partial class Config(
     int trainingLength = Config.DefaultTrainingLength,
     int trainingSkip = Config.DefaultTrainingSkip,
     float frequencyWidth = 1,
+    float orderWidth = 1,
     float rainbowBrightness = 1,
     float rainbowSaturation = 1,
     float rainbowSpeed = 1,
@@ -105,6 +107,9 @@ sealed partial class Config(
     /// <summary>Gets the width of the frequency graph.</summary>
     public float FrequencyWidth { get; private set; } = frequencyWidth;
 
+    /// <summary>Gets the width of the order.</summary>
+    public float OrderWidth { get; private set; } = orderWidth;
+
     /// <summary>Gets the speed of the rainbow.</summary>
     public float RainbowBrightness { get; private set; } = rainbowBrightness;
 
@@ -177,7 +182,7 @@ sealed partial class Config(
         IInputProvider? input = null;
         var profile = DefaultProfile;
         var accumulator = ImmutableArray.CreateBuilder<Exception>();
-        float frequencyWidth = 1, rainbowBrightness = 1, rainbowSaturation = 1, rainbowSpeed = 1;
+        float frequencyWidth = 1, orderWidth = 1, rainbowBrightness = 1, rainbowSaturation = 1, rainbowSpeed = 1;
         bool borderless = false, setInput = false, inverted = false;
 
         int frequencyScale = DefaultFrequencyScale,
@@ -200,6 +205,8 @@ sealed partial class Config(
                     ChangeFloat(value, accumulator, ref frequencyWidth),
                 var x when x.EqualsIgnoreCase(nameof(Input)) => ChangeInput(value, setInput, accumulator, ref input),
                 var x when x.EqualsIgnoreCase(nameof(Inverted)) => ChangeBoolean(value, accumulator, ref inverted),
+                var x when x.EqualsIgnoreCase(nameof(OrderWidth)) =>
+                    ChangeFloat(value, accumulator, ref orderWidth),
                 var x when x.EqualsIgnoreCase(nameof(Profile)) => ChangeProfile(value, accumulator, ref profile),
                 var x when x.EqualsIgnoreCase(nameof(RainbowBrightness)) =>
                     ChangeFloat(value, accumulator, ref rainbowBrightness),
@@ -234,6 +241,7 @@ sealed partial class Config(
             trainingLength,
             trainingSkip,
             frequencyWidth,
+            orderWidth,
             rainbowBrightness,
             rainbowSaturation,
             rainbowSpeed,
@@ -269,6 +277,7 @@ sealed partial class Config(
         config.FrequencyWidth = FrequencyWidth;
         config.Input = Input;
         config.Inverted = Inverted;
+        config.OrderWidth = OrderWidth;
         config.Profile = Profile;
         config.RainbowBrightness = RainbowBrightness;
         config.RainbowSaturation = RainbowSaturation;

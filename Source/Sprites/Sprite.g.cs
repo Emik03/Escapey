@@ -105,6 +105,10 @@ sealed partial class Sprite
         [Sprite("happy eyebrow")]
         HappyEyebrow,
 
+        /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/expressions/eyes/happy eyebrow.png">Image</a></summary>
+        [Sprite("happy eyebrow")]
+        Laughter,
+
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/expressions/eyes/scared.png">Image</a></summary>
         [Sprite("scared")]
         Scared,
@@ -222,6 +226,10 @@ sealed partial class Sprite
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/expressions/mouths/happy eyebrow.png">Image</a></summary>
         [Sprite("expressions/mouths/happy eyebrow")]
         HappyEyebrow,
+
+        /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/expressions/mouths/happy eyebrow.png">Image</a></summary>
+        [Sprite("expressions/mouths/happy eyebrow")]
+        Laughter,
 
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/expressions/mouths/scared.png">Image</a></summary>
         [Sprite("expressions/mouths/scared")]

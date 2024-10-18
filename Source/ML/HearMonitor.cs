@@ -82,7 +82,7 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
         {
             _order = new Sprite.Mouth[stabilize];
             _order.AsSpan().Fill(Neutral);
-            _count.AsSpan().Clear();
+            _count.AsSpan(1).Clear();
             _count[0] = stabilize;
         }
 
@@ -141,6 +141,9 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
         for (var i = 0f; Unsafe.IsAddressLessThan(ref start, ref end); start = ref Unsafe.Add(ref start, 1), i++)
             _batch.Draw(_texture, Box(i, start * _segment.NormalizationFactor.Sqrt(), config.FrequencyScale), _last);
 
+        for (var i = 0; i < _count.Length; i++)
+            _batch.Draw(_texture, Box(i, _count[i], null), _last);
+
         Vector2 position = new((GraphicsDevice.Width() - 72) / 2f, GraphicsDevice.Height() - 108);
         _batch.DrawString(_font, _prediction.ToString(), position, _last);
         _batch.End();
@@ -168,14 +171,18 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
     /// <param name="amount">The length of the box.</param>
     /// <param name="scale">The scaling factor for the box.</param>
     /// <returns>The box where height represents pitch and width represents amplitude.</returns>
-    Rectangle Box(float i, float amount, int scale)
+    Rectangle Box(float i, float amount, int? scale)
     {
-        var max = AudioSegment.Length / scale;
+        var max = scale is { } s ? AudioSegment.Length / s : _count.Length;
+
+        var width = (int)(amount *
+            GraphicsDevice.Width() *
+            (scale is null ? config.OrderWidth / _order.Length : config.FrequencyWidth));
 
         return new(
-            0,
+            scale is null ? GraphicsDevice.Width() - width : 0,
             (int)(i / max * GraphicsDevice.Height()),
-            (int)(config.FrequencyWidth * amount * GraphicsDevice.Width()),
+            width,
             (int)(1f / max * GraphicsDevice.Height())
         );
     }
