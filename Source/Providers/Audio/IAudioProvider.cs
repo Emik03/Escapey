@@ -5,7 +5,7 @@ namespace Escapey.Providers.Audio;
 partial interface IAudioProvider : IDisposable
 {
     /// <summary>The length of the audio buffer for training.</summary>
-    const int Length = 1600;
+    const int Length = 400;
 
     /// <summary>Gets the latest audio buffer.</summary>
     AudioSegment Segment { get; }
