@@ -107,10 +107,18 @@ partial interface IAudioProvider
             if (PollRaw() is not { IsEmpty: false } current)
                 return null;
 
-            using var _ = Length.Alloc<float>(out var real);
-            current.CopyTo(real);
-            Segment.Forward(real);
-            return Segment;
+            var real = ArrayPool<float>.Shared.Rent(Length);
+
+            try
+            {
+                current.CopyTo(real);
+                Segment.Forward(real.AsSpan().UnsafelyTake(Length));
+                return Segment;
+            }
+            finally
+            {
+                ArrayPool<float>.Shared.Return(real);
+            }
         }
 
         /// <inheritdoc />

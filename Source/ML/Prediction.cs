@@ -9,6 +9,7 @@ sealed class Prediction
     public Sprite.Mouth Mouth => (Sprite.Mouth)(PredictedLabel + (float)Sprite.Mouth.Upset);
 
     /// <summary>Gets or sets the predicted label.</summary>
+    [ValueRange(0, 7)]
     public float PredictedLabel { get; set; }
 
     /// <inheritdoc />

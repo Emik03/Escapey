@@ -80,7 +80,7 @@ sealed class AudioSegment
         // To say I've optimized this algorithm is a bit of an understatement.
         Debug.Assert(realBuffer.Length >= Length);
         Debug.Assert(realBuffer.ToImmutableArray().All(x => x is <= 1 and >= -1));
-        var max = Bluestein.MaxHypotFFT(realBuffer);
+        var max = Bluestein.MaxHypotFFT(realBuffer, true);
         ref var current = ref Head;
         ref var real = ref MemoryMarshal.GetReference(realBuffer);
         ref readonly var end = ref Unsafe.Add(ref current, Length);

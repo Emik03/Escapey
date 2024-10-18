@@ -44,18 +44,19 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
     [MustDisposeResource]
     public static HearMonitor From(Game game, Config config)
     {
+        var init = bool.TryParse(Environment.GetEnvironmentVariable("ESCAPEY_INIT"), out var i) && i;
         var modelFile = Path.Join(Config.Folder, config.Profile);
         var dataFile = Path.ChangeExtension(modelFile, ".dat");
         MLContext ml = new();
 
-        if (File.Exists(modelFile))
+        if (!init && File.Exists(modelFile))
             return new(game, ml, ml.Model.Load(modelFile, out _), config);
 
         var trainer = ml.MulticlassClassification.Trainers.OneVersusAll(
-            ml.BinaryClassification.Trainers.LbfgsLogisticRegression(optimizationTolerance: 1e-10f)
+            ml.BinaryClassification.Trainers.LbfgsLogisticRegression()
         );
 
-        var data = LoadOrSaveData(ml, config, dataFile);
+        var data = LoadOrSaveData(ml, config, dataFile, init);
         string[] features = [..AudioSegment.Length.For(x => $"E{x}"), nameof(AudioSegment.NormalizationFactor)];
 #pragma warning disable IDISP001
         var transformer = ml.Transforms
@@ -149,10 +150,11 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
     /// <param name="ml">The machine learning context.</param>
     /// <param name="config">The configuration.</param>
     /// <param name="file">The path to the data to either save or load.</param>
+    /// <param name="init">Whether to always start from scratch, not reading from disk.</param>
     /// <returns>The <see cref="IDataView"/> containing the training date.</returns>
-    static IDataView LoadOrSaveData(MLContext ml, Config config, string file)
+    static IDataView LoadOrSaveData(MLContext ml, Config config, string file, bool init)
     {
-        if (File.Exists(file))
+        if (!init && File.Exists(file))
             return ml.Data.LoadFromBinary(file);
 
         var data = ml.Data.LoadFromEnumerable(config.Capture());
