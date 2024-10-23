@@ -90,10 +90,10 @@ public sealed partial class EscapeyGame : Game
         var sound = _hearMonitor.Poll();
         var pushed = columns.Has(Columns.Hide);
         var toggled = _visible.Accept(!pushed);
-        var rainbow = _rainbow.Accept(columns.Has(Columns.Rainbow));
         var brightness = (byte)(_config.RainbowBrightness * byte.MaxValue);
         var saturation = (byte)(_config.RainbowSaturation * byte.MaxValue);
         var time = (int)(gameTime.TotalGameTime.Ticks * _config.RainbowSpeed / TimeSpan.TicksPerMillisecond);
+        var color = _rainbow.Accept(columns.Has(Columns.Rainbow)) ? time.ToColor(saturation, brightness) : Color.White;
 
         _animations
            .Background(_config.Background)
@@ -101,8 +101,8 @@ public sealed partial class EscapeyGame : Game
            .Change(sound.IsSpeaking() ? sound : columns.ToMouth(ref _neutral))
            .Change(toggled ? columns.ToLeftArm() : Sprite.Arm.Left.Idle)
            .Change(toggled ? columns.ToRightArm() : Sprite.Arm.Right.Idle)
-           .Colored<Sprite.Eyes>(rainbow ? time.ToColor(saturation, brightness) : Color.White)
-           .Colored<Sprite.Mouth>(rainbow ? time.ToColor(saturation, brightness) : Color.White)
+           .Colored<Sprite.Eyes>(color)
+           .Colored<Sprite.Mouth>(color)
            .SetVisibility<Sprite.Keys.Overlay>(toggled)
            .SetVisibility<Sprite.Keys.Background>(toggled)
            .SetVisibility<Sprite.Keys.First>(toggled && columns.Has(Columns.First))
@@ -130,6 +130,9 @@ public sealed partial class EscapeyGame : Game
             Console.Error.WriteLine(warning.Message);
             Debug.WriteLine(warning);
         }
+
+        if (warnings.Aggregate() is { } aggregate)
+            "Failed to load config!".ShowError(aggregate.Messages(), Window.Handle);
 
         if (IsWindows() || IsMacOS() || IsLinux() || IsFreeBSD()) // `IsBorderless` is only supported on DesktopGL.
             Window.IsBorderless = _config.Borderless;

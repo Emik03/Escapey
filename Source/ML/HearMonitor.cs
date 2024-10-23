@@ -58,6 +58,7 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
 
         var data = LoadOrSaveData(ml, config, dataFile, init);
         string[] features = [..AudioSegment.Length.For(x => $"E{x}"), nameof(AudioSegment.NormalizationFactor)];
+        Console.WriteLine("Hear Monitor will now train on your data. This may take a while, so please be patient!");
 #pragma warning disable IDISP001
         var transformer = ml.Transforms
 #pragma warning restore IDISP001

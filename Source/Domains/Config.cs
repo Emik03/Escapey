@@ -309,25 +309,18 @@ sealed partial class Config(
             Console.WriteLine();
         }
 
-        void ShowProgress()
+        var cursor = Console.CursorLeft;
+        var upper = IAudioProvider.Length / TrainingSkip;
+        var capacity = phonemes.Count * TrainingLength * upper;
+
+        while (bag.Count < capacity)
         {
-            var cursor = Console.CursorLeft;
-            var upper = IAudioProvider.Length / TrainingSkip;
-            var capacity = phonemes.Count * TrainingLength * upper;
-
-            while (bag.Count < capacity)
-            {
-                Console.CursorLeft = cursor;
-                Console.Write($"Processing {bag.Count} / {capacity}.");
-            }
-
             Console.CursorLeft = cursor;
-            Console.WriteLine($"Done processing {bag.Count} / {capacity}.");
-            Console.WriteLine("Hear Monitor will now train on your data. This may take a while, so please be patient!");
+            Console.Write($"Processing {bag.Count} / {capacity}.");
         }
 
-        tasks.Add(Task.Run(ShowProgress));
-        Task.WaitAll(tasks);
+        Console.CursorLeft = cursor;
+        Console.WriteLine($"Done processing {bag.Count} / {capacity}.");
         return bag;
     }
 
