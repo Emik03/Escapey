@@ -22,7 +22,7 @@
         <Compile Update="Source/Sprites/Sprite.g.cs">
           <DependentUpon>Sprite.tt</DependentUpon>
         </Compile>
-        <PackageReference Include="Microsoft.ML" Version="4.0.0-preview.24522.7" />
+        <PackageReference Include="Microsoft.ML" Version="4.0.0-preview.24522.7"/>
         <Compile Update="Source/ML/AudioSegment.g.cs">
           <DependentUpon>AudioSegment.tt</DependentUpon>
         </Compile>

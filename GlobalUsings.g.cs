@@ -173,18 +173,28 @@ global using global::CommunityToolkit.HighPerformance.Memory.Views;
 global using global::CommunityToolkit.HighPerformance.Streams;
 global using global::DotNetProjectFile;
 global using global::DotNetProjectFile.Analyzers;
+global using global::DotNetProjectFile.Analyzers.Generic;
 global using global::DotNetProjectFile.Analyzers.Helpers;
 global using global::DotNetProjectFile.Analyzers.MsBuild;
 global using global::DotNetProjectFile.Analyzers.Resx;
 global using global::DotNetProjectFile.Caching;
 global using global::DotNetProjectFile.CodeAnalysis;
+global using global::DotNetProjectFile.Collections;
 global using global::DotNetProjectFile.Conversion;
 global using global::DotNetProjectFile.Diagnostics;
+global using global::DotNetProjectFile.EditorConfig;
+global using global::DotNetProjectFile.Git;
 global using global::DotNetProjectFile.IO;
+global using global::DotNetProjectFile.IO.Globbing;
+global using global::DotNetProjectFile.Ini;
 global using global::DotNetProjectFile.MsBuild;
 global using global::DotNetProjectFile.MsBuild.Conversion;
+global using global::DotNetProjectFile.Navigation;
 global using global::DotNetProjectFile.NuGet;
+global using global::DotNetProjectFile.Parsing;
+global using global::DotNetProjectFile.Parsing.Internal;
 global using global::DotNetProjectFile.Resx;
+global using global::DotNetProjectFile.Syntax;
 global using global::DotNetProjectFile.Xml;
 global using global::Emik;
 global using global::Emik.Morsels;
@@ -195,9 +205,9 @@ global using global::Escapey.Providers;
 global using global::Escapey.Providers.Audio;
 global using global::Escapey.Providers.Input;
 global using global::Escapey.Sprites;
-global using global::Fody;
 global using global::FxResources;
 global using global::FxResources.System;
+global using global::FxResources.System.CodeDom;
 global using global::FxResources.System.Numerics;
 global using global::FxResources.System.Numerics.Tensors;
 global using global::ILMerge;
@@ -205,49 +215,7 @@ global using global::InlineIL;
 global using global::InlineMethod;
 global using global::JetBrains;
 global using global::JetBrains.Annotations;
-global using global::Lazy;
 global using global::LocalsInit;
-global using global::MathNet;
-global using global::MathNet.Numerics;
-global using global::MathNet.Numerics.Differentiation;
-global using global::MathNet.Numerics.Distributions;
-global using global::MathNet.Numerics.Financial;
-global using global::MathNet.Numerics.IntegralTransforms;
-global using global::MathNet.Numerics.Integration;
-global using global::MathNet.Numerics.Integration.GaussRule;
-global using global::MathNet.Numerics.Interpolation;
-global using global::MathNet.Numerics.LinearAlgebra;
-global using global::MathNet.Numerics.LinearAlgebra.Complex;
-global using global::MathNet.Numerics.LinearAlgebra.Complex.Factorization;
-global using global::MathNet.Numerics.LinearAlgebra.Complex.Solvers;
-global using global::MathNet.Numerics.LinearAlgebra.Complex32;
-global using global::MathNet.Numerics.LinearAlgebra.Complex32.Factorization;
-global using global::MathNet.Numerics.LinearAlgebra.Complex32.Solvers;
-global using global::MathNet.Numerics.LinearAlgebra.Double;
-global using global::MathNet.Numerics.LinearAlgebra.Double.Factorization;
-global using global::MathNet.Numerics.LinearAlgebra.Double.Solvers;
-global using global::MathNet.Numerics.LinearAlgebra.Factorization;
-global using global::MathNet.Numerics.LinearAlgebra.Single;
-global using global::MathNet.Numerics.LinearAlgebra.Single.Factorization;
-global using global::MathNet.Numerics.LinearAlgebra.Single.Solvers;
-global using global::MathNet.Numerics.LinearAlgebra.Solvers;
-global using global::MathNet.Numerics.LinearAlgebra.Storage;
-global using global::MathNet.Numerics.LinearRegression;
-global using global::MathNet.Numerics.OdeSolvers;
-global using global::MathNet.Numerics.Optimization;
-global using global::MathNet.Numerics.Optimization.LineSearch;
-global using global::MathNet.Numerics.Optimization.ObjectiveFunctions;
-global using global::MathNet.Numerics.Optimization.TrustRegion;
-global using global::MathNet.Numerics.Optimization.TrustRegion.Subproblems;
-global using global::MathNet.Numerics.Providers;
-global using global::MathNet.Numerics.Providers.FourierTransform;
-global using global::MathNet.Numerics.Providers.LinearAlgebra;
-global using global::MathNet.Numerics.Providers.SparseSolver;
-global using global::MathNet.Numerics.Random;
-global using global::MathNet.Numerics.RootFinding;
-global using global::MathNet.Numerics.Statistics;
-global using global::MathNet.Numerics.Statistics.Mcmc;
-global using global::MathNet.Numerics.Threading;
 global using global::Microsoft;
 global using global::Microsoft.CSharp;
 global using global::Microsoft.CSharp.RuntimeBinder;
@@ -358,9 +326,6 @@ global using global::Serilog.Sinks.SystemConsole.Rendering;
 global using global::Serilog.Sinks.SystemConsole.Themes;
 global using global::StbImageSharp;
 global using global::StbImageWriteSharp;
-global using global::Substitute;
-global using global::UnitGenerator;
-global using global::Virtuosity;
 
 // Polyfills of namespaces in case dependencies are conditional.
 namespace System { }
@@ -707,6 +672,8 @@ namespace DotNetProjectFile { }
 
 namespace DotNetProjectFile.Analyzers { }
 
+namespace DotNetProjectFile.Analyzers.Generic { }
+
 namespace DotNetProjectFile.Analyzers.Helpers { }
 
 namespace DotNetProjectFile.Analyzers.MsBuild { }
@@ -717,19 +684,37 @@ namespace DotNetProjectFile.Caching { }
 
 namespace DotNetProjectFile.CodeAnalysis { }
 
+namespace DotNetProjectFile.Collections { }
+
 namespace DotNetProjectFile.Conversion { }
 
 namespace DotNetProjectFile.Diagnostics { }
 
+namespace DotNetProjectFile.EditorConfig { }
+
+namespace DotNetProjectFile.Git { }
+
 namespace DotNetProjectFile.IO { }
+
+namespace DotNetProjectFile.IO.Globbing { }
+
+namespace DotNetProjectFile.Ini { }
 
 namespace DotNetProjectFile.MsBuild { }
 
 namespace DotNetProjectFile.MsBuild.Conversion { }
 
+namespace DotNetProjectFile.Navigation { }
+
 namespace DotNetProjectFile.NuGet { }
 
+namespace DotNetProjectFile.Parsing { }
+
+namespace DotNetProjectFile.Parsing.Internal { }
+
 namespace DotNetProjectFile.Resx { }
+
+namespace DotNetProjectFile.Syntax { }
 
 namespace DotNetProjectFile.Xml { }
 
@@ -751,11 +736,11 @@ namespace Escapey.Providers.Input { }
 
 namespace Escapey.Sprites { }
 
-namespace Fody { }
-
 namespace FxResources { }
 
 namespace FxResources.System { }
+
+namespace FxResources.System.CodeDom { }
 
 namespace FxResources.System.Numerics { }
 
@@ -771,91 +756,7 @@ namespace JetBrains { }
 
 namespace JetBrains.Annotations { }
 
-namespace Lazy { }
-
 namespace LocalsInit { }
-
-namespace MathNet { }
-
-namespace MathNet.Numerics { }
-
-namespace MathNet.Numerics.Differentiation { }
-
-namespace MathNet.Numerics.Distributions { }
-
-namespace MathNet.Numerics.Financial { }
-
-namespace MathNet.Numerics.IntegralTransforms { }
-
-namespace MathNet.Numerics.Integration { }
-
-namespace MathNet.Numerics.Integration.GaussRule { }
-
-namespace MathNet.Numerics.Interpolation { }
-
-namespace MathNet.Numerics.LinearAlgebra { }
-
-namespace MathNet.Numerics.LinearAlgebra.Complex { }
-
-namespace MathNet.Numerics.LinearAlgebra.Complex.Factorization { }
-
-namespace MathNet.Numerics.LinearAlgebra.Complex.Solvers { }
-
-namespace MathNet.Numerics.LinearAlgebra.Complex32 { }
-
-namespace MathNet.Numerics.LinearAlgebra.Complex32.Factorization { }
-
-namespace MathNet.Numerics.LinearAlgebra.Complex32.Solvers { }
-
-namespace MathNet.Numerics.LinearAlgebra.Double { }
-
-namespace MathNet.Numerics.LinearAlgebra.Double.Factorization { }
-
-namespace MathNet.Numerics.LinearAlgebra.Double.Solvers { }
-
-namespace MathNet.Numerics.LinearAlgebra.Factorization { }
-
-namespace MathNet.Numerics.LinearAlgebra.Single { }
-
-namespace MathNet.Numerics.LinearAlgebra.Single.Factorization { }
-
-namespace MathNet.Numerics.LinearAlgebra.Single.Solvers { }
-
-namespace MathNet.Numerics.LinearAlgebra.Solvers { }
-
-namespace MathNet.Numerics.LinearAlgebra.Storage { }
-
-namespace MathNet.Numerics.LinearRegression { }
-
-namespace MathNet.Numerics.OdeSolvers { }
-
-namespace MathNet.Numerics.Optimization { }
-
-namespace MathNet.Numerics.Optimization.LineSearch { }
-
-namespace MathNet.Numerics.Optimization.ObjectiveFunctions { }
-
-namespace MathNet.Numerics.Optimization.TrustRegion { }
-
-namespace MathNet.Numerics.Optimization.TrustRegion.Subproblems { }
-
-namespace MathNet.Numerics.Providers { }
-
-namespace MathNet.Numerics.Providers.FourierTransform { }
-
-namespace MathNet.Numerics.Providers.LinearAlgebra { }
-
-namespace MathNet.Numerics.Providers.SparseSolver { }
-
-namespace MathNet.Numerics.Random { }
-
-namespace MathNet.Numerics.RootFinding { }
-
-namespace MathNet.Numerics.Statistics { }
-
-namespace MathNet.Numerics.Statistics.Mcmc { }
-
-namespace MathNet.Numerics.Threading { }
 
 namespace Microsoft { }
 
@@ -1076,9 +977,3 @@ namespace Serilog.Sinks.SystemConsole.Themes { }
 namespace StbImageSharp { }
 
 namespace StbImageWriteSharp { }
-
-namespace Substitute { }
-
-namespace UnitGenerator { }
-
-namespace Virtuosity { }
