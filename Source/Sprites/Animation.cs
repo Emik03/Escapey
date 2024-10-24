@@ -85,7 +85,7 @@ sealed class Animation<T> : DrawableGameComponent
             }
         }
 
-        Batch.Draw(CurrentTexture, Vector2.Zero, _color);
+        Batch.Draw(CurrentTexture, new Vector2(0, DrawOrder), _color);
     }
 
     /// <summary>Changes the state.</summary>

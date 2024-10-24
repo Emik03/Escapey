@@ -75,11 +75,17 @@ static class ColumnExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool IsSpeaking(this Sprite.Mouth mouth) => mouth is Ah or Dz or E or F or M or Nsl or O;
 
+    /// <summary>Counts the number of buttons being held in the column.</summary>
+    /// <param name="column">The column.</param>
+    /// <returns>The number of buttons held.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static int ButtonCount(this Columns column) => BitOperations.PopCount((uint)(column & Columns.All));
+
     /// <summary>Converts the column to the index.</summary>
     /// <param name="column">The column.</param>
     /// <returns>The index.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static byte ToIndex(this Columns column) => (byte)BitOperations.TrailingZeroCount((int)column);
+    public static int ToIndex(this Columns column) => BitOperations.TrailingZeroCount((int)column);
 
     /// <summary>Inverts the columns.</summary>
     /// <param name="column">The columns to invert.</param>

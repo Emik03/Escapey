@@ -91,6 +91,14 @@ sealed class Animations(Game game, int width, int height)
         where T : struct, Enum =>
         value is { } v ? Change(v) : this;
 
+    /// <summary>Sets the Y position of all animations of type <typeparamref name="T"/>.</summary>
+    /// <typeparam name="T">The type of sprites.</typeparam>
+    /// <param name="drawOrder">The new draw order position.</param>
+    /// <returns>Itself.</returns>
+    public Animations SetDrawOrder<T>(int drawOrder)
+        where T : struct, Enum =>
+        ForEach(ref drawOrder, static (Animation<T> a, ref int v) => a.DrawOrder = v);
+
     /// <summary>Sets the visibility of all animations of type <typeparamref name="T"/>.</summary>
     /// <typeparam name="T">The type of sprites.</typeparam>
     /// <param name="visible">The new visibility.</param>

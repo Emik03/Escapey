@@ -46,8 +46,8 @@ public sealed partial class EscapeyGame : Game
            .Add<Sprite.Keys.Third>(visible: false)
            .Add<Sprite.Keys.Fourth>(visible: false)
            .Add<Sprite.Keys.Overlay>()
-           .Add<Sprite.Arm.Right>()
            .Add<Sprite.Arm.Left>()
+           .Add<Sprite.Arm.Right>()
            .Sync<Sprite.Legs, Sprite.Arm.Left>();
 
         _watcher = new(Path.GetDirectoryName(Config.TextFile).OrEmpty(), Path.GetFileName(Config.TextFile))
@@ -98,11 +98,17 @@ public sealed partial class EscapeyGame : Game
         _animations
            .Background(_config.Background)
            .Change(columns.ToEyes())
-           .Change(sound.IsSpeaking() ? sound : columns.ToMouth(ref _neutral))
            .Change(toggled ? columns.ToLeftArm() : Sprite.Arm.Left.Idle)
            .Change(toggled ? columns.ToRightArm() : Sprite.Arm.Right.Idle)
+           .Change(sound.IsSpeaking() ? sound : columns.ToMouth(ref _neutral))
            .Colored<Sprite.Eyes>(color)
            .Colored<Sprite.Mouth>(color)
+           .SetDrawOrder<Sprite.Keys.Overlay>(columns.ButtonCount())
+           .SetDrawOrder<Sprite.Keys.Background>(columns.ButtonCount())
+           .SetDrawOrder<Sprite.Keys.First>(columns.ButtonCount())
+           .SetDrawOrder<Sprite.Keys.Second>(columns.ButtonCount())
+           .SetDrawOrder<Sprite.Keys.Third>(columns.ButtonCount())
+           .SetDrawOrder<Sprite.Keys.Fourth>(columns.ButtonCount())
            .SetVisibility<Sprite.Keys.Overlay>(toggled)
            .SetVisibility<Sprite.Keys.Background>(toggled)
            .SetVisibility<Sprite.Keys.First>(toggled && columns.Has(Columns.First))
