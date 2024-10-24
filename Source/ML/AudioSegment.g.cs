@@ -1643,6 +1643,18 @@ sealed class AudioSegment
     }
 
 
+    /// <summary>Gets or sets the probability. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float Probability { get; set; }
+
+    /// <summary>Gets or sets the score. Not meant to be used directly, but for the model.</summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public float Score { get; set; }
+
+    /// <summary>Gets the predicted phoneme.</summary>
+    [NoColumn]
+    public Sprite.Mouth Mouth => (Sprite.Mouth)(PredictedLabel + (float)Sprite.Mouth.Upset);
+
     /// <summary>Writes the Fast Fourier Transform to this instance.</summary>
     /// <param name="realBuffer">The real buffer.</param>
     public void Forward(scoped Span<float> realBuffer)
@@ -1685,7 +1697,8 @@ sealed class AudioSegment
     /// <summary>Clones the buffer with the given label.</summary>
     /// <param name="mouth">The label.</param>
     /// <returns>The cloned buffer.</returns>
-    public AudioSegment With(Sprite.Mouth mouth) => new() { _array = _array, Label = mouth - Sprite.Mouth.Upset };
+    public AudioSegment With(Sprite.Mouth mouth)
+        => new() { _array = _array, Label = mouth - Sprite.Mouth.Upset, Score = mouth - Sprite.Mouth.Upset };
 
     /// <summary>Asserts that the buffer is normalized.</summary>
     [Conditional("DEBUG")]

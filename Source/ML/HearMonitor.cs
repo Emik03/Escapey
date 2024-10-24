@@ -70,6 +70,8 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
            .Fit(data);
 
         ml.Model.Save(transformer, data.Schema, modelFile);
+        var evaluate = ml.BinaryClassification.Evaluate(data);
+        Console.WriteLine($"Accuracy: {evaluate.Accuracy:p2}, Loss: {evaluate.LogLoss}.");
         return new(game, ml, transformer, config);
     }
 
