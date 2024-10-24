@@ -43,7 +43,7 @@ sealed partial class Config(
     public const int ColumnCount = 4;
 
     /// <summary>The default value for <see cref="FrequencyScale"/>.</summary>
-    const int DefaultFrequencyScale = 20;
+    const int DefaultFrequencyScale = 2;
 
     /// <summary>The default value for <see cref="Stabilize"/>.</summary>
     const int DefaultStabilize = 3;
@@ -52,7 +52,7 @@ sealed partial class Config(
     const int DefaultTrainingLength = 100;
 
     /// <summary>The default value for <see cref="TrainingSkip"/>.</summary>
-    const int DefaultTrainingSkip = 5;
+    const int DefaultTrainingSkip = 1;
 
     /// <summary>The default value for <see cref="Profile"/>.</summary>
     const string DefaultProfile = "main.mlnet";

@@ -112,13 +112,13 @@ static class ColumnExtensions
         mouth switch
         {
             Ah => ["/æ/", "/a/", "/ä/", "/ɑ/"],
-            Dz => ["/z/", "/ʒ/", "/ʃ/"],
+            Dz => ["/ʒ/", "/ʃ/"],
             E => ["/e/", "/i/", "/y/"],
             F => ["/f/", "/v/"],
-            M => ["/m/"],
-            Nsl => ["/s/", "/l/"],
-            O => ["/o/", "/ʊ/", "/u/", "/w/"],
-            _ => ["nothing", "keyboard typing", "keyboard mashing", "loud breathing", "foot tapping", "chair rocking"],
+            M => ["/m/", "/n/"],
+            Nsl => ["/s/", "/z/"],
+            O => ["/o/", "/u/", "/w/"],
+            _ => ["nothing", "typing", "mashing", "breathing", "finger tapping", "foot tapping", "chair rocking"],
         };
 
     /// <summary>Converts the <see cref="Columns"/> to the <see cref="Sprite.Arm.Left"/>.</summary>
