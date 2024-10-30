@@ -86,8 +86,9 @@ public sealed partial class EscapeyGame : Game
     /// <inheritdoc />
     protected override void Draw(GameTime gameTime)
     {
-        var columns = _config.Input.Poll().InvertIf(_config.Inverted);
         var sound = _hearMonitor.Poll();
+        var columns = _config.Input.Poll().InvertIf(_config.Inverted);
+        var count = columns.ButtonCount();
         var pushed = columns.Has(Columns.Hide);
         var toggled = _visible.Accept(!pushed);
         var brightness = (byte)(_config.RainbowBrightness * byte.MaxValue);
@@ -103,12 +104,14 @@ public sealed partial class EscapeyGame : Game
            .Change(sound.IsSpeaking() ? sound : columns.ToMouth(ref _neutral))
            .Colored<Sprite.Eyes>(color)
            .Colored<Sprite.Mouth>(color)
-           .SetDrawOrder<Sprite.Keys.Overlay>(columns.ButtonCount())
-           .SetDrawOrder<Sprite.Keys.Background>(columns.ButtonCount())
-           .SetDrawOrder<Sprite.Keys.First>(columns.ButtonCount())
-           .SetDrawOrder<Sprite.Keys.Second>(columns.ButtonCount())
-           .SetDrawOrder<Sprite.Keys.Third>(columns.ButtonCount())
-           .SetDrawOrder<Sprite.Keys.Fourth>(columns.ButtonCount())
+           .SetDrawOrder<Sprite.Arm.Left>(count)
+           .SetDrawOrder<Sprite.Arm.Right>(count)
+           .SetDrawOrder<Sprite.Keys.Overlay>(count)
+           .SetDrawOrder<Sprite.Keys.Background>(count)
+           .SetDrawOrder<Sprite.Keys.First>(count)
+           .SetDrawOrder<Sprite.Keys.Second>(count)
+           .SetDrawOrder<Sprite.Keys.Third>(count)
+           .SetDrawOrder<Sprite.Keys.Fourth>(count)
            .SetVisibility<Sprite.Keys.Overlay>(toggled)
            .SetVisibility<Sprite.Keys.Background>(toggled)
            .SetVisibility<Sprite.Keys.First>(toggled && columns.Has(Columns.First))
