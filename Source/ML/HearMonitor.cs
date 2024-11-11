@@ -174,7 +174,7 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
     /// <returns>The box where height represents pitch and width represents amplitude.</returns>
     Rectangle Box(float i, float amount, int? scale)
     {
-        var max = scale is { } s ? AudioSegment.Length / s : _count.Length;
+        var max = scale is { } s ? AudioSegment.Length / s : Config.Mouths.Length;
 
         var width = (int)(amount *
             GraphicsDevice.Width() *
