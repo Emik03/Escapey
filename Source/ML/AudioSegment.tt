@@ -37,15 +37,14 @@ sealed class AudioSegment
     public ref float Head => ref _array[0];
 
     /// <summary>Gets or sets the normalization factor.</summary>
-    [ValueRange(0, 1)]
     public float NormalizationFactor { get; set; }
 
     /// <summary>Gets or sets the predicted label. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 24)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public int PredictedLabel { get; set; }
 
     /// <summary>Gets or sets the label. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 24)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float Label { get; set; }
 
 <#
@@ -60,7 +59,7 @@ sealed class AudioSegment
     {
 #>
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E<#= i #>
     {
         get => _array[<#= i #>];
@@ -83,7 +82,7 @@ sealed class AudioSegment
 
     /// <summary>Gets the predicted phoneme.</summary>
     [NoColumn]
-    public Phonemes Phoneme => (Phonemes)PredictedLabel;
+    public Sprite.Mouth Mouth => (Sprite.Mouth)(PredictedLabel + (float)Sprite.Mouth.Upset);
 
     /// <summary>Writes the Fast Fourier Transform to this instance.</summary>
     /// <param name="realBuffer">The real buffer.</param>
@@ -125,10 +124,10 @@ sealed class AudioSegment
     }
 
     /// <summary>Clones the buffer with the given label.</summary>
-    /// <param name="phoneme">The phoneme.</param>
+    /// <param name="mouth">The label.</param>
     /// <returns>The cloned buffer.</returns>
-    public AudioSegment With(Phonemes phoneme) =>
-        new() { _array = _array, Label = (float)phoneme, Score = (float)phoneme };
+    public AudioSegment With(Sprite.Mouth mouth)
+        => new() { _array = _array, Label = mouth - Sprite.Mouth.Upset, Score = mouth - Sprite.Mouth.Upset };
 
     /// <summary>Asserts that the buffer is normalized.</summary>
     [Conditional("DEBUG")]

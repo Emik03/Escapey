@@ -296,23 +296,22 @@ sealed partial class Config(
         var previous = new float[IAudioProvider.Length];
         var ipa = Environment.GetEnvironmentVariable("ESCAPEY_IPA").OrEmpty();
 
-        bool EnvironmentVariableHas(KeyValuePair<Phonemes, PhonemeAttribute> x) =>
-            ipa.SplitOn(',').Any(y => y.Span.Trim().Trim('"').SequenceEqual(x.Value.ToString()));
+        IList<(Sprite.Mouth Mouth, string Phoneme)> phonemes =
+            [..Mouths.SelectMany(x => x.ToIPAs().Select(y => (x, y)))];
 
-        var phonemes = ipa.Contains(',')
-            ? [..PhonemesExtensions.Attributes.Where(EnvironmentVariableHas)]
-            : PhonemesExtensions.Attributes;
+        if (ipa.Contains(','))
+            phonemes.Retain(x => ipa.SplitOn(',').Any(y => y.Span.Trim().Trim('"').SequenceEqual(x.Phoneme)));
 
-        foreach (var phoneme in phonemes)
+        foreach (var (mouth, phoneme) in phonemes)
         {
-            Console.Write($"Press any button and make \"{phoneme.Value}\" until the next prompt.");
-            CaptureTrainingData(bag, tasks, previous, phoneme.Key);
+            Console.Write($"Press any button and make \"{phoneme}\" until the next prompt.");
+            CaptureTrainingData(bag, tasks, previous, mouth);
             Console.WriteLine();
         }
 
         var cursor = Console.CursorLeft;
         var upper = IAudioProvider.Length / TrainingSkip;
-        var capacity = phonemes.Length * TrainingLength * upper;
+        var capacity = phonemes.Count * TrainingLength * upper;
 
         while (bag.Count < capacity)
         {
@@ -559,8 +558,8 @@ sealed partial class Config(
     /// <param name="bag">The bag to add the views to.</param>
     /// <param name="tasks">The list to add the immediately-running tasks that execute the FFT transforms.</param>
     /// <param name="prev">The previous audio data.</param>
-    /// <param name="phoneme">The current mouth.</param>
-    void AddWindows(ConcurrentBag<AudioSegment> bag, ICollection<Task> tasks, float[] prev, Phonemes phoneme)
+    /// <param name="mouth">The current mouth.</param>
+    void AddWindows(ConcurrentBag<AudioSegment> bag, ICollection<Task> tasks, float[] prev, Sprite.Mouth mouth)
     {
         var raw = Audio.WaitForRaw().ToImmutableArray();
         var upper = IAudioProvider.Length / TrainingSkip;
@@ -575,7 +574,7 @@ sealed partial class Config(
             {
                 await Task.Yield();
                 using var blank = IAudioProvider.CreateBlank(current);
-                bag.Add((blank.Poll() ?? blank.Segment).With(phoneme));
+                bag.Add((blank.Poll() ?? blank.Segment).With(mouth));
             }
 
             tasks.Add(Task.Run(AddAsync));
@@ -588,8 +587,8 @@ sealed partial class Config(
     /// <param name="bag">The bag to add the views to.</param>
     /// <param name="tasks">The list to add the immediately-running tasks that execute the FFT transforms.</param>
     /// <param name="prev">The previous audio data.</param>
-    /// <param name="phoneme">The current mouth.</param>
-    void CaptureTrainingData(ConcurrentBag<AudioSegment> bag, ICollection<Task> tasks, float[] prev, Phonemes phoneme)
+    /// <param name="mouth">The current mouth.</param>
+    void CaptureTrainingData(ConcurrentBag<AudioSegment> bag, ICollection<Task> tasks, float[] prev, Sprite.Mouth mouth)
     {
         var cursor = Console.CursorLeft;
         Console.Write($" 0 / {TrainingLength}");
@@ -600,7 +599,7 @@ sealed partial class Config(
         {
             Console.CursorLeft = cursor;
             Console.Write($" {i + 1} / {TrainingLength}");
-            AddWindows(bag, tasks, prev, phoneme);
+            AddWindows(bag, tasks, prev, mouth);
         }
     }
 }

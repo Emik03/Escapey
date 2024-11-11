@@ -32,19 +32,18 @@ sealed class AudioSegment
     public ref float Head => ref _array[0];
 
     /// <summary>Gets or sets the normalization factor.</summary>
-    [ValueRange(0, 1)]
     public float NormalizationFactor { get; set; }
 
     /// <summary>Gets or sets the predicted label. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 24)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public int PredictedLabel { get; set; }
 
     /// <summary>Gets or sets the label. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 24)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float Label { get; set; }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E0
     {
         get => _array[0];
@@ -52,7 +51,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E1
     {
         get => _array[1];
@@ -60,7 +59,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E2
     {
         get => _array[2];
@@ -68,7 +67,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E3
     {
         get => _array[3];
@@ -76,7 +75,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E4
     {
         get => _array[4];
@@ -84,7 +83,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E5
     {
         get => _array[5];
@@ -92,7 +91,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E6
     {
         get => _array[6];
@@ -100,7 +99,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E7
     {
         get => _array[7];
@@ -108,7 +107,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E8
     {
         get => _array[8];
@@ -116,7 +115,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E9
     {
         get => _array[9];
@@ -124,7 +123,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E10
     {
         get => _array[10];
@@ -132,7 +131,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E11
     {
         get => _array[11];
@@ -140,7 +139,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E12
     {
         get => _array[12];
@@ -148,7 +147,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E13
     {
         get => _array[13];
@@ -156,7 +155,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E14
     {
         get => _array[14];
@@ -164,7 +163,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E15
     {
         get => _array[15];
@@ -172,7 +171,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E16
     {
         get => _array[16];
@@ -180,7 +179,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E17
     {
         get => _array[17];
@@ -188,7 +187,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E18
     {
         get => _array[18];
@@ -196,7 +195,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E19
     {
         get => _array[19];
@@ -204,7 +203,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E20
     {
         get => _array[20];
@@ -212,7 +211,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E21
     {
         get => _array[21];
@@ -220,7 +219,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E22
     {
         get => _array[22];
@@ -228,7 +227,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E23
     {
         get => _array[23];
@@ -236,7 +235,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E24
     {
         get => _array[24];
@@ -244,7 +243,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E25
     {
         get => _array[25];
@@ -252,7 +251,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E26
     {
         get => _array[26];
@@ -260,7 +259,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E27
     {
         get => _array[27];
@@ -268,7 +267,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E28
     {
         get => _array[28];
@@ -276,7 +275,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E29
     {
         get => _array[29];
@@ -284,7 +283,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E30
     {
         get => _array[30];
@@ -292,7 +291,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E31
     {
         get => _array[31];
@@ -300,7 +299,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E32
     {
         get => _array[32];
@@ -308,7 +307,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E33
     {
         get => _array[33];
@@ -316,7 +315,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E34
     {
         get => _array[34];
@@ -324,7 +323,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E35
     {
         get => _array[35];
@@ -332,7 +331,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E36
     {
         get => _array[36];
@@ -340,7 +339,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E37
     {
         get => _array[37];
@@ -348,7 +347,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E38
     {
         get => _array[38];
@@ -356,7 +355,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E39
     {
         get => _array[39];
@@ -364,7 +363,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E40
     {
         get => _array[40];
@@ -372,7 +371,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E41
     {
         get => _array[41];
@@ -380,7 +379,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E42
     {
         get => _array[42];
@@ -388,7 +387,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E43
     {
         get => _array[43];
@@ -396,7 +395,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E44
     {
         get => _array[44];
@@ -404,7 +403,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E45
     {
         get => _array[45];
@@ -412,7 +411,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E46
     {
         get => _array[46];
@@ -420,7 +419,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E47
     {
         get => _array[47];
@@ -428,7 +427,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E48
     {
         get => _array[48];
@@ -436,7 +435,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E49
     {
         get => _array[49];
@@ -444,7 +443,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E50
     {
         get => _array[50];
@@ -452,7 +451,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E51
     {
         get => _array[51];
@@ -460,7 +459,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E52
     {
         get => _array[52];
@@ -468,7 +467,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E53
     {
         get => _array[53];
@@ -476,7 +475,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E54
     {
         get => _array[54];
@@ -484,7 +483,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E55
     {
         get => _array[55];
@@ -492,7 +491,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E56
     {
         get => _array[56];
@@ -500,7 +499,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E57
     {
         get => _array[57];
@@ -508,7 +507,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E58
     {
         get => _array[58];
@@ -516,7 +515,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E59
     {
         get => _array[59];
@@ -524,7 +523,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E60
     {
         get => _array[60];
@@ -532,7 +531,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E61
     {
         get => _array[61];
@@ -540,7 +539,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E62
     {
         get => _array[62];
@@ -548,7 +547,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E63
     {
         get => _array[63];
@@ -556,7 +555,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E64
     {
         get => _array[64];
@@ -564,7 +563,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E65
     {
         get => _array[65];
@@ -572,7 +571,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E66
     {
         get => _array[66];
@@ -580,7 +579,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E67
     {
         get => _array[67];
@@ -588,7 +587,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E68
     {
         get => _array[68];
@@ -596,7 +595,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E69
     {
         get => _array[69];
@@ -604,7 +603,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E70
     {
         get => _array[70];
@@ -612,7 +611,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E71
     {
         get => _array[71];
@@ -620,7 +619,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E72
     {
         get => _array[72];
@@ -628,7 +627,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E73
     {
         get => _array[73];
@@ -636,7 +635,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E74
     {
         get => _array[74];
@@ -644,7 +643,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E75
     {
         get => _array[75];
@@ -652,7 +651,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E76
     {
         get => _array[76];
@@ -660,7 +659,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E77
     {
         get => _array[77];
@@ -668,7 +667,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E78
     {
         get => _array[78];
@@ -676,7 +675,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E79
     {
         get => _array[79];
@@ -684,7 +683,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E80
     {
         get => _array[80];
@@ -692,7 +691,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E81
     {
         get => _array[81];
@@ -700,7 +699,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E82
     {
         get => _array[82];
@@ -708,7 +707,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E83
     {
         get => _array[83];
@@ -716,7 +715,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E84
     {
         get => _array[84];
@@ -724,7 +723,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E85
     {
         get => _array[85];
@@ -732,7 +731,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E86
     {
         get => _array[86];
@@ -740,7 +739,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E87
     {
         get => _array[87];
@@ -748,7 +747,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E88
     {
         get => _array[88];
@@ -756,7 +755,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E89
     {
         get => _array[89];
@@ -764,7 +763,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E90
     {
         get => _array[90];
@@ -772,7 +771,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E91
     {
         get => _array[91];
@@ -780,7 +779,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E92
     {
         get => _array[92];
@@ -788,7 +787,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E93
     {
         get => _array[93];
@@ -796,7 +795,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E94
     {
         get => _array[94];
@@ -804,7 +803,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E95
     {
         get => _array[95];
@@ -812,7 +811,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E96
     {
         get => _array[96];
@@ -820,7 +819,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E97
     {
         get => _array[97];
@@ -828,7 +827,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E98
     {
         get => _array[98];
@@ -836,7 +835,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E99
     {
         get => _array[99];
@@ -844,7 +843,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E100
     {
         get => _array[100];
@@ -852,7 +851,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E101
     {
         get => _array[101];
@@ -860,7 +859,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E102
     {
         get => _array[102];
@@ -868,7 +867,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E103
     {
         get => _array[103];
@@ -876,7 +875,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E104
     {
         get => _array[104];
@@ -884,7 +883,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E105
     {
         get => _array[105];
@@ -892,7 +891,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E106
     {
         get => _array[106];
@@ -900,7 +899,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E107
     {
         get => _array[107];
@@ -908,7 +907,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E108
     {
         get => _array[108];
@@ -916,7 +915,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E109
     {
         get => _array[109];
@@ -924,7 +923,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E110
     {
         get => _array[110];
@@ -932,7 +931,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E111
     {
         get => _array[111];
@@ -940,7 +939,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E112
     {
         get => _array[112];
@@ -948,7 +947,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E113
     {
         get => _array[113];
@@ -956,7 +955,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E114
     {
         get => _array[114];
@@ -964,7 +963,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E115
     {
         get => _array[115];
@@ -972,7 +971,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E116
     {
         get => _array[116];
@@ -980,7 +979,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E117
     {
         get => _array[117];
@@ -988,7 +987,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E118
     {
         get => _array[118];
@@ -996,7 +995,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E119
     {
         get => _array[119];
@@ -1004,7 +1003,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E120
     {
         get => _array[120];
@@ -1012,7 +1011,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E121
     {
         get => _array[121];
@@ -1020,7 +1019,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E122
     {
         get => _array[122];
@@ -1028,7 +1027,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E123
     {
         get => _array[123];
@@ -1036,7 +1035,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E124
     {
         get => _array[124];
@@ -1044,7 +1043,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E125
     {
         get => _array[125];
@@ -1052,7 +1051,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E126
     {
         get => _array[126];
@@ -1060,7 +1059,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E127
     {
         get => _array[127];
@@ -1068,7 +1067,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E128
     {
         get => _array[128];
@@ -1076,7 +1075,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E129
     {
         get => _array[129];
@@ -1084,7 +1083,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E130
     {
         get => _array[130];
@@ -1092,7 +1091,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E131
     {
         get => _array[131];
@@ -1100,7 +1099,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E132
     {
         get => _array[132];
@@ -1108,7 +1107,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E133
     {
         get => _array[133];
@@ -1116,7 +1115,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E134
     {
         get => _array[134];
@@ -1124,7 +1123,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E135
     {
         get => _array[135];
@@ -1132,7 +1131,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E136
     {
         get => _array[136];
@@ -1140,7 +1139,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E137
     {
         get => _array[137];
@@ -1148,7 +1147,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E138
     {
         get => _array[138];
@@ -1156,7 +1155,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E139
     {
         get => _array[139];
@@ -1164,7 +1163,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E140
     {
         get => _array[140];
@@ -1172,7 +1171,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E141
     {
         get => _array[141];
@@ -1180,7 +1179,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E142
     {
         get => _array[142];
@@ -1188,7 +1187,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E143
     {
         get => _array[143];
@@ -1196,7 +1195,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E144
     {
         get => _array[144];
@@ -1204,7 +1203,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E145
     {
         get => _array[145];
@@ -1212,7 +1211,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E146
     {
         get => _array[146];
@@ -1220,7 +1219,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E147
     {
         get => _array[147];
@@ -1228,7 +1227,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E148
     {
         get => _array[148];
@@ -1236,7 +1235,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E149
     {
         get => _array[149];
@@ -1244,7 +1243,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E150
     {
         get => _array[150];
@@ -1252,7 +1251,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E151
     {
         get => _array[151];
@@ -1260,7 +1259,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E152
     {
         get => _array[152];
@@ -1268,7 +1267,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E153
     {
         get => _array[153];
@@ -1276,7 +1275,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E154
     {
         get => _array[154];
@@ -1284,7 +1283,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E155
     {
         get => _array[155];
@@ -1292,7 +1291,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E156
     {
         get => _array[156];
@@ -1300,7 +1299,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E157
     {
         get => _array[157];
@@ -1308,7 +1307,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E158
     {
         get => _array[158];
@@ -1316,7 +1315,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E159
     {
         get => _array[159];
@@ -1324,7 +1323,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E160
     {
         get => _array[160];
@@ -1332,7 +1331,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E161
     {
         get => _array[161];
@@ -1340,7 +1339,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E162
     {
         get => _array[162];
@@ -1348,7 +1347,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E163
     {
         get => _array[163];
@@ -1356,7 +1355,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E164
     {
         get => _array[164];
@@ -1364,7 +1363,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E165
     {
         get => _array[165];
@@ -1372,7 +1371,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E166
     {
         get => _array[166];
@@ -1380,7 +1379,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E167
     {
         get => _array[167];
@@ -1388,7 +1387,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E168
     {
         get => _array[168];
@@ -1396,7 +1395,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E169
     {
         get => _array[169];
@@ -1404,7 +1403,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E170
     {
         get => _array[170];
@@ -1412,7 +1411,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E171
     {
         get => _array[171];
@@ -1420,7 +1419,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E172
     {
         get => _array[172];
@@ -1428,7 +1427,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E173
     {
         get => _array[173];
@@ -1436,7 +1435,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E174
     {
         get => _array[174];
@@ -1444,7 +1443,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E175
     {
         get => _array[175];
@@ -1452,7 +1451,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E176
     {
         get => _array[176];
@@ -1460,7 +1459,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E177
     {
         get => _array[177];
@@ -1468,7 +1467,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E178
     {
         get => _array[178];
@@ -1476,7 +1475,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E179
     {
         get => _array[179];
@@ -1484,7 +1483,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E180
     {
         get => _array[180];
@@ -1492,7 +1491,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E181
     {
         get => _array[181];
@@ -1500,7 +1499,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E182
     {
         get => _array[182];
@@ -1508,7 +1507,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E183
     {
         get => _array[183];
@@ -1516,7 +1515,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E184
     {
         get => _array[184];
@@ -1524,7 +1523,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E185
     {
         get => _array[185];
@@ -1532,7 +1531,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E186
     {
         get => _array[186];
@@ -1540,7 +1539,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E187
     {
         get => _array[187];
@@ -1548,7 +1547,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E188
     {
         get => _array[188];
@@ -1556,7 +1555,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E189
     {
         get => _array[189];
@@ -1564,7 +1563,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E190
     {
         get => _array[190];
@@ -1572,7 +1571,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E191
     {
         get => _array[191];
@@ -1580,7 +1579,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E192
     {
         get => _array[192];
@@ -1588,7 +1587,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E193
     {
         get => _array[193];
@@ -1596,7 +1595,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E194
     {
         get => _array[194];
@@ -1604,7 +1603,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E195
     {
         get => _array[195];
@@ -1612,7 +1611,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E196
     {
         get => _array[196];
@@ -1620,7 +1619,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E197
     {
         get => _array[197];
@@ -1628,7 +1627,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E198
     {
         get => _array[198];
@@ -1636,7 +1635,7 @@ sealed class AudioSegment
     }
 
     /// <summary>Gets or sets the exact element. Not meant to be used directly, but for the model.</summary>
-    [EditorBrowsable(EditorBrowsableState.Never), ValueRange(0, 1)]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public float E199
     {
         get => _array[199];
@@ -1654,7 +1653,7 @@ sealed class AudioSegment
 
     /// <summary>Gets the predicted phoneme.</summary>
     [NoColumn]
-    public Phonemes Phoneme => (Phonemes)PredictedLabel;
+    public Sprite.Mouth Mouth => (Sprite.Mouth)(PredictedLabel + (float)Sprite.Mouth.Upset);
 
     /// <summary>Writes the Fast Fourier Transform to this instance.</summary>
     /// <param name="realBuffer">The real buffer.</param>
@@ -1696,10 +1695,10 @@ sealed class AudioSegment
     }
 
     /// <summary>Clones the buffer with the given label.</summary>
-    /// <param name="phoneme">The phoneme.</param>
+    /// <param name="mouth">The label.</param>
     /// <returns>The cloned buffer.</returns>
-    public AudioSegment With(Phonemes phoneme) =>
-        new() { _array = _array, Label = (float)phoneme, Score = (float)phoneme };
+    public AudioSegment With(Sprite.Mouth mouth)
+        => new() { _array = _array, Label = mouth - Sprite.Mouth.Upset, Score = mouth - Sprite.Mouth.Upset };
 
     /// <summary>Asserts that the buffer is normalized.</summary>
     [Conditional("DEBUG")]

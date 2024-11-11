@@ -13,7 +13,7 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
     readonly SpriteBatch _batch = new(game.GraphicsDevice);
 
     /// <summary>The number of occurrences of each mouth state.</summary>
-    readonly int[] _count = new int[PhonemesExtensions.Attributes.Length];
+    readonly int[] _count = new int[Config.Mouths.Length];
 
     /// <summary>The prediction engine.</summary>
     readonly PredictionEngine<AudioSegment, Prediction> _engine =
@@ -52,9 +52,11 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
         if (!init && File.Exists(modelFile))
             return new(game, ml, ml.Model.Load(modelFile, out _), config);
 
-        var upper = PhonemesExtensions.Attributes.Length;
+        var trainer = ml.MulticlassClassification.Trainers.OneVersusAll(
+            ml.BinaryClassification.Trainers.LbfgsLogisticRegression()
+        );
+
         var data = LoadOrSaveData(ml, config, dataFile, init);
-        var catalog = ml.BinaryClassification.Trainers.LbfgsLogisticRegression();
         string[] features = [..AudioSegment.Length.For(x => $"E{x}"), nameof(AudioSegment.NormalizationFactor)];
         Console.WriteLine("Hear Monitor will now train on your data. This may take a while, so please be patient!");
 #pragma warning disable IDISP001
@@ -62,8 +64,8 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
 #pragma warning restore IDISP001
            .ReplaceMissingValues(features.ConvertAll(x => new InputOutputColumnPair(x)))
            .Append(ml.Transforms.Concatenate("Features", features))
-           .Append(ml.Transforms.Conversion.MapValueToKey("Label", maximumNumberOfKeys: upper))
-           .Append(ml.MulticlassClassification.Trainers.OneVersusAll(catalog))
+           .Append(ml.Transforms.Conversion.MapValueToKey("Label", maximumNumberOfKeys: Config.Mouths.Length))
+           .Append(trainer)
            .Append(ml.Transforms.Conversion.MapKeyToValue("PredictedLabel"))
            .Fit(data);
 
@@ -107,7 +109,7 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
             if (max < step)
                 max = ref step;
 
-        return ((Phonemes)(Unsafe.ByteOffset(count, max) / sizeof(int))).ToMouth();
+        return (Sprite.Mouth)(Unsafe.ByteOffset(count, max) / sizeof(int) + (nint)Neutral);
     }
 
     /// <inheritdoc />
@@ -137,7 +139,7 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
 
         ref var start = ref _segment.Head;
         ref var end = ref Unsafe.Add(ref start, AudioSegment.Length / config.FrequencyScale);
-        _batch.Begin();
+        _batch.Begin(blendState: BlendState.NonPremultiplied);
 
         for (var i = 0f; Unsafe.IsAddressLessThan(ref start, ref end); start = ref Unsafe.Add(ref start, 1), i++)
             _batch.Draw(_texture, Box(i, start * _segment.NormalizationFactor.Sqrt(), config.FrequencyScale), _last);
@@ -174,7 +176,7 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
     /// <returns>The box where height represents pitch and width represents amplitude.</returns>
     Rectangle Box(float i, float amount, int? scale)
     {
-        var max = scale is { } s ? AudioSegment.Length / s : Config.Mouths.Length;
+        var max = scale is { } s ? AudioSegment.Length / s : _count.Length;
 
         var width = (int)(amount *
             GraphicsDevice.Width() *
