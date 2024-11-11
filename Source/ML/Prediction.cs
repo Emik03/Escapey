@@ -6,10 +6,14 @@ sealed class Prediction
 {
     /// <summary>Gets the predicted phoneme.</summary>
     [NoColumn]
-    public Sprite.Mouth Mouth => (Sprite.Mouth)(PredictedLabel + (float)Sprite.Mouth.Upset);
+    public Phonemes Phoneme => (Phonemes)PredictedLabel;
+
+    /// <summary>Gets the predicted phoneme.</summary>
+    [NoColumn]
+    public Sprite.Mouth Mouth => Phoneme.ToMouth();
 
     /// <summary>Gets or sets the predicted label.</summary>
-    [ValueRange(0, 7)]
+    [ValueRange(0, 24)]
     public float PredictedLabel { get; set; }
 
     /// <inheritdoc />
