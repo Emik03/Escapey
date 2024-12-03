@@ -3,7 +3,7 @@ namespace Escapey.Providers.Input;
 
 partial interface IInputProvider
 {
-    sealed partial class Xna : IInputProvider
+    sealed partial class Sdl : IInputProvider
     {
         /// <summary>Represents some input.</summary>
         [Choice.Button<Buttons>.Mouse<MouseButtons>.Key<Keys>]

@@ -5,7 +5,7 @@ partial interface IInputProvider
 {
     /// <summary>Provides audio implementation with XNA.</summary>
     // ReSharper disable once ArrangeTypeMemberModifiers
-    private sealed partial class Xna : IInputProvider
+    private sealed partial class Sdl : IInputProvider
     {
         /// <summary>The list of binds.</summary>
         readonly List<KeyValuePair<Columns, Input>> _keys = [];
@@ -13,7 +13,7 @@ partial interface IInputProvider
         /// <inheritdoc />
         public Columns Poll()
         {
-            var state = Columns.None;
+            var col = Columns.None;
             var mouse = Mouse.GetState();
             var gamepads = GamePads.Four;
             var keyboard = Keyboard.GetState();
@@ -23,9 +23,9 @@ partial interface IInputProvider
                 if (input.IsButton && gamepads.IsButtonDown(input.Button) ||
                     input.IsMouse && mouse.ToMouseButtons().Has(input.Mouse) ||
                     input.IsKey && keyboard.IsKeyDown(input.Key))
-                    state |= columns;
+                    col |= columns;
 
-            return state;
+            return col;
         }
 
         /// <inheritdoc />

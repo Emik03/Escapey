@@ -14,7 +14,7 @@ partial interface IInputProvider : IDisposable
 
         evdev.Dispose();
         warnings = [];
-        return new Xna();
+        return new Sdl();
     }
 
     /// <summary>Creates an input provider from an alias.</summary>
@@ -26,17 +26,17 @@ partial interface IInputProvider : IDisposable
     {
         if (!alias.EqualsIgnoreCase(nameof(Evdev)))
         {
-            warnings = alias.IsWhiteSpace() || alias.EqualsIgnoreCase(nameof(Xna))
+            warnings = alias.IsWhiteSpace() || alias.EqualsIgnoreCase(nameof(Sdl))
                 ? []
-                : [new FormatException($"Unrecognized alias, falling back to XNA: {alias}")];
+                : [new FormatException($"Unrecognized alias, falling back to SDL: {alias}")];
 
-            return new Xna();
+            return new Sdl();
         }
 
         if (!OperatingSystem.IsFreeBSD() && !OperatingSystem.IsLinux())
         {
-            warnings = [new PlatformNotSupportedException("Evdev is unsupported, falling back to XNA.")];
-            return new Xna();
+            warnings = [new PlatformNotSupportedException("Evdev is unsupported, falling back to SDL.")];
+            return new Sdl();
         }
 
         var evdev = new Evdev(out var evdevWarnings);
