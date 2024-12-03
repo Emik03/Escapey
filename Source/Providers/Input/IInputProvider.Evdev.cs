@@ -31,11 +31,11 @@ partial interface IInputProvider
         /// <summary>Contains the state of the keys.</summary>
         readonly bool[,] _keys = new bool[sizeof(Columns) * BitsInByte, KeyCount];
 
+        /// <summary>Contains the number of times a key is pressed.</summary>
+        readonly int[] _counts = new int[sizeof(Columns) * BitsInByte];
+
         /// <summary>Watches over <c>/dev/input</c> for new devices to listen to.</summary>
         readonly FileSystemWatcher? _watcher;
-
-        /// <summary>Contains the current input.</summary>
-        Columns _col;
 
         /// <summary>Contains every input device.</summary>
         List<Device> _devices = [];
@@ -94,8 +94,8 @@ partial interface IInputProvider
             if (TryParse(value) is not { } code)
                 return false;
 
-            Span2D<bool> keys = _keys;
-            keys[key.ToIndex(), (int)code] = true;
+            Span2D<bool> k = _keys;
+            k[key.ToIndex(), (int)code] = true;
             return true;
         }
 
@@ -106,16 +106,22 @@ partial interface IInputProvider
         // ReSharper disable once CognitiveComplexity
         public Columns Poll()
         {
-            Span2D<bool> keys = _keys;
+            ReadOnlySpan2D<bool> keys = _keys;
 
             foreach (var device in _devices.AsSpan())
                 while (device.Next() is var (state, code))
                     if (state is not null && (_keyState[code] = state is Pressed) is var _)
-                        for (var i = 0; i < keys.Height; i++)
-                            if (keys[i, code])
-                                _col = state is Pressed ? _col | i.ToColumns() : _col & ~i.ToColumns();
+                        for (var i = 0;
+                            i < keys.Height && (!keys[i, code] || (_counts[i] += state is Pressed ? 1 : -1) is var _);
+                            i++) { }
 
-            return _col;
+            var col = Columns.None;
+
+            for (var i = 0; i < _counts.Length; i++)
+                if (_counts[i] > 0)
+                    col |= i.ToColumns();
+
+            return col;
         }
 
         /// <summary>Tries to parse the <see cref="KeyEventCodes"/> from <paramref name="value"/>.</summary>

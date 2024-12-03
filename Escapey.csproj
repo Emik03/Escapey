@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <NoTests>true</NoTests>
         <OutputType>Exe</OutputType>
-        <IsPackable>false</IsPackable>
-        <FileVersion>1.3.1</FileVersion>
+        <FileVersion>1.3.2</FileVersion>
         <TargetFramework>net9.0</TargetFramework>
         <TransformOnBuild>true</TransformOnBuild>
         <ApplicationIcon>Properties/Icon.ico</ApplicationIcon>
-        <DisableDefaultDocumentation>true</DisableDefaultDocumentation>
+        <RepositoryUrl>https://github.com/Emik03/Escapey</RepositoryUrl>
         <DefineConstants>$(DefineConstants);XNA;RELEASE</DefineConstants>
         <ApplicationManifest>Properties/app.manifest</ApplicationManifest>
+        <Description>The application for drawing the adorable character Escapey.</Description>
+        <PackageTags>MonoGame Application Input SDL evdev Listener Audio Processor Processing Alc PipeWire Machine Learning ML Keys Config</PackageTags>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)' == 'Android'">
         <ApplicationId>dev.emik.escapey</ApplicationId>
@@ -20,21 +20,21 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Update="Source/Sprites/Sprite.g.cs">
-          <DependentUpon>Sprite.tt</DependentUpon>
+            <DependentUpon>Sprite.tt</DependentUpon>
         </Compile>
         <PackageReference Include="Microsoft.ML" Version="4.0.0-preview.24522.7"/>
         <Compile Update="Source/ML/AudioSegment.g.cs">
-          <DependentUpon>AudioSegment.tt</DependentUpon>
+            <DependentUpon>AudioSegment.tt</DependentUpon>
         </Compile>
         <PackageReference Include="System.Net.Http" Version="[4.3.4,)" PrivateAssets="all"/>
         <PackageReference Include="System.Text.RegularExpressions" Version="[4.3.1,)" PrivateAssets="all"/>
         <None Update="Source/Sprites/Sprite.tt">
-          <Generator>TextTemplatingFileGenerator</Generator>
-          <LastGenOutput>Sprite.g.cs</LastGenOutput>
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>Sprite.g.cs</LastGenOutput>
         </None>
         <None Update="Source/ML/AudioSegment.tt">
-          <Generator>TextTemplatingFileGenerator</Generator>
-          <LastGenOutput>AudioSegment.g.cs</LastGenOutput>
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>AudioSegment.g.cs</LastGenOutput>
         </None>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' != 'Android'">
