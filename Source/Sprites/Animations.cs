@@ -2,10 +2,8 @@
 namespace Escapey.Sprites;
 
 /// <summary>Maintains a list of <see cref="Animation{T}"/> instances.</summary>
-/// <param name="game">The game that this component will belong to.</param>
-/// <param name="width">The width of the render target.</param>
-/// <param name="height">The height of the render target.</param>
-sealed class Animations(Game game, int width, int height)
+/// <inheritdoc cref="DrawableGameComponent(Game)"/>
+sealed class Animations(Letterboxed2DGame game)
     : DrawableGameComponent(game), IReadOnlyList<DrawableGameComponent>
 {
     /// <summary>Executes an action for each animation of type <typeparamref name="T"/>.</summary>
@@ -17,20 +15,11 @@ sealed class Animations(Game game, int width, int height)
     /// <summary>The list of animations.</summary>
     readonly List<DrawableGameComponent> _animations = [];
 
-    /// <summary>The render target to draw to.</summary>
-    readonly RenderTarget2D _target = new(game.GraphicsDevice, width, height);
-
-    /// <summary>The background color.</summary>
-    Color _background;
-
     /// <inheritdoc />
     public DrawableGameComponent this[int index] => _animations[index];
 
     /// <inheritdoc />
     public int Count => _animations.Count;
-
-    /// <summary>The sprite batch to draw with.</summary>
-    public SpriteBatch Batch { get; } = new(game.GraphicsDevice);
 
     /// <inheritdoc />
     public override void Draw(GameTime gameTime)
@@ -38,17 +27,7 @@ sealed class Animations(Game game, int width, int height)
         if (!Visible)
             return;
 
-        GraphicsDevice.SetRenderTarget(_target);
-        GraphicsDevice.Clear(_background);
-        Batch.Begin();
         ForEach(ref gameTime, static (DrawableGameComponent c, ref GameTime t) => c.Draw(t));
-        Batch.End();
-        GraphicsDevice.SetRenderTarget(null);
-        GraphicsDevice.Clear(_background);
-        Batch.Begin();
-        var resolution = GraphicsDevice.Resolution(width, height);
-        Batch.Draw(_target, resolution, Color.White);
-        Batch.End();
     }
 
     /// <summary>Adds an animation.</summary>
@@ -60,7 +39,7 @@ sealed class Animations(Game game, int width, int height)
     public Animations Add<T>(T value = default, int min = 0, bool visible = true)
         where T : struct, Enum
     {
-        _animations.Add(new Animation<T>(Game) { Batch = Batch, Min = min, Visible = visible }.Change(value));
+        _animations.Add(new Animation<T>(Game) { Batch = game.Batch, Min = min, Visible = visible }.Change(value));
         return this;
     }
 
@@ -68,7 +47,7 @@ sealed class Animations(Game game, int width, int height)
     /// <returns>Itself.</returns>
     public Animations Background(Color background)
     {
-        _background = background;
+        game.Background = background;
         return this;
     }
 
@@ -125,15 +104,6 @@ sealed class Animations(Game game, int width, int height)
 
     /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-    /// <inheritdoc />
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing)
-            Batch.Dispose();
-
-        base.Dispose(disposing);
-    }
 
     /// <summary>Executes an action for each animation.</summary>
     /// <param name="x">The state to pass to the action.</param>

@@ -6,7 +6,6 @@ using static Sprite.Mouth;
 /// <summary>Represents the configuration of the application.</summary>
 /// <param name="audio">The audio provider.</param>
 /// <param name="input">The input provider.</param>
-/// <param name="borderless">Whether to use a borderless window.</param>
 /// <param name="inverted">Whether to invert the columns.</param>
 /// <param name="frequencyScale">The scale of the frequency graph.</param>
 /// <param name="stabilize">The number of frames to display before allowing animations to change.</param>
@@ -23,7 +22,6 @@ using static Sprite.Mouth;
 sealed partial class Config(
     IAudioProvider audio,
     IInputProvider input,
-    bool borderless = false,
     bool inverted = false,
     int frequencyScale = Config.DefaultFrequencyScale,
     int stabilize = Config.DefaultStabilize,
@@ -86,9 +84,6 @@ sealed partial class Config(
     /// <summary>Gets the phonemes to train and predict.</summary>
     public static ImmutableArray<Sprite.Mouth> Mouths { get; } = [Upset, Ah, Dz, E, F, M, Nsl, O];
 
-    /// <summary>Gets value determining whether to use borderless mode.</summary>
-    public bool Borderless { get; private set; } = borderless;
-
     /// <summary>Gets a value determining whether to invert the columns.</summary>
     public bool Inverted { get; private set; } = inverted;
 
@@ -135,9 +130,10 @@ sealed partial class Config(
     public IInputProvider Input { get; private set; } = input;
 
     /// <summary>Loads the config.</summary>
+    /// <param name="path">The path containing the config to load.</param>
     /// <param name="warnings">The warnings.</param>
     /// <returns>The config.</returns>
-    public static Config Load(out ImmutableArray<Exception> warnings)
+    public static Config Load(string? path, out ImmutableArray<Exception> warnings)
     {
         static Config Default(Exception initial, out ImmutableArray<Exception> warnings)
         {
@@ -152,11 +148,13 @@ sealed partial class Config(
             return new(a, i);
         }
 
+        var load = path ?? TextFile;
+
         // ReSharper disable once NullableWarningSuppressionIsUsed
-        if (Go(() => _ = Path.GetDirectoryName(TextFile) is { } n ? Directory.CreateDirectory(n) : null, out var dir))
+        if (Go(() => _ = Path.GetDirectoryName(load) is { } n ? Directory.CreateDirectory(n) : null, out var dir))
             return Default(dir, out warnings);
 
-        if (Go(() => File.Open(TextFile, FileMode.OpenOrCreate), out var file, out var ok))
+        if (Go(() => File.Open(load, FileMode.OpenOrCreate), out var file, out var ok))
             return Default(file, out warnings);
 
         using StreamReader stream = new(ok);
@@ -183,7 +181,7 @@ sealed partial class Config(
         var profile = DefaultProfile;
         var accumulator = ImmutableArray.CreateBuilder<Exception>();
         float frequencyWidth = 1, orderWidth = 1, rainbowBrightness = 1, rainbowSaturation = 1, rainbowSpeed = 1;
-        bool borderless = false, setInput = false, inverted = false;
+        bool setInput = false, inverted = false;
 
         int frequencyScale = DefaultFrequencyScale,
             stabilize = DefaultStabilize,
@@ -195,7 +193,6 @@ sealed partial class Config(
             {
                 "" => default,
                 var x when x.EqualsIgnoreCase(nameof(Audio)) => ChangeAudio(value, accumulator, ref audio),
-                var x when x.EqualsIgnoreCase(nameof(Borderless)) => ChangeBoolean(value, accumulator, ref borderless),
                 var x when x.EqualsIgnoreCase(nameof(Background)) => ChangeColor(value, accumulator, ref background),
                 var x when x.EqualsIgnoreCase(nameof(FrequencyGraph)) =>
                     ChangeColor(value, accumulator, ref frequencyGraph),
@@ -234,7 +231,6 @@ sealed partial class Config(
         return new(
             audio,
             input,
-            borderless,
             inverted,
             frequencyScale,
             stabilize,
@@ -271,7 +267,6 @@ sealed partial class Config(
         config.Dispose();
         config.Audio = Audio;
         config.Background = Background;
-        config.Borderless = Borderless;
         config.FrequencyScale = FrequencyScale;
         config.FrequencyGraph = FrequencyGraph;
         config.FrequencyWidth = FrequencyWidth;

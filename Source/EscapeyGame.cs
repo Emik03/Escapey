@@ -5,19 +5,20 @@ using static OperatingSystem;
 
 /// <summary>The application for drawing the adorable character Escapey.</summary>
 [CLSCompliant(false)]
-public sealed partial class EscapeyGame : Game
+public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779)
 {
     /// <summary>The set of animations.</summary>
-    readonly Animations _animations;
-
-    /// <summary>The file system watcher for the config.</summary>
-    readonly FileSystemWatcher _watcher;
-
-    /// <summary>The model for speech recognition.</summary>
-    readonly HearMonitor _hearMonitor;
+    // ReSharper disable NullableWarningSuppressionIsUsed
+    Animations _animations = null!;
 
     /// <summary>The config.</summary>
-    Config _config;
+    Config _config = null!;
+
+    /// <summary>The file system watcher for the config.</summary>
+    FileSystemWatcher _watcher = null!;
+
+    /// <summary>The model for speech recognition.</summary>
+    HearMonitor _hearMonitor = null!;
 
     /// <summary>The mouth to use when the user is not speaking.</summary>
     Sprite.Mouth _neutral = Sprite.Mouth.Happy;
@@ -25,17 +26,19 @@ public sealed partial class EscapeyGame : Game
     /// <summary>Manages toggle states.</summary>
     Toggle _rainbow, _visible;
 
-    /// <summary>Initializes a new instance of the <see cref="EscapeyGame"/> class.</summary>
-    public EscapeyGame()
+    /// <summary>Runs the game.</summary>
+    public static void Go()
     {
-        const int Width = 930, Height = 779;
+        using EscapeyGame game = new();
+        game.Run();
+    }
 
-        new GraphicsDeviceManager(this)
-        {
-            PreferredBackBufferWidth = Width, PreferredBackBufferHeight = Height, SynchronizeWithVerticalRetrace = true,
-        }.ApplyChanges();
+    /// <inheritdoc />
+    protected override void Initialize()
+    {
+        base.Initialize();
 
-        _animations = new Animations(this, Width, Height)
+        _animations = new Animations(this)
            .Add<Sprite.Legs>()
            .Add<Sprite.Body>()
            .Add(Sprite.Eyes.Happy)
@@ -56,18 +59,9 @@ public sealed partial class EscapeyGame : Game
         };
 
         LoadConfig();
-        IsMouseVisible = true;
-        Window.AllowUserResizing = true;
         _hearMonitor = HearMonitor.From(this, _config);
-        GraphicsDevice.BlendState = BlendState.NonPremultiplied;
-        _watcher.Changed += LoadConfig; // Re-read only after HearMonitor loads; causes undefined behavior otherwise.
-    }
-
-    /// <summary>Runs the game.</summary>
-    public static void Go()
-    {
-        using EscapeyGame game = new();
-        game.Run();
+        Window.FileDrop += LoadConfig;
+        _watcher.Changed += LoadConfig;
     }
 
     /// <inheritdoc />
@@ -127,12 +121,12 @@ public sealed partial class EscapeyGame : Game
     protected override void Update(GameTime gameTime) { }
 
     /// <summary>Loads or reloads the config.</summary>
-    /// <param name="_">The sender, ignored.</param>
+    /// <param name="path">The sender, optionally containing the file to load.</param>
     /// <param name="__">The event args, ignored.</param>
     [MemberNotNull(nameof(_config))]
-    void LoadConfig(object? _ = null, [UsedImplicitly] FileSystemEventArgs? __ = null)
+    void LoadConfig(object? path = null, [UsedImplicitly] FileSystemEventArgs? __ = null)
     {
-        Config.Load(out var warnings).CopyTo(ref _config);
+        Config.Load(path as string, out var warnings).CopyTo(ref _config);
 
         foreach (var warning in warnings)
         {
@@ -140,16 +134,19 @@ public sealed partial class EscapeyGame : Game
             Debug.WriteLine(warning);
         }
 
-        if (warnings.Aggregate() is { } aggregate)
-            "Failed to load config!".ShowError(aggregate.Messages(), Window.Handle);
-
-        if (IsWindows() || IsMacOS() || IsLinux() || IsFreeBSD()) // `IsBorderless` is only supported on DesktopGL.
-            Window.IsBorderless = _config.Borderless;
-
         _animations
            .Change((Sprite.Keys.First)_config.Inverted.ToByte())
            .Change((Sprite.Keys.Second)_config.Inverted.ToByte())
            .Change((Sprite.Keys.Third)_config.Inverted.ToByte())
            .Change((Sprite.Keys.Fourth)_config.Inverted.ToByte());
+    }
+
+    /// <summary>Loads or reloads the config.</summary>
+    /// <param name="_">The sender, ignored.</param>
+    /// <param name="e">The event args, used for determining which file was dropped.</param>
+    void LoadConfig([UsedImplicitly] object? _, FileDropEventArgs e)
+    {
+        if (e.Files is [var file])
+            LoadConfig(file);
     }
 }

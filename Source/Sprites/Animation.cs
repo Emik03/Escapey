@@ -12,8 +12,6 @@ sealed class Animation<T> : DrawableGameComponent
     /// <summary>The loaded sprites.</summary>
     static ImmutableArray<SpriteAttribute.Loaded> s_sprites;
 
-    public static Animation<T>? Instance { get; private set; }
-
     /// <summary>The current state.</summary>
     int _frame, _index;
 
@@ -23,26 +21,11 @@ sealed class Animation<T> : DrawableGameComponent
     /// <summary>The synchronization function.</summary>
     Func<int>? _sync;
 
-    /// <summary>The elapsed time.</summary>
+    /// <summary>The accumulated game time.</summary>
     TimeSpan _delta;
-
-    /// <summary>Gets or sets the minimum number of frames to wait before accepting a new state.</summary>
-    public required int Min { get; init; }
-
-    /// <summary>The sprite batch to draw with.</summary>
-    public required SpriteBatch Batch { get; init; }
 
     /// <summary>Gets the current sprite.</summary>
     SpriteAttribute.Loaded CurrentSprite => s_sprites[_index];
-
-    /// <summary>Gets the number of frames of the current sprite.</summary>
-    int FrameLength => CurrentSprite.Textures.Length;
-
-    /// <summary>Gets the last frame of the current sprite.</summary>
-    int LastFrame => FrameLength - 1;
-
-    /// <summary>Gets the current texture.</summary>
-    Texture2D CurrentTexture => CurrentSprite.Textures[_frame];
 
     /// <summary>Initializes a new instance of the <see cref="Animation{T}"/> class.</summary>
     /// <param name="game">The game that this component will belong to.</param>
@@ -64,6 +47,24 @@ sealed class Animation<T> : DrawableGameComponent
 
         _frame = LastFrame;
     }
+
+    /// <summary>Gets the only instance, or <see langword="null"/> if none or more than one were created.</summary>
+    public static Animation<T>? Instance { get; private set; }
+
+    /// <summary>Gets or sets the minimum number of frames to wait before accepting a new state.</summary>
+    public required int Min { get; init; }
+
+    /// <summary>The sprite batch to draw with.</summary>
+    public required SpriteBatch Batch { get; init; }
+
+    /// <summary>Gets the number of frames of the current sprite.</summary>
+    int FrameLength => CurrentSprite.Textures.Length;
+
+    /// <summary>Gets the last frame of the current sprite.</summary>
+    int LastFrame => FrameLength - 1;
+
+    /// <summary>Gets the current texture.</summary>
+    Texture2D CurrentTexture => CurrentSprite.Textures[_frame];
 
     /// <inheritdoc />
     public override void Draw(GameTime time)
