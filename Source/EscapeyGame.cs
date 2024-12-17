@@ -38,6 +38,9 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779)
     {
         base.Initialize();
 
+        if (IsDesktop)
+            Window.IsBorderless = true;
+
         _animations = new Animations(this)
            .Add<Sprite.Legs>()
            .Add<Sprite.Body>()
