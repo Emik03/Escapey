@@ -7,6 +7,9 @@ partial interface IAudioProvider : IDisposable
     /// <summary>The length of the audio buffer for training.</summary>
     const int Length = 400;
 
+    /// <summary>Gets the preferred microphone name.</summary>
+    static string? PreferredMicrophone { get; } = Environment.GetEnvironmentVariable("ESCAPEY_MICROPHONE");
+
     /// <summary>Gets the latest audio buffer.</summary>
     AudioSegment Segment { get; }
 

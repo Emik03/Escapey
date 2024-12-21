@@ -6,6 +6,11 @@ partial interface IAudioProvider
     /// <summary>Provides audio implementation with ALC.</summary>
     private sealed class Alc : IAudioProvider
     {
+        /// <summary>Gets the current microphone.</summary>
+        static readonly Microphone s_microphone = PreferredMicrophone is null
+            ? Microphone.Default
+            : Microphone.All.FirstOrDefault(x => x.Name == PreferredMicrophone) ?? Microphone.Default;
+
         /// <summary>The number of non-disposed instances of <see cref="IAudioProvider.Alc"/>.</summary>
         static int s_references;
 
@@ -24,9 +29,9 @@ partial interface IAudioProvider
         /// <summary>Initializes a new instance of the <see cref="IAudioProvider.Alc"/> class.</summary>
         public Alc()
         {
-            Microphone.Default.BufferDuration = TimeSpan.FromMilliseconds(100);
-            Microphone.Default.BufferReady += Noop;
-            Microphone.Default.Start();
+            s_microphone.BufferDuration = TimeSpan.FromMilliseconds(100);
+            s_microphone.BufferReady += Noop;
+            s_microphone.Start();
             s_references++;
         }
 
@@ -37,7 +42,7 @@ partial interface IAudioProvider
         public void Dispose()
         {
             if (!_disposed && (_disposed = true) && --s_references is 0)
-                Microphone.Default.Stop();
+                s_microphone.Stop();
         }
 
         /// <inheritdoc />
@@ -55,7 +60,7 @@ partial interface IAudioProvider
         [MustUseReturnValue]
         public Span<float> PollRaw()
         {
-            if ((_i += Microphone.Default.GetData(_pcm, _i, _pcm.Length - _i)) < Length * sizeof(short))
+            if ((_i += s_microphone.GetData(_pcm, _i, _pcm.Length - _i)) < Length * sizeof(short))
                 return [];
 
             ref var end = ref Unsafe.As<byte, short>(ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(_pcm), _i));

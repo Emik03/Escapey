@@ -42,7 +42,8 @@ partial interface IAudioProvider
                     PropertiesSet(props, "media.type", "Audio") < 0 ||
                     PropertiesSet(props, "media.category", "Capture") < 0 ||
                     PropertiesSet(props, "media.role", "Music") < 0 ||
-                    PropertiesSet(props, "node.latency", s_latency) < 0)
+                    PropertiesSet(props, "node.latency", s_latency) < 0 ||
+                    PreferredMicrophone is not null && PropertiesSet(props, "target.object", PreferredMicrophone) < 0)
                 {
                     Win32Exception ex = new();
                     PropertiesFree(props);
