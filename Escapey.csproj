@@ -2,6 +2,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <FileVersion>1.3.5</FileVersion>
+        <CopyrightSince>2024</CopyrightSince>
         <TargetFramework>net9.0</TargetFramework>
         <TransformOnBuild>true</TransformOnBuild>
         <ApplicationIcon>Properties/Icon.ico</ApplicationIcon>
