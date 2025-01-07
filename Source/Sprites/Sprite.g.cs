@@ -105,8 +105,8 @@ sealed partial class Sprite
         [Sprite("happy eyebrow")]
         HappyEyebrow,
 
-        /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/expressions/eyes/happy eyebrow.png">Image</a></summary>
-        [Sprite("happy eyebrow")]
+        /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/expressions/eyes/laughter.png">Image</a></summary>
+        [Sprite("laughter")]
         Laughter,
 
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/expressions/eyes/scared.png">Image</a></summary>
@@ -187,6 +187,14 @@ sealed partial class Sprite
         }
     }
 
+    /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/laughter marks/">Directory</a></summary>
+    public enum LaughterMarks : byte
+    {
+        /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/laughter marks/1.png">Images</a></summary>
+        [Sprite("laughter marks", Frames = 3, FrameRate = 8, Loops = true)]
+        Neutral,
+    }
+
     /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/legs/">Directory</a></summary>
     public enum Legs : byte
     {
@@ -227,8 +235,8 @@ sealed partial class Sprite
         [Sprite("expressions/mouths/happy eyebrow")]
         HappyEyebrow,
 
-        /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/expressions/mouths/happy eyebrow.png">Image</a></summary>
-        [Sprite("expressions/mouths/happy eyebrow")]
+        /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/expressions/mouths/laughter.png">Image</a></summary>
+        [Sprite("expressions/mouths/laughter")]
         Laughter,
 
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/expressions/mouths/scared.png">Image</a></summary>

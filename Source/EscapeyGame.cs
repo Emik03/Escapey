@@ -5,7 +5,7 @@ using static OperatingSystem;
 
 /// <summary>The application for drawing the adorable character Escapey.</summary>
 [CLSCompliant(false)]
-public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779)
+public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
 {
     /// <summary>The set of animations.</summary>
     // ReSharper disable NullableWarningSuppressionIsUsed
@@ -54,6 +54,7 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779)
            .Add<Sprite.Keys.Overlay>()
            .Add<Sprite.Arm.Left>()
            .Add<Sprite.Arm.Right>()
+           .Add<Sprite.LaughterMarks>()
            .Sync<Sprite.Legs, Sprite.Arm.Left>();
 
         _watcher = new(Path.GetDirectoryName(Config.TextFile).OrEmpty(), Path.GetFileName(Config.TextFile))
@@ -92,13 +93,14 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779)
         var saturation = (byte)(_config.RainbowSaturation * byte.MaxValue);
         var time = (int)(gameTime.TotalGameTime.Ticks * _config.RainbowSpeed / TimeSpan.TicksPerMillisecond);
         var color = _rainbow.Accept(columns.Has(Columns.Rainbow)) ? time.ToColor(saturation, brightness) : Color.White;
+        var neutral = columns.ToMouth(ref _neutral);
 
         _animations
            .Background(_config.Background)
            .Change(columns.ToEyes())
            .Change(toggled ? columns.ToLeftArm() : Sprite.Arm.Left.Idle)
            .Change(toggled ? columns.ToRightArm() : Sprite.Arm.Right.Idle)
-           .Change(sound.IsSpeaking() ? sound : columns.ToMouth(ref _neutral))
+           .Change(sound.IsSpeaking() ? sound : neutral)
            .Colored<Sprite.Eyes>(color)
            .Colored<Sprite.Mouth>(color)
            .SetDrawOrder<Sprite.Arm.Left>(count)
@@ -115,6 +117,7 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779)
            .SetVisibility<Sprite.Keys.Second>(toggled && columns.Has(Columns.Second))
            .SetVisibility<Sprite.Keys.Third>(toggled && columns.Has(Columns.Third))
            .SetVisibility<Sprite.Keys.Fourth>(toggled && columns.Has(Columns.Fourth))
+           .SetVisibility<Sprite.LaughterMarks>(_neutral is Sprite.Mouth.Laughter)
            .Draw(gameTime);
 
         _hearMonitor.Draw(gameTime);

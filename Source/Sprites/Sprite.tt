@@ -112,8 +112,8 @@ sealed partial class Sprite
         [Sprite("happy eyebrow")]
         HappyEyebrow,
 
-        /// <summary><a href="<#= f #>expressions/eyes/happy eyebrow.png">Image</a></summary>
-        [Sprite("happy eyebrow")]
+        /// <summary><a href="<#= f #>expressions/eyes/laughter.png">Image</a></summary>
+        [Sprite("laughter")]
         Laughter,
 
         /// <summary><a href="<#= f #>expressions/eyes/scared.png">Image</a></summary>
@@ -194,6 +194,14 @@ sealed partial class Sprite
         }
     }
 
+    /// <summary><a href="<#= f #>laughter marks/">Directory</a></summary>
+    public enum LaughterMarks : byte
+    {
+        /// <summary><a href="<#= f #>laughter marks/1.png">Images</a></summary>
+        [Sprite("laughter marks", Frames = 3, FrameRate = 8, Loops = true)]
+        Neutral,
+    }
+
     /// <summary><a href="<#= f #>legs/">Directory</a></summary>
     public enum Legs : byte
     {
@@ -234,8 +242,8 @@ sealed partial class Sprite
         [Sprite("expressions/mouths/happy eyebrow")]
         HappyEyebrow,
 
-        /// <summary><a href="<#= f #>expressions/mouths/happy eyebrow.png">Image</a></summary>
-        [Sprite("expressions/mouths/happy eyebrow")]
+        /// <summary><a href="<#= f #>expressions/mouths/laughter.png">Image</a></summary>
+        [Sprite("expressions/mouths/laughter")]
         Laughter,
 
         /// <summary><a href="<#= f #>expressions/mouths/scared.png">Image</a></summary>
