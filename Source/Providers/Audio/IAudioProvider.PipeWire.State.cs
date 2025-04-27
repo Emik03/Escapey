@@ -38,7 +38,7 @@ partial interface IAudioProvider
                 if (PropertiesNew(0, 0) is var props &&
                     PropertiesSet(props, "application.name", nameof(Escapey)) < 0 ||
                     PropertiesSet(props, "node.name", nameof(Escapey)) < 0 || // NOTE: Must be unique for all instances.
-                    PropertiesSet(props, "config.name", "client-rt.conf") < 0 ||
+                    PropertiesSet(props, "config.name", "client.conf") < 0 ||
                     PropertiesSet(props, "media.type", "Audio") < 0 ||
                     PropertiesSet(props, "media.category", "Capture") < 0 ||
                     PropertiesSet(props, "media.role", "Music") < 0 ||
