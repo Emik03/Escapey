@@ -119,7 +119,7 @@ sealed class Animation<T> : DrawableGameComponent
         if (!condition)
             return this;
 
-        _delta = default;
+        _delta = TimeSpan.Zero;
         _frame = 0;
         return this;
     }

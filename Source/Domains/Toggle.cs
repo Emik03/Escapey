@@ -27,16 +27,11 @@ struct Toggle(bool start)
     /// <param name="value">The held state.</param>
     /// <returns>The toggled state.</returns>
     public bool Accept(bool value) =>
-        (_state, value) switch
+        _state switch
         {
-            (0, false) => false,
-            (0, true) when (_state = 1) is var _ => true,
-            (1, true) => true,
-            (1, false) when (_state = 2) is var _ => true,
-            (2, false) => true,
-            (2, true) when (_state = 3) is var _ => false,
-            (3, true) => false,
-            (3, false) when (_state = 0) is var _ => false,
-            _ => false,
+            0 => value && (_state = 1) is var _,
+            1 => value || (_state = 2) is var _,
+            2 => !(value && (_state = 3) is var _),
+            _ => !(value || (_state = 0) is var _),
         };
 }

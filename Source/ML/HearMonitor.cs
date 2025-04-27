@@ -6,12 +6,14 @@ namespace Escapey.ML;
 /// <param name="ml">The machine learning context.</param>
 /// <param name="transformer">The transformer for the model.</param>
 /// <param name="config">The configuration.</param>
-sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITransformer transformer, Config config)
+sealed class HearMonitor(
+    Letterboxed2DGame game,
+    MLContext ml,
+    [HandlesResourceDisposal] ITransformer transformer,
+    Config config
+)
     : DrawableGameComponent(game)
 {
-    /// <summary>The sprite batch to draw with.</summary>
-    readonly SpriteBatch _batch = new(game.GraphicsDevice);
-
     /// <summary>The number of occurrences of each mouth state.</summary>
     readonly int[] _count = new int[Config.Mouths.Length];
 
@@ -22,9 +24,6 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
     /// <summary>The font to draw with.</summary>
     readonly SpriteFont _font = game.Content.Load<SpriteFont>("Fonts/main");
 
-    /// <summary>The previous color used to draw frequency graph.</summary>
-    Color _last;
-
     /// <summary>The previous mouth states.</summary>
     Sprite.Mouth[] _order = [];
 
@@ -34,15 +33,12 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
     /// <summary>The audio segment to predict.</summary>
     AudioSegment _segment = new();
 
-    /// <summary>The texture to draw with.</summary>
-    Texture2D? _texture;
-
     /// <summary>Creates the new <see cref="HearMonitor"/>.</summary>
     /// <param name="game">The game that this component will belong to.</param>
     /// <param name="config">The configuration.</param>
     /// <returns>The new <see cref="HearMonitor"/>.</returns>
     [MustDisposeResource]
-    public static HearMonitor From(Game game, Config config)
+    public static HearMonitor From(Letterboxed2DGame game, Config config)
     {
         var init = bool.TryParse(Environment.GetEnvironmentVariable("ESCAPEY_INIT"), out var i) && i;
         var modelFile = Path.Join(Config.Folder, config.Profile);
@@ -116,10 +112,7 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
     protected override void Dispose(bool disposing)
     {
         if (disposing)
-        {
             _engine.Dispose();
-            _texture?.Dispose();
-        }
 
         base.Dispose(disposing);
     }
@@ -130,26 +123,19 @@ sealed class HearMonitor(Game game, MLContext ml, [HandlesResourceDisposal] ITra
         if (!Visible || config.FrequencyGraph.A is 0 || config.FrequencyWidth is 0)
             return;
 
-        if (_texture is null || _last != config.FrequencyGraph)
-        {
-            _texture?.Dispose();
-            _texture = new(GraphicsDevice, 1, 1);
-            _texture.SetData([_last = config.FrequencyGraph]);
-        }
-
+        var color = config.FrequencyGraph;
+        var scale = config.FrequencyScale;
         ref var start = ref _segment.Head;
-        ref var end = ref Unsafe.Add(ref start, AudioSegment.Length / config.FrequencyScale);
-        _batch.Begin(blendState: BlendState.NonPremultiplied);
+        ref var end = ref Unsafe.Add(ref start, AudioSegment.Length / scale);
 
         for (var i = 0f; Unsafe.IsAddressLessThan(ref start, ref end); start = ref Unsafe.Add(ref start, 1), i++)
-            _batch.Draw(_texture, Box(i, start * _segment.NormalizationFactor.Sqrt(), config.FrequencyScale), _last);
+            game.Batch.Draw(game.WhitePixel, Box(i, start * _segment.NormalizationFactor.Sqrt(), scale), color);
 
         for (var i = 0; i < _count.Length; i++)
-            _batch.Draw(_texture, Box(i, _count[i], null), _last);
+            game.Batch.Draw(game.WhitePixel, Box(i, _count[i], null), color);
 
         Vector2 position = new((GraphicsDevice.Width() - 72) / 2f, GraphicsDevice.Height() - 108);
-        _batch.DrawString(_font, _prediction.ToString(), position, _last);
-        _batch.End();
+        game.Batch.DrawString(_font, _prediction.ToString(), position, color);
     }
 
     /// <summary>Loads or saves the data.</summary>

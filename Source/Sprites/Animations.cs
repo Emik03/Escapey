@@ -27,7 +27,7 @@ sealed class Animations(Letterboxed2DGame game)
         if (!Visible)
             return;
 
-        ForEach(ref gameTime, static (DrawableGameComponent c, ref GameTime t) => c.Draw(t));
+        ForEach(ref gameTime, static (c, ref t) => c.Draw(t));
     }
 
     /// <summary>Adds an animation.</summary>
@@ -57,13 +57,13 @@ sealed class Animations(Letterboxed2DGame game)
     /// <returns>Itself.</returns>
     public Animations Change<T>(T value)
         where T : struct, Enum =>
-        ForEach(ref value, static (Animation<T> a, ref T v) => a.Change(v));
+        ForEach<T, T>(ref value, static (a, ref v) => a.Change(v));
 
     /// <summary>Changes all colors for animations of type <typeparamref name="T"/> with the given value.</summary>
     /// <returns>Itself.</returns>
     public Animations Colored<T>(Color color)
         where T : struct, Enum =>
-        ForEach(ref color, static (Animation<T> a, ref Color v) => a.Colored(v));
+        ForEach<Color, T>(ref color, static (a, ref v) => a.Colored(v));
 
     /// <inheritdoc cref="Change{T}(T)"/>
     public Animations Change<T>(T? value)
@@ -76,7 +76,7 @@ sealed class Animations(Letterboxed2DGame game)
     /// <returns>Itself.</returns>
     public Animations SetDrawOrder<T>(int drawOrder)
         where T : struct, Enum =>
-        ForEach(ref drawOrder, static (Animation<T> a, ref int v) => a.DrawOrder = v);
+        ForEach<int, T>(ref drawOrder, static (a, ref v) => a.DrawOrder = v);
 
     /// <summary>Sets the visibility of all animations of type <typeparamref name="T"/>.</summary>
     /// <typeparam name="T">The type of sprites.</typeparam>
@@ -84,7 +84,7 @@ sealed class Animations(Letterboxed2DGame game)
     /// <returns>Itself.</returns>
     public Animations SetVisibility<T>(bool visible)
         where T : struct, Enum =>
-        ForEach(ref visible, static (Animation<T> a, ref bool v) => a.Visible = v);
+        ForEach<bool, T>(ref visible, static (a, ref v) => a.Visible = v);
 
     /// <summary>Syncs the animations.</summary>
     /// <typeparam name="T">The type of sprites.</typeparam>
@@ -94,9 +94,9 @@ sealed class Animations(Letterboxed2DGame game)
         where T : struct, Enum
         where TOther : struct, Enum
     {
-        Animation<TOther>? v = default;
-        ForEach(ref v, static (Animation<TOther> a, ref Animation<TOther>? v) => v = a);
-        return ForEach(ref v, static (Animation<T> a, ref Animation<TOther>? v) => a.Sync(v));
+        Animation<TOther>? v = null;
+        ForEach<Animation<TOther>?, TOther>(ref v, static (a, ref v) => v = a);
+        return ForEach<Animation<TOther>?, T>(ref v, static (a, ref v) => a.Sync(v));
     }
 
     /// <inheritdoc />

@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey;
 
-using static OperatingSystem;
-
 /// <summary>The application for drawing the adorable character Escapey.</summary>
 [CLSCompliant(false)]
 public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)

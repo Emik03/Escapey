@@ -23,7 +23,7 @@ partial interface IAudioProvider : IDisposable
     /// <returns>The default <see cref="IAudioProvider"/>.</returns>
     [MustDisposeResource, MustUseReturnValue]
     static IAudioProvider Default() =>
-        PipeWire.Instance(out var warnings) is var pipewire && warnings is [] ? pipewire : new Alc();
+        PipeWire.Instance(out var warnings) is var pipeWire && warnings is [] ? pipeWire : new Alc();
 
     /// <summary>Creates an input provider from an alias.</summary>
     /// <param name="alias">The alias.</param>
