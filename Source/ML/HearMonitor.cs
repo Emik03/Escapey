@@ -8,8 +8,8 @@ namespace Escapey.ML;
 /// <param name="config">The configuration.</param>
 sealed class HearMonitor(
     Letterboxed2DGame game,
-    MLContext ml,
-    [HandlesResourceDisposal] ITransformer transformer,
+    MLContext? ml,
+    [HandlesResourceDisposal] ITransformer? transformer,
     Config config
 )
     : DrawableGameComponent(game)
@@ -18,8 +18,8 @@ sealed class HearMonitor(
     readonly int[] _count = new int[Config.Mouths.Length];
 
     /// <summary>The prediction engine.</summary>
-    readonly PredictionEngine<AudioSegment, Prediction> _engine =
-        ml.Model.CreatePredictionEngine<AudioSegment, Prediction>(transformer);
+    readonly PredictionEngine<AudioSegment, Prediction>? _engine =
+        ml?.Model.CreatePredictionEngine<AudioSegment, Prediction>(transformer);
 
     /// <summary>The font to draw with.</summary>
     readonly SpriteFont _font = game.Content.Load<SpriteFont>("Fonts/main");
@@ -41,12 +41,16 @@ sealed class HearMonitor(
     public static HearMonitor From(Letterboxed2DGame game, Config config)
     {
         var init = bool.TryParse(Environment.GetEnvironmentVariable("ESCAPEY_INIT"), out var i) && i;
-        var modelFile = Path.Join(Config.Folder, config.Profile);
-        var dataFile = Path.ChangeExtension(modelFile, ".dat");
+        var file = Path.Join(Config.Folder, config.Profile);
+        var modelFile = Path.ChangeExtension(file, "mlnet");
+        var dataFile = Path.ChangeExtension(file, "dat");
         MLContext ml = new();
 
-        if (!init && File.Exists(modelFile))
-            return new(game, ml, ml.Model.Load(modelFile, out _), config);
+        switch (init)
+        {
+            case false when File.Exists(modelFile): return new(game, ml, ml.Model.Load(modelFile, out _), config);
+            case false when !config.Audio.HasData: return new(game, null, null, config);
+        }
 
         var trainer = ml.MulticlassClassification.Trainers.OneVersusAll(
             ml.BinaryClassification.Trainers.LbfgsLogisticRegression()
@@ -76,6 +80,9 @@ sealed class HearMonitor(
     public Sprite.Mouth Poll()
     {
         const Sprite.Mouth Neutral = Sprite.Mouth.Upset;
+
+        if (_engine is null)
+            return Neutral;
 
         if (config.Stabilize is var stabilize && _order.Length != stabilize)
         {
@@ -112,7 +119,7 @@ sealed class HearMonitor(
     protected override void Dispose(bool disposing)
     {
         if (disposing)
-            _engine.Dispose();
+            _engine?.Dispose();
 
         base.Dispose(disposing);
     }
@@ -120,7 +127,7 @@ sealed class HearMonitor(
     /// <inheritdoc />
     public override void Draw(GameTime gameTime)
     {
-        if (!Visible || config.FrequencyGraph.A is 0 || config.FrequencyWidth is 0)
+        if (!Visible || config.FrequencyGraph.Result.A is 0 || config.FrequencyWidth is 0)
             return;
 
         var color = config.FrequencyGraph;

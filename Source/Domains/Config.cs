@@ -3,284 +3,364 @@ namespace Escapey.Domains;
 
 using static Sprite.Mouth;
 
-/// <summary>Represents the configuration of the application.</summary>
-/// <param name="audio">The audio provider.</param>
-/// <param name="input">The input provider.</param>
-/// <param name="inverted">Whether to invert the columns.</param>
-/// <param name="frequencyScale">The scale of the frequency graph.</param>
-/// <param name="stabilize">The number of frames to display before allowing animations to change.</param>
-/// <param name="trainingLength">The amount of training data per phoneme.</param>
-/// <param name="trainingSkip">How many other slices to save and treat as separate training data.</param>
-/// <param name="frequencyWidth">The width of the frequency graph.</param>
-/// <param name="orderWidth">The width of the order graph.</param>
-/// <param name="rainbowBrightness">The brightness of the rainbow.</param>
-/// <param name="rainbowSaturation">The saturation of the rainbow.</param>
-/// <param name="rainbowSpeed">The speed of the rainbow.</param>
-/// <param name="profile">The name of the model.</param>
-/// <param name="background">The background color.</param>
-/// <param name="frequencyGraph">The color of the frequency graph.</param>
-sealed partial class Config(
-    IAudioProvider audio,
-    IInputProvider input,
-    bool inverted = false,
-    int frequencyScale = Config.DefaultFrequencyScale,
-    int stabilize = Config.DefaultStabilize,
-    int trainingLength = Config.DefaultTrainingLength,
-    int trainingSkip = Config.DefaultTrainingSkip,
-    float frequencyWidth = 1,
-    float orderWidth = 1,
-    float rainbowBrightness = 1,
-    float rainbowSaturation = 1,
-    float rainbowSpeed = 1,
-    string profile = Config.DefaultProfile,
-    Color background = default,
-    Color frequencyGraph = default
-) : IDisposable
+// ReSharper disable InconsistentNaming
+sealed partial class Config : IDisposable
 {
     /// <summary>The number of columns.</summary>
     public const int ColumnCount = 4;
-
-    /// <summary>The default value for <see cref="FrequencyScale"/>.</summary>
-    const int DefaultFrequencyScale = 2;
-
-    /// <summary>The default value for <see cref="Stabilize"/>.</summary>
-    const int DefaultStabilize = 3;
-
-    /// <summary>The default value for <see cref="TrainingLength"/>.</summary>
-    const int DefaultTrainingLength = 100;
-
-    /// <summary>The default value for <see cref="TrainingSkip"/>.</summary>
-    const int DefaultTrainingSkip = 1;
-
-    /// <summary>The default value for <see cref="Profile"/>.</summary>
-    const string DefaultProfile = "main.mlnet";
-
-    /// <summary>The aliases for <see cref="Color"/> instances.</summary>
-    static readonly FrozenDictionary<string, Color>.AlternateLookup<ReadOnlySpan<char>> s_knownColors = typeof(Color)
-       .GetProperties(BindingFlags.Public | BindingFlags.Static)
-       .Where(x => x.CanRead && x.PropertyType == typeof(Color) && x.GetIndexParameters() is [])
-       .SelectMany(IncludeAlternateSpellings)
-       .ToFrozenDictionary(StringComparer.OrdinalIgnoreCase)
-       .GetAlternateLookup<ReadOnlySpan<char>>();
-
-    /// <summary>Parses the syntax.</summary>
-    static readonly SearchValues<char>
-        s_assignment = SearchValues.Create("="),
-        s_comment = SearchValues.Create("#;"),
-        s_invalidFileName = SearchValues.Create(Path.GetInvalidFileNameChars()),
-        s_separator = SearchValues.Create(",");
 
     /// <summary>Contains the contents for the last time the config file was read.</summary>
     static string? s_lastContents;
 
     /// <summary>Gets the folder where the config is stored.</summary>
-    public static string Folder { get; } =
-        Environment.GetEnvironmentVariable("ESCAPEY_CONFIG") ??
+    public static string Folder { get; } = Environment.GetEnvironmentVariable("ESCAPEY_CONFIG") ??
         Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), nameof(Escapey));
 
     /// <summary>Gets the path to the config file.</summary>
-    public static string TextFile { get; } = Path.Join(Folder, "config.ini");
+    public static string TextFile { get; } = Path.Join(Folder, "Escapey.cfg");
 
     /// <summary>Gets the phonemes to train and predict.</summary>
-    public static ImmutableArray<Sprite.Mouth> Mouths { get; } = [Upset, Ah, Dz, E, F, M, Nsl, O];
+    public static ImmutableArray<Sprite.Mouth> Mouths { get; } = [Sprite.Mouth.Upset, Ah, Dz, E, F, M, Nsl, O];
 
-    /// <summary>Gets a value determining whether to invert the columns.</summary>
-    public bool Inverted { get; private set; } = inverted;
+    [Description(
+         """
+         Hi, welcome to the configuration file!
+         Here you will see a list of key-value pairs to configure the application to your liking.
+         All keys and values are case-insensitive and surrounding whitespace is disregarded.
+         If a key is left unspecified or is set to no value, the default value is used.
+         The default value will be denoted in square brackets within these comments.
+         If an option is confusing, leave it as the default value.
+         If this file is saved, or you drop a file into the application, it will perform a hot-reload.
 
-    /// <summary>Gets the scaling factor of the frequency graph.</summary>
-    public int FrequencyScale { get; private set; } = frequencyScale;
+         ========================
+             PRIMARY CONTROLS
+         ========================
 
-    /// <summary>Gets the number of frames to display before allowing animations to change.</summary>
-    public int Stabilize { get; private set; } = stabilize;
+         Possible values: [smart], sdl, evdev.
+         The method in which the application captures input.
+         Smart uses evdev when this application is running on Linux/BSD, otherwise uses SDL.
+         For both primary and secondary controls, the possible values depend on this value.
+         Refer to the bottom portion of this document for the list of valid values from both.
+         Additionally, you can denote multiple by separating multiple values with commas.
+         """
+     ), JsonPropertyOrder(0)]
+    public InputProvider Input { get; [UsedImplicitly] private set; } = InputProvider.Default();
 
-    /// <summary>Gets the amount of training data per phoneme.</summary>
-    public int TrainingLength { get; private set; } = trainingLength;
+    [Description(
+         """
 
-    /// <summary>Gets the amount of other slices to save and treat as separate training data.</summary>
-    public int TrainingSkip { get; private set; } = trainingSkip;
+         When any of these buttons are pressed, the respective column is activated.
+         """
+     ), JsonPropertyOrder(1)]
+    public List<string> First { get; private set; } = ["A"];
 
-    /// <summary>Gets the width of the frequency graph.</summary>
-    public float FrequencyWidth { get; private set; } = frequencyWidth;
+    [JsonPropertyOrder(2)]
+    public List<string> Second { get; private set; } = ["S"];
 
-    /// <summary>Gets the width of the order.</summary>
-    public float OrderWidth { get; private set; } = orderWidth;
+    [JsonPropertyOrder(3)]
+    public List<string> Third { get; private set; } = ["K"];
 
-    /// <summary>Gets the speed of the rainbow.</summary>
-    public float RainbowBrightness { get; private set; } = rainbowBrightness;
+    [JsonPropertyOrder(4)]
+    public List<string> Fourth { get; private set; } = ["L"];
 
-    /// <summary>Gets the speed of the rainbow.</summary>
-    public float RainbowSaturation { get; private set; } = rainbowSaturation;
+    [Description(
+         """
 
-    /// <summary>Gets the speed of the rainbow.</summary>
-    public float RainbowSpeed { get; private set; } = rainbowSpeed;
+         When any of these buttons are pressed, the non-talkative expression changes to the respective emotion.
+         """
+     ), JsonPropertyOrder(5)]
+    public List<string> Angry { get; private set; } = ["F13"];
 
-    /// <summary>Gets the name of the model.</summary>
-    public string Profile { get; private set; } = profile;
+    [JsonPropertyOrder(6)]
+    public List<string> Bored { get; private set; } = ["F14"];
 
-    /// <summary>Gets the background color.</summary>
-    public Color Background { get; private set; } = background;
+    [JsonPropertyOrder(7)]
+    public List<string> Concentrated { get; private set; } = ["F15"];
 
-    /// <summary>Gets the frequency graph color.</summary>
-    public Color FrequencyGraph { get; private set; } = frequencyGraph;
+    [JsonPropertyOrder(8)]
+    public List<string> Confused { get; private set; } = ["F16"];
 
-    /// <summary>Gets the audio provider.</summary>
-    public IAudioProvider Audio { get; private set; } = audio;
+    [JsonPropertyOrder(9)]
+    public List<string> Frown { get; private set; } = ["F17"];
 
-    /// <summary>Gets the input provider.</summary>
-    public IInputProvider Input { get; private set; } = input;
+    [JsonPropertyOrder(10)]
+    public List<string> Happy { get; private set; } = ["F18"];
 
-    /// <summary>Loads the config.</summary>
-    /// <param name="path">The path containing the config to load.</param>
-    /// <param name="warnings">The warnings.</param>
-    /// <returns>The config.</returns>
-    public static Config Load(string? path, out ImmutableArray<Exception> warnings)
+    [JsonPropertyOrder(11)]
+    public List<string> HappyEyebrow { get; private set; } = ["F19"];
+
+    [JsonPropertyOrder(12)]
+    public List<string> Hide { get; private set; } = ["F20 ; This toggles their keyboard."];
+
+    [JsonPropertyOrder(13)]
+    public List<string> Laughter { get; private set; } = ["F21"];
+
+    [JsonPropertyOrder(14)]
+    public List<string> Rainbow { get; private set; } = ["F22 ; This toggles RGB eyes and mouth."];
+
+    [JsonPropertyOrder(15)]
+    public List<string> Scared { get; private set; } = ["F23"];
+
+    [JsonPropertyOrder(16)]
+    public List<string> Upset { get; private set; } = ["F24"];
+
+    [Description(
+         """
+
+         =================
+             LIP SYNC
+         =================
+
+         Possible values: [null], alc, pipewire.
+         The method in which the application captures your microphone.
+         Null disables audio capturing, and PipeWire is exclusive to Linux/BSD.
+         Audio capture should almost always be ALC, including on Linux.
+         However older systems may fail to initialize ALC when the application is run with root privileges. 
+         """
+     ), JsonPropertyOrder(17)]
+    public AudioProvider Audio { get; [UsedImplicitly] private set; } = AudioProvider.Default();
+
+    [Description(
+         """
+
+         If "Audio" is set to null, skip this option.
+         The name of the model, referring to which file to read. This allows you to store multiple models.
+         This option cannot be hot-reloaded, if you change this value you must relaunch the application.
+         Any valid file name is accepted, defaulting to [main].
+         """
+     ), JsonPropertyOrder(18)]
+    public string Profile { get; private set; } = "Main";
+
+    [Description(
+         """
+
+         If "Audio" is set to null, skip this option.
+         Possible values: Any non-zero positive number, defaulting to [1].
+         The step size between slices windows of training data.
+         The higher the number, the more variance the training dataset provides,
+         but the less training data it is able to feed into the model.
+         """
+     ), JsonPropertyOrder(19)]
+    public ushort TrainingSkip { get; [UsedImplicitly] private set; } = 1;
+
+    [Description(
+         """
+
+         If "Audio" is set to null, skip this option.
+         Possible values: Any non-zero positive number, defaulting to [200].
+         The amount of samples the model is given at a time.
+         This also dictates the frequency in which the model gets polled.
+         The higher the number, the more detail the model can work with,
+         but the less training data will be produced in the same amount of time during setup.
+         """
+     ), JsonPropertyOrder(20)]
+    public ushort TrainingLength { get; [UsedImplicitly] private set; } = 200;
+
+    [Description(
+         """
+
+         If "Audio" is set to null, skip this option.
+         Possible values: Any non-zero positive number, defaulting to [5].
+         The amount of previous guesses to take the average of which mouth shape should be used.
+         If this value is set too high, animations may appear delayed or unresponsive.
+         If too low, animations may be overly responsive and jittery.
+         For a more intuitive understanding of how this works, enable the visualization.
+         """
+     ), JsonPropertyOrder(21)]
+    public ushort Stabilize { get; private set; } = 5;
+
+    [Description(
+         """
+
+         ==================
+             APPEARANCE
+         ==================
+
+         The background color, which can either be the name of a CSS Named Color,
+         or a 3/6 digit hex color. For the list of named colors, see here:
+         https://developer.mozilla.org/en-US/docs/Web/CSS/named-color
+         Defaults to [44475a].
+         """
+     ), JsonPropertyOrder(22)]
+    public ParsableColor Background { get; private set; } = ParsableColor.Parse("44475a", CultureInfo.InvariantCulture);
+
+    [Description(
+         """
+
+         Possible values: [true], false.
+         Should the leftmost button be considered:
+         - ...from our point of view? (true)
+         - ...from their point of view? (false)
+         """
+     ), JsonPropertyOrder(23)]
+    public bool Inverted { get; private set; } = true;
+
+    [Description(
+         """
+
+         Possible values: Any number between 0 and [1].
+         Determines the brightness of the eyes and face when rainbow mode is on.
+         """
+     ), JsonPropertyOrder(24)]
+    public float RainbowBrightness
     {
-        static Config Default(Exception initial, out ImmutableArray<Exception> warnings)
-        {
-#pragma warning disable IDISP001
-            var a = IAudioProvider.Default();
-            var i = IInputProvider.Default(out var inputWarnings);
-#pragma warning restore IDISP001
-            var builder = ImmutableArray.CreateBuilder<Exception>();
-            builder.Add(initial);
-            builder.AddRange(inputWarnings);
-            warnings = builder.DrainToImmutable();
-            return new(a, i);
-        }
+        get;
+        [UsedImplicitly] private set => field = float.Clamp(value, 0, 1);
+    } = 1;
 
-        var load = path ?? TextFile;
+    [Description(
+         """
 
-        // ReSharper disable once NullableWarningSuppressionIsUsed
-        if (Go(() => _ = Path.GetDirectoryName(load) is { } n ? Directory.CreateDirectory(n) : null, out var dir))
-            return Default(dir, out warnings);
-
-        if (Go(() => File.Open(load, FileMode.OpenOrCreate), out var file, out var ok))
-            return Default(file, out warnings);
-
-        using StreamReader stream = new(ok);
-
-        if (stream.ReadToEnd() is var str && Parse(str, out warnings) is var ret && str.Equals(s_lastContents))
-            warnings = []; // We suppress the warnings if the contents didn't change.
-
-        s_lastContents = str;
-        return ret;
-    }
-
-    /// <summary>Parses the config string.</summary>
-    /// <param name="str">The config string.</param>
-    /// <param name="warnings">The warnings.</param>
-    /// <returns>The config.</returns>
-    // ReSharper disable once CognitiveComplexity
-#pragma warning disable MA0051
-    public static Config Parse(scoped ReadOnlySpan<char> str, out ImmutableArray<Exception> warnings)
-#pragma warning restore MA0051
+         Possible values: Any number between 0 and [1].
+         Determines the saturation of the eyes and face when rainbow mode is on.
+         """
+     ), JsonPropertyOrder(25)]
+    public float RainbowSaturation
     {
-        Color background = default, frequencyGraph = default;
-        IAudioProvider? audio = null;
-        IInputProvider? input = null;
-        var profile = DefaultProfile;
-        var accumulator = ImmutableArray.CreateBuilder<Exception>();
-        float frequencyWidth = 1, orderWidth = 1, rainbowBrightness = 1, rainbowSaturation = 1, rainbowSpeed = 1;
-        bool setInput = false, inverted = false;
+        get;
+        [UsedImplicitly] private set => field = float.Clamp(value, 0, 1);
+    } = 1;
 
-        int frequencyScale = DefaultFrequencyScale,
-            stabilize = DefaultStabilize,
-            trainingSkip = DefaultTrainingSkip,
-            trainingLength = DefaultTrainingLength;
-#pragma warning disable IDISP003
-        foreach (var line in str.SplitLines())
-            _ = SplitKeyValuePair(line, out var value) switch
-            {
-                "" => default,
-                var x when x.EqualsIgnoreCase(nameof(Audio)) => ChangeAudio(value, accumulator, ref audio),
-                var x when x.EqualsIgnoreCase(nameof(Background)) => ChangeColor(value, accumulator, ref background),
-                var x when x.EqualsIgnoreCase(nameof(FrequencyGraph)) =>
-                    ChangeColor(value, accumulator, ref frequencyGraph),
-                var x when x.EqualsIgnoreCase(nameof(frequencyScale)) =>
-                    ChangeInt(value, accumulator, ref frequencyScale),
-                var x when x.EqualsIgnoreCase(nameof(FrequencyWidth)) =>
-                    ChangeFloat(value, accumulator, ref frequencyWidth),
-                var x when x.EqualsIgnoreCase(nameof(Input)) => ChangeInput(value, setInput, accumulator, ref input),
-                var x when x.EqualsIgnoreCase(nameof(Inverted)) => ChangeBoolean(value, accumulator, ref inverted),
-                var x when x.EqualsIgnoreCase(nameof(OrderWidth)) =>
-                    ChangeFloat(value, accumulator, ref orderWidth),
-                var x when x.EqualsIgnoreCase(nameof(Profile)) => ChangeProfile(value, accumulator, ref profile),
-                var x when x.EqualsIgnoreCase(nameof(RainbowBrightness)) =>
-                    ChangeFloat(value, accumulator, ref rainbowBrightness),
-                var x when x.EqualsIgnoreCase(nameof(RainbowSaturation)) =>
-                    ChangeFloat(value, accumulator, ref rainbowSaturation),
-                var x when x.EqualsIgnoreCase(nameof(RainbowSpeed)) =>
-                    ChangeFloat(value, accumulator, ref rainbowSpeed),
-                var x when x.EqualsIgnoreCase(nameof(Stabilize)) || x.EqualsIgnoreCase("stabilise") =>
-                    ChangeInt(value, accumulator, ref stabilize),
-                var x when x.EqualsIgnoreCase(nameof(TrainingLength)) =>
-                    ChangeInt(value, accumulator, ref trainingLength),
-                var x when x.EqualsIgnoreCase(nameof(TrainingSkip)) =>
-                    ChangeInt(value, accumulator, ref trainingSkip),
-                var x when x.TryIntoEnum<Columns>() is { } column =>
-                    AddColumn(column, value, accumulator, ref setInput, ref input),
-                var x => UnrecognizedKey(x, accumulator),
-            };
-#pragma warning restore IDISP003
-        audio ??= IAudioProvider.Default();
-        ImmutableArray<Exception> inputWarnings = [];
-        input ??= IInputProvider.Default(out inputWarnings);
-        accumulator.AddRange(inputWarnings);
-        warnings = accumulator.DrainToImmutable();
+    [Description(
+         """
 
-        return new(
-            audio,
-            input,
-            inverted,
-            frequencyScale,
-            stabilize,
-            trainingLength,
-            trainingSkip,
-            frequencyWidth,
-            orderWidth,
-            rainbowBrightness,
-            rainbowSaturation,
-            rainbowSpeed,
-            profile,
-            background,
-            frequencyGraph
-        );
-    }
+         Possible values: Any number between 0 and [1].
+         Determines the speed in which the rainbow colors cycle through.
+         """
+     ), JsonPropertyOrder(26)]
+    public float RainbowSpeed
+    {
+        get;
+        [UsedImplicitly] private set => field = float.Clamp(value, 0, 1);
+    } = 1;
+
+    [Description(
+         """
+
+         ======================
+             VISUALIZATIONS
+         ======================
+
+         If "Audio" is set to null, skip this option.
+         The color of the frequency spectrum, which can either be the name of a CSS Named Color,
+         or a 3/6 digit hex color. For the list of named colors, see here:
+         https://developer.mozilla.org/en-US/docs/Web/CSS/named-color
+         Defaults to [transparent], effectively disabling this feature.
+         """
+     ), JsonPropertyOrder(27)]
+    public ParsableColor FrequencyGraph { get; private set; } = Color.Transparent;
+
+    [Description(
+         """
+
+         Possible values: Any number between 0 and 1.
+         By default, the value is [0.2].
+         The width of the last guesses visualization relative to the entire screen.
+         """
+     ), JsonPropertyOrder(28)]
+    public float OrderWidth
+    {
+        get;
+        [UsedImplicitly] private set => field = float.Clamp(value, 0, 1);
+    } = 0.2f;
+
+    [Description(
+         """
+
+         Possible values: Any number between 0 and 1.
+         By default, the value is [0.8].
+         The width of the frequency spectrum relative to the entire screen.
+         """
+     ), JsonPropertyOrder(29)]
+    public float FrequencyWidth
+    {
+        get;
+        [UsedImplicitly] private set => field = float.Clamp(value, 0, 1);
+    } = 0.8f;
+
+    [Description(
+         """
+
+         Any non-zero positive number is accepted, defaulting to [1].
+         The zoom factor for the frequency spectrum.
+         1 shows what the model receives as input, but makes the lower frequencies harder to see.
+         """
+     ), JsonPropertyOrder(30)]
+    public byte FrequencyScale { get; private set; } = 1;
 
     /// <inheritdoc />
     public void Dispose()
     {
         Audio.Dispose();
         Input.Dispose();
+
+        foreach (var properties in typeof(Config).GetProperties().AsSpan())
+            if (properties.GetValue(this) is List<string> list)
+                list.Clear();
     }
 
-    /// <summary>Copies the config over to <paramref name="config"/>.</summary>
-    /// <param name="config"></param>
-    public void CopyTo([MustDisposeResource, NotNull] ref Config? config)
+    public void Read(string? path, out ImmutableArray<Exception> warnings)
     {
-        if (config is null)
+        path ??= TextFile;
+        var isNewFile = !File.Exists(path);
+
+        if (Go(() => _ = Path.GetDirectoryName(path) is { } n ? Directory.CreateDirectory(n) : null, out var dir))
         {
-            config = this;
+            warnings = [dir];
+            BindInputs();
             return;
         }
 
-        config.Dispose();
-        config.Audio = Audio;
-        config.Background = Background;
-        config.FrequencyScale = FrequencyScale;
-        config.FrequencyGraph = FrequencyGraph;
-        config.FrequencyWidth = FrequencyWidth;
-        config.Input = Input;
-        config.Inverted = Inverted;
-        config.OrderWidth = OrderWidth;
-        config.Profile = Profile;
-        config.RainbowBrightness = RainbowBrightness;
-        config.RainbowSaturation = RainbowSaturation;
-        config.RainbowSpeed = RainbowSpeed;
-        config.Stabilize = Stabilize;
-        config.TrainingLength = TrainingLength;
-        config.TrainingSkip = TrainingSkip;
+        if (Go(() => File.Open(path, FileMode.OpenOrCreate, FileAccess.ReadWrite), out var file, out var ok))
+        {
+            warnings = [file];
+            BindInputs();
+            return;
+        }
+
+        if (isNewFile)
+        {
+            BindInputs();
+            using StreamWriter writer = new(ok);
+            warnings = Go(writer.Write, ToString(), out var write) ? [write] : [];
+            return;
+        }
+
+        using StreamReader reader = new(ok);
+
+        if (Go(reader.ReadToEnd, out var read, out var contents))
+        {
+            warnings = [read];
+            BindInputs();
+            return;
+        }
+
+        if (contents == s_lastContents)
+        {
+            warnings = [];
+            return;
+        }
+
+        Dispose();
+        Kvp.Deserialize(s_lastContents = contents, this);
+        warnings = [];
+        BindInputs();
     }
+
+    /// <inheritdoc />
+    public override string ToString() =>
+        $"""
+         {Kvp.Serialize(this)}
+         # ==========================
+         #     VALID INPUT VALUES
+         # ==========================
+
+         # Below are all valid values for inputs, based on the default input handler.
+         # Assigning to underscore does nothing, it is done here to enable auto-complete in text editors.
+         # You can choose to omit the prefix "Key." for SDL or "KEY_" for evdev.
+         _ = {Input.GetValidValues()}
+
+         """;
 
     /// <summary>Captures audio and creates training data from it.</summary>
     /// <returns>The training data.</returns>
@@ -288,7 +368,7 @@ sealed partial class Config(
     {
         ConcurrentBag<AudioSegment> bag = [];
         List<Task> tasks = new(TrainingLength);
-        var previous = new float[IAudioProvider.Length];
+        var previous = new float[AudioProvider.Length];
         var ipa = Environment.GetEnvironmentVariable("ESCAPEY_IPA").OrEmpty();
 
         IList<(Sprite.Mouth Mouth, string Phoneme)> phonemes =
@@ -305,7 +385,7 @@ sealed partial class Config(
         }
 
         var cursor = Console.CursorLeft;
-        var upper = IAudioProvider.Length / TrainingSkip;
+        var upper = AudioProvider.Length / TrainingSkip;
         var capacity = phonemes.Count * TrainingLength * upper;
 
         while (bag.Count < capacity)
@@ -319,236 +399,6 @@ sealed partial class Config(
         return bag;
     }
 
-    /// <summary>Attempts to parse a hex number from the provided inputs.</summary>
-    /// <param name="fst">The first character.</param>
-    /// <param name="snd">The second character.</param>
-    /// <returns>The parsed number if successful; otherwise, <see langword="null"/>.</returns>
-    static byte? P(char fst, char snd = '\0') =>
-        byte.TryParse([fst, snd is '\0' ? fst : snd], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var ret)
-            ? ret
-            : null;
-
-    /// <summary>Attempts to parse a color from the provided inputs.</summary>
-    /// <param name="chars">The characters to parse.</param>
-    /// <returns>The parsed color if successful; otherwise, <see langword="null"/>.</returns>
-    static Color? Parse(ReadOnlySpan<char> chars) =>
-        chars switch
-        {
-            _ when s_knownColors.TryGetValue(chars, out var knownColor) => knownColor,
-            [var r, var g, var b] when (P(r), P(b), P(g)) is ({ } pr, { } pg, { } pb) => new(pr, pg, pb),
-            [var r, var g, var b, var a] when (P(r), P(b), P(g), P(a)) is ({ } pr, { } pg, { } pb, { } pa)
-                => new(pr, pg, pb, pa),
-            [var r, var rp, var g, var gp, var b, var bp]
-                when (P(r, rp), P(g, gp), P(b, bp)) is ({ } pr, { } pg, { } pb) => new(pr, pg, pb),
-            [var r, var rp, var g, var gp, var b, var bp, var a, var ap]
-                when (P(r, rp), P(g, gp), P(b, bp), P(a, ap)) is ({ } pr, { } pg, { } pb, { } pa)
-                => new(pr, pg, pb, pa),
-            _ => null,
-        };
-
-    /// <summary>Includes alternate spellings for <see cref="Color.Gray"/> and similar.</summary>
-    /// <param name="x">The property to include.</param>
-    /// <returns>The included properties.</returns>
-    static IEnumerable<KeyValuePair<string, Color>> IncludeAlternateSpellings(PropertyInfo x) =>
-        (x.GetValue(null) as Color?).GetValueOrDefault() is var color &&
-        x.Name.Contains(nameof(Color.Gray), StringComparison.InvariantCultureIgnoreCase)
-            ? [new(x.Name, color), new(x.Name.Replace(nameof(Color.Gray), "Grey"), color)]
-            : [new(x.Name, color)];
-
-    /// <summary>Splits a line into a key and value.</summary>
-    /// <param name="line">The line to split.</param>
-    /// <param name="values">The value section.</param>
-    /// <returns>The key section.</returns>
-    static ReadOnlySpan<char> SplitKeyValuePair(ReadOnlySpan<char> line, out ReadOnlySpan<char> values)
-    {
-        if (line is [var first, ..] && (s_comment.Contains(first) || s_assignment.Contains(first)))
-            return values = default;
-
-        var (key, value) = line.SplitOn(s_comment).First.SplitOn(s_assignment);
-        values = value.Body.Trim();
-        return key.Trim();
-    }
-
-    /// <summary>Associates an input with the specified <see cref="Columns"/>.</summary>
-    /// <param name="column">The <see cref="Columns"/> to associate.</param>
-    /// <param name="value">The value that represents the input.</param>
-    /// <param name="accumulator">The accumulator of warnings.</param>
-    /// <param name="implicitInput">The implicit input flag to potentially coerce.</param>
-    /// <param name="input">The input provider to potentially coerce.</param>
-    /// <returns><c>()</c></returns>
-    static ValueTuple AddColumn(
-        Columns column,
-        scoped ReadOnlySpan<char> value,
-        ImmutableArray<Exception>.Builder accumulator,
-        ref bool implicitInput,
-        ref IInputProvider? input
-    )
-    {
-        if (input is null)
-        {
-            input = IInputProvider.Default(out var defaultWarnings);
-            accumulator.AddRange(defaultWarnings);
-            implicitInput = true;
-        }
-
-        input.Add(column, value.SplitOn(s_separator), accumulator);
-        return default;
-    }
-
-    /// <summary>Changes the audio provider.</summary>
-    /// <param name="value">The alias to use.</param>
-    /// <param name="accumulator">The accumulator of warnings.</param>
-    /// <param name="audio">The audio provider to change.</param>
-    /// <returns><c>()</c></returns>
-    static ValueTuple ChangeAudio(
-        ReadOnlySpan<char> value,
-        ImmutableArray<Exception>.Builder accumulator,
-        [MustDisposeResource, NotNull] ref IAudioProvider? audio
-    )
-    {
-        audio?.Dispose();
-        audio = IAudioProvider.FromAlias(value, out var audioWarnings);
-        accumulator.AddRange(audioWarnings);
-        return default;
-    }
-
-    /// <summary>Changes the boolean flag.</summary>
-    /// <param name="value">The new value.</param>
-    /// <param name="accumulator">The accumulator of warnings.</param>
-    /// <param name="flag">The flag to change.</param>
-    /// <returns><c>()</c></returns>
-    static ValueTuple ChangeBoolean(
-        scoped ReadOnlySpan<char> value,
-        ImmutableArray<Exception>.Builder accumulator,
-        ref bool flag
-    )
-    {
-        if (bool.TryParse(value, out var b))
-            flag = b;
-        else
-            accumulator.Add(new FormatException($"Must be true or false, ignoring: {value}"));
-
-        return default;
-    }
-
-    /// <summary>Changes the background color.</summary>
-    /// <param name="value">The new value.</param>
-    /// <param name="accumulator">The accumulator of warnings.</param>
-    /// <param name="color">The background color to change.</param>
-    /// <returns><c>()</c></returns>
-    static ValueTuple ChangeColor(
-        scoped ReadOnlySpan<char> value,
-        ImmutableArray<Exception>.Builder accumulator,
-        ref Color color
-    )
-    {
-        if (Parse(value) is { } c)
-            color = c;
-        else
-            accumulator.Add(new FormatException($"Unrecognized color, ignoring: {value}"));
-
-        return default;
-    }
-
-    /// <summary>Changes the number.</summary>
-    /// <param name="value">The new value.</param>
-    /// <param name="accumulator">The accumulator of warnings.</param>
-    /// <param name="number">The number to change.</param>
-    /// <returns><c>()</c></returns>
-    static ValueTuple ChangeFloat(
-        ReadOnlySpan<char> value,
-        ImmutableArray<Exception>.Builder accumulator,
-        ref float number
-    )
-    {
-        // ReSharper disable once ConvertIfStatementToSwitchStatement
-        if (value.TryInto<float>() is not { } t)
-            accumulator.Add(new FormatException($"Invalid number, ignoring invalid value: {value}"));
-        else if (t < 0)
-            accumulator.Add(new FormatException($"Number must be non-negative, ignoring invalid value: {value}"));
-        else if (t > 1)
-            accumulator.Add(new FormatException($"Number must be less than one, ignoring invalid value: {value}"));
-        else
-            number = t;
-
-        return default;
-    }
-
-    /// <summary>Changes the input provider.</summary>
-    /// <param name="value">The alias to use.</param>
-    /// <param name="setInput">Whether to warn if the input provider is not defined.</param>
-    /// <param name="accumulator">The accumulator of warnings.</param>
-    /// <param name="input">The input provider to change.</param>
-    /// <returns><c>()</c></returns>
-    static ValueTuple ChangeInput(
-        scoped ReadOnlySpan<char> value,
-        bool setInput,
-        ImmutableArray<Exception>.Builder accumulator,
-        ref IInputProvider? input
-    )
-    {
-        if (setInput)
-        {
-            accumulator.Add(new FormatException($"Define the input provider before keybindings, ignoring: {value}."));
-            return default;
-        }
-
-        input?.Dispose();
-        input = IInputProvider.FromAlias(value, out var inputWarnings);
-        accumulator.AddRange(inputWarnings);
-        return default;
-    }
-
-    /// <summary>Changes the number.</summary>
-    /// <param name="value">The new value.</param>
-    /// <param name="accumulator">The accumulator of warnings.</param>
-    /// <param name="number">The number to change.</param>
-    /// <returns><c>()</c></returns>
-    static ValueTuple ChangeInt(
-        ReadOnlySpan<char> value,
-        ImmutableArray<Exception>.Builder accumulator,
-        ref int number
-    )
-    {
-        if (value.TryInto<int>() is not { } t)
-            accumulator.Add(new FormatException($"Invalid number, ignoring invalid value: {value}"));
-        else if (t <= 0)
-            accumulator.Add(new FormatException($"Number must be positive, ignoring invalid value: {value}"));
-        else
-            number = t;
-
-        return default;
-    }
-
-    /// <summary>Changes the profile.</summary>
-    /// <param name="value">The new value.</param>
-    /// <param name="accumulator">The accumulator of warnings.</param>
-    /// <param name="profile">The profile to change.</param>
-    /// <returns><c>()</c></returns>
-    static ValueTuple ChangeProfile(
-        ReadOnlySpan<char> value,
-        ImmutableArray<Exception>.Builder accumulator,
-        ref string profile
-    )
-    {
-        if (value.ContainsAny(s_invalidFileName))
-            accumulator.Add(new FormatException($"Invalid file name, ignoring invalid value: {value}"));
-        else
-            profile = $"{value}.mlnet";
-
-        return default;
-    }
-
-    /// <summary>Adds an exception to the accumulator.</summary>
-    /// <param name="key">The key that was unrecognized.</param>
-    /// <param name="accumulator">The accumulator of warnings.</param>
-    /// <returns><c>()</c></returns>
-    static ValueTuple UnrecognizedKey(scoped ReadOnlySpan<char> key, ImmutableArray<Exception>.Builder accumulator)
-    {
-        accumulator.Add(new FormatException($"Unrecognized key, ignoring: {key}"));
-        return default;
-    }
-
     /// <summary>Adds every view between the two audio buffers captured to the bag.</summary>
     /// <param name="bag">The bag to add the views to.</param>
     /// <param name="tasks">The list to add the immediately-running tasks that execute the FFT transforms.</param>
@@ -557,25 +407,48 @@ sealed partial class Config(
     void AddWindows(ConcurrentBag<AudioSegment> bag, ICollection<Task> tasks, float[] prev, Sprite.Mouth mouth)
     {
         var raw = Audio.WaitForRaw().ToImmutableArray();
-        var upper = IAudioProvider.Length / TrainingSkip;
+        var upper = AudioProvider.Length / TrainingSkip;
 
         for (var i = 0; i < upper; i++)
         {
-            var current = new float[IAudioProvider.Length];
-            prev.AsSpan(..^i).CopyTo(current);
-            raw.AsSpan().UnsafelyTake(i).CopyTo(current.AsSpan(^i));
+            var temp = AudioProvider.Temporary();
+            var tempRaw = temp.PollRaw();
+            prev.AsSpan(..^i).CopyTo(tempRaw);
+            raw.AsSpan().UnsafelyTake(i).CopyTo(tempRaw[^i..]);
+
+            void Add()
+            {
+                bag.Add((temp.Poll() ?? temp.Segment).With(mouth));
+                temp.Dispose();
+            }
 
             async Task? AddAsync()
             {
                 await Task.Yield();
-                using var blank = IAudioProvider.CreateBlank(current);
-                bag.Add((blank.Poll() ?? blank.Segment).With(mouth));
+#if DEBUG
+                if (Go(Add, out var e))
+                    EscapeyGame.Log([e]);
+#else
+                Add();
+#endif
             }
 
             tasks.Add(Task.Run(AddAsync));
         }
 
         raw.CopyTo(prev);
+    }
+
+    /// <summary>Binds properties representing <see cref="Columns"/> onto the <see cref="InputProvider"/>.</summary>
+    void BindInputs()
+    {
+        Input.Clear();
+
+        foreach (var column in Enum.GetValues<Columns>())
+            if (typeof(Config).GetProperty(column.ToString())?.GetValue(this) is List<string> list)
+                foreach (var next in list.AsSpan())
+                    if (!Input.Add(column, next))
+                        EscapeyGame.Log([new FormatException($"Not a valid {column} input value: {next}")]);
     }
 
     /// <summary>Captures one set of training data.</summary>

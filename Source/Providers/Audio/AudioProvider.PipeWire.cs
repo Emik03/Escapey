@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey.Providers.Audio;
 
-partial interface IAudioProvider
+partial class AudioProvider
 {
     /// <summary>Provides audio implementation with PipeWire.</summary>
     // ReSharper disable once ArrangeTypeMemberModifiers
-    private sealed partial class PipeWire : IAudioProvider
+    private sealed partial class PipeWire : AudioProvider
     {
         /// <summary>The library name to link against.</summary>
         const string Lib = "libpipewire-0.3.so.0";
@@ -36,16 +36,16 @@ partial interface IAudioProvider
         /// <summary>The task that runs the PipeWire library.</summary>
         Task _task = Task.CompletedTask;
 
-        /// <summary>Initializes a new instance of the <see cref="IAudioProvider.PipeWire"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="AudioProvider.PipeWire"/> class.</summary>
         PipeWire() { }
 
         /// <inheritdoc />
-        public AudioSegment Segment { get; } = new();
+        public override AudioSegment Segment { get; } = new();
 
         /// <summary>The error message displayed when running on big-endian architecture.</summary>
         static string NoBigEndian =>
             "PipeWire can only be used on little-endian architectures. If you want me to support it, " +
-            $"send a big-endian version of this spa_pod blob: {Convert.ToHexString(StreamParameterBlob)}";
+            $"please send a big-endian version of this spa_pod blob: {Convert.ToHexString(StreamParameterBlob)}";
 
         /// <summary>Contains the little-endian binary representation of the PipeWire stream parameters.</summary>
         /// <remarks><para>
@@ -98,11 +98,11 @@ partial interface IAudioProvider
         }
 
         /// <inheritdoc />
-        void IDisposable.Dispose() { }
+        public override void Dispose() { }
 
         /// <inheritdoc />
         [MustUseReturnValue]
-        public AudioSegment? Poll()
+        public override AudioSegment? Poll()
         {
             if (PollRaw() is not { IsEmpty: false } current)
                 return null;
@@ -123,7 +123,7 @@ partial interface IAudioProvider
 
         /// <inheritdoc />
         [MustUseReturnValue]
-        public unsafe Span<float> PollRaw() =>
+        public override unsafe Span<float> PollRaw() =>
             _task.IsCompleted ? _task.Exception is { } e ? throw e : [] : State.Current(_state);
 
         /// <summary>

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey.Providers.Audio;
 
-partial interface IAudioProvider
+partial class AudioProvider
 {
     sealed partial class PipeWire
     {

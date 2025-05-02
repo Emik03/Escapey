@@ -3,11 +3,11 @@ namespace Escapey.Providers.Input;
 
 using static ButtonState;
 
-partial interface IInputProvider
+abstract partial class InputProvider
 {
-    /// <summary>Provides audio implementation with evdev.</summary>
+    /// <summary>Provides input processing with evdev.</summary>
     // ReSharper disable once ArrangeTypeMemberModifiers
-    private sealed partial class Evdev : IInputProvider
+    sealed partial class Evdev : InputProvider
     {
         /// <summary>The upper limit of <see cref="KeyEventCodes"/></summary>
         const int KeyCount = 0x300;
@@ -16,23 +16,20 @@ partial interface IInputProvider
         const string KeyPrefix = "KEY_";
 
         /// <summary>Contains the shortened aliases for <see cref="KeyEventCodes"/>.</summary>
-        static readonly ImmutableArray<(KeyEventCodes Code, string Alias)> s_aliases =
+        static readonly ImmutableArray<(string Alias, KeyEventCodes Code)> s_aliases =
         [
             ..Enum
                .GetValues<KeyEventCodes>()
-               .Select(x => (Code: x, Alias: $"{x}"))
+               .Select(x => (Alias: $"{x}", Code: x))
                .Where(x => x.Alias.StartsWith(KeyPrefix))
                .Select(x => x with { Alias = x.Alias[KeyPrefix.Length..] }),
         ];
 
         /// <summary>Contains the state of the keys.</summary>
-        readonly bool[] _keyState = new bool[KeyCount];
-
-        /// <summary>Contains the state of the keys.</summary>
         readonly bool[,] _keys = new bool[sizeof(Columns) * BitsInByte, KeyCount];
 
         /// <summary>Contains the number of times a key is pressed.</summary>
-        readonly int[] _counts = new int[sizeof(Columns) * BitsInByte];
+        readonly short[] _counters = new short[sizeof(Columns) * BitsInByte];
 
         /// <summary>Watches over <c>/dev/input</c> for new devices to listen to.</summary>
         readonly FileSystemWatcher? _watcher;
@@ -40,7 +37,7 @@ partial interface IInputProvider
         /// <summary>Contains every input device.</summary>
         List<Device> _devices = [];
 
-        /// <summary>Initializes a new instance of the <see cref="IInputProvider.Evdev"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="InputProvider.Evdev"/> class.</summary>
         /// <param name="warnings">The warnings.</param>
         public Evdev(out ImmutableArray<Exception> warnings)
         {
@@ -80,7 +77,10 @@ partial interface IInputProvider
         }
 
         /// <inheritdoc />
-        public void Dispose()
+        public override void Clear() => _keys.AsSpan2D().Clear();
+
+        /// <inheritdoc />
+        public override void Dispose()
         {
             foreach (var device in _devices)
                 device.Dispose();
@@ -89,39 +89,32 @@ partial interface IInputProvider
         }
 
         /// <inheritdoc />
-        public bool Add(Columns key, scoped ReadOnlySpan<char> value)
-        {
-            if (TryParse(value) is not { } code)
-                return false;
-
-            Span2D<bool> k = _keys;
-            k[key.ToIndex(), (int)code] = true;
-            return true;
-        }
+        public override bool Add(Columns key, scoped ReadOnlySpan<char> value) =>
+            TryParse(value) is { } code && (_keys.AsSpan2D()[key.ToIndex(), (int)code] = true);
 
         /// <inheritdoc />
-        public override string ToString() => $"[{_devices.Conjoin()}]";
+        public override string GetValidValues() => Enum.GetValues<KeyEventCodes>().Conjoin();
 
         /// <inheritdoc />
         // ReSharper disable once CognitiveComplexity
-        public Columns Poll()
+        public override Columns Poll()
         {
             ReadOnlySpan2D<bool> keys = _keys;
 
             foreach (var device in _devices.AsSpan())
                 while (device.Next() is var (state, code))
-                    if (state is not null && (_keyState[code] = state is Pressed) is var _)
-                        for (var i = 0;
-                            i < keys.Height && (!keys[i, code] || (_counts[i] += state is Pressed ? 1 : -1) is var _);
-                            i++) { }
+                    if (state is not null)
+                        for (var i = 0; i < keys.Height; i++)
+                            if (keys[i, code])
+                                _ = state is Pressed ? _counters[i]++ : _counters[i]--;
 
-            var col = Columns.None;
+            var column = Columns.None;
 
-            for (var i = 0; i < _counts.Length; i++)
-                if (_counts[i] > 0)
-                    col |= i.ToColumns();
+            for (var i = 0; i < _counters.Length; i++)
+                if (_counters[i] > 0)
+                    column |= i.ToColumns();
 
-            return col;
+            return column;
         }
 
         /// <summary>Tries to parse the <see cref="KeyEventCodes"/> from <paramref name="value"/>.</summary>
@@ -129,7 +122,7 @@ partial interface IInputProvider
         /// <returns>The parsed <see cref="KeyEventCodes"/> if successful; otherwise, <see langword="null"/>.</returns>
         static KeyEventCodes? TryParse(scoped ReadOnlySpan<char> value)
         {
-            foreach (var (code, alias) in s_aliases)
+            foreach (var (alias, code) in s_aliases)
                 if (alias.EqualsIgnoreCase(value))
                     return code;
 

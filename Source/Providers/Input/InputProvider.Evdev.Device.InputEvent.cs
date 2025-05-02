@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey.Providers.Input;
 
-partial interface IInputProvider
+abstract partial class InputProvider
 {
     sealed partial class Evdev
     {
@@ -13,7 +13,12 @@ partial interface IInputProvider
             /// <param name="Code">The code of the event.</param>
             /// <param name="Value">The value of the event.</param>
             [StructLayout(LayoutKind.Sequential)]
-            public readonly partial record struct InputEvent(TimeValue Time, ushort Type, ushort Code, int Value)
+            public readonly partial record struct InputEvent(
+                [UsedImplicitly] TimeValue Time,
+                ushort Type,
+                ushort Code,
+                int Value
+            )
             {
                 /// <summary>
                 /// When <see cref="Type"/> matches this constant, the <see cref="Value"/> is a button state.

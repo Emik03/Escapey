@@ -24,10 +24,8 @@ sealed class Animations(Letterboxed2DGame game)
     /// <inheritdoc />
     public override void Draw(GameTime gameTime)
     {
-        if (!Visible)
-            return;
-
-        ForEach(ref gameTime, static (c, ref t) => c.Draw(t));
+        if (Visible)
+            ForEach(ref gameTime, static (c, ref t) => c.Draw(t));
     }
 
     /// <summary>Adds an animation.</summary>

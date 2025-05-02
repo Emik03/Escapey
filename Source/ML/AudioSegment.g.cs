@@ -19,10 +19,10 @@ sealed class AudioSegment
     }
 
     /// <summary>The length of this buffer.</summary>
-    public const int Length = IAudioProvider.Length / 2;
+    public const int Length = AudioProvider.Length / 2;
 
     /// <summary>The Bluestein transform.</summary>
-    public static Bluestein Bluestein { get; } = IAudioProvider.Length.Bluestein<float>();
+    public static Bluestein Bluestein { get; } = AudioProvider.Length.Bluestein<float>();
 
     /// <summary>The inlined array.</summary>
     Array _array;

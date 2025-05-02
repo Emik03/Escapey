@@ -5,12 +5,14 @@ namespace Escapey;
 [CLSCompliant(false)]
 public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
 {
+    static readonly bool s_silent = bool.TryParse(Environment.GetEnvironmentVariable("ESCAPEY_SILENT"), out var b) && b;
+
+    /// <summary>The config.</summary>
+    readonly Config _config = new();
+
     /// <summary>The set of animations.</summary>
     // ReSharper disable NullableWarningSuppressionIsUsed
     Animations _animations = null!;
-
-    /// <summary>The config.</summary>
-    Config _config = null!;
 
     /// <summary>The file system watcher for the config.</summary>
     FileSystemWatcher _watcher = null!;
@@ -24,11 +26,29 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     /// <summary>Manages toggle states.</summary>
     Toggle _rainbow, _visible;
 
+    /// <inheritdoc />
+    public override BlendState BatchBlendState =>
+        _config.FrequencyGraph.Result.A is 0 ? BlendState.AlphaBlend : BlendState.NonPremultiplied;
+
     /// <summary>Runs the game.</summary>
     public static void Go()
     {
         using EscapeyGame game = new();
         game.Run();
+    }
+
+    /// <summary>Prints each exception to the console.</summary>
+    /// <param name="exceptions">The exceptions to log.</param>
+    public static void Log(ReadOnlySpan<Exception> exceptions)
+    {
+        if (s_silent)
+            return;
+
+        foreach (var ex in exceptions)
+        {
+            Console.Error.WriteLine($"{ex.Message}\n{ex.StackTrace.SplitLines()[..3]}");
+            Debug.WriteLine(ex);
+        }
     }
 
     /// <inheritdoc />
@@ -127,16 +147,10 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     /// <summary>Loads or reloads the config.</summary>
     /// <param name="path">The sender, optionally containing the file to load.</param>
     /// <param name="__">The event args, ignored.</param>
-    [MemberNotNull(nameof(_config))]
     void LoadConfig(object? path = null, [UsedImplicitly] FileSystemEventArgs? __ = null)
     {
-        Config.Load(path as string, out var warnings).CopyTo(ref _config);
-
-        foreach (var warning in warnings)
-        {
-            Console.Error.WriteLine(warning.Message);
-            Debug.WriteLine(warning);
-        }
+        _config.Read(path as string, out var warnings);
+        Log(warnings.AsSpan());
 
         _animations
            .Change((Sprite.Keys.First)_config.Inverted.ToByte())

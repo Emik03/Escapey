@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey.Providers.Audio;
 
-partial interface IAudioProvider
+partial class AudioProvider
 {
     sealed partial class PipeWire
     {
         /// <summary>Contains the data passed around within PipeWire callbacks.</summary>
         [StructLayout(LayoutKind.Auto)]
-        partial struct State // ReSharper disable UnassignedField.Local
+        partial struct State
         {
             /// <summary>The length of the temporary buffer.</summary>
             const int StackLength = Length * 5;
@@ -16,6 +16,7 @@ partial interface IAudioProvider
             static readonly string s_latency = $"{Length}/48000";
 
             /// <summary>The temporary buffers.</summary>
+            [UsedImplicitly]
             unsafe fixed float _buffer[StackLength];
 
             /// <summary>The pointers to PipeWire objects.</summary>

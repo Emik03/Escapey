@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey.Providers.Input;
 
-partial interface IInputProvider
+abstract partial class InputProvider
 {
     sealed partial class Evdev
     {

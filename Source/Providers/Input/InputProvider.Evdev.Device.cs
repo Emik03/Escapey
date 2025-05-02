@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey.Providers.Input;
 
-partial interface IInputProvider
+abstract partial class InputProvider
 {
     sealed partial class Evdev
     {
@@ -17,11 +17,11 @@ partial interface IInputProvider
             /// <summary>The error code that indicates that reading should be repeated.</summary>
             static readonly int s_eAgain = OperatingSystem.IsFreeBSD() ? 35 : 11;
 
-            /// <summary>Whether the next call to <see cref="Next"/> is asynchronous.</summary>
-            bool _async = true;
-
             /// <summary>The file descriptor.</summary>
             int _fd;
+
+            /// <summary>Whether the next call to <see cref="Next"/> is asynchronous.</summary>
+            int _flags = 2;
 
             /// <summary>The device pointer.</summary>
             nint _device;
@@ -98,10 +98,10 @@ partial interface IInputProvider
             /// <summary>Gets the next input.</summary>
             public InputEvent? Next() =>
                 IsInitialized
-                    ? NextEvent(_device, _async.ToByte() + 1, out var ev) switch
+                    ? NextEvent(_device, _flags, out var ev) switch
                     {
-                        1 when (_async = false) is var _ => ev,
-                        >= 0 when (_async = true) is var _ => ev,
+                        1 when (_flags = 1) is var _ => ev,
+                        >= 0 when (_flags = 2) is var _ => ev,
                         var x when x == -s_eAgain => null,
                         _ => Fail(),
                     }

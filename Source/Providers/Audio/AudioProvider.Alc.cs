@@ -1,18 +1,14 @@
 // SPDX-License-Identifier: MPL-2.0
 namespace Escapey.Providers.Audio;
 
-partial interface IAudioProvider
+partial class AudioProvider
 {
     /// <summary>Provides audio implementation with ALC.</summary>
-    private sealed class Alc : IAudioProvider
+    sealed class Alc : AudioProvider
     {
         /// <summary>Gets the current microphone.</summary>
-        static readonly Microphone s_microphone = PreferredMicrophone is null
-            ? Microphone.Default
-            : Microphone.All.FirstOrDefault(x => x.Name == PreferredMicrophone) ?? Microphone.Default;
-
-        /// <summary>The number of non-disposed instances of <see cref="IAudioProvider.Alc"/>.</summary>
-        static int s_references;
+        static readonly Microphone s_microphone =
+            Microphone.All.Where(x => x.Name is not null && x.Name == PreferredMicrophone).FirstOr(Microphone.Default);
 
         /// <summary>Contains the raw PCM data.</summary>
         readonly byte[] _pcm = new byte[8820];
@@ -20,34 +16,26 @@ partial interface IAudioProvider
         /// <summary>Contains the PCM data converted to <see cref="float"/>.</summary>
         readonly float[] _real = new float[Length];
 
-        /// <summary>Determines whether this instance is disposed.</summary>
-        bool _disposed;
-
         /// <summary>The current index to start writing from.</summary>
         int _i;
 
-        /// <summary>Initializes a new instance of the <see cref="IAudioProvider.Alc"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="AudioProvider.Alc"/> class.</summary>
         public Alc()
         {
             s_microphone.BufferDuration = TimeSpan.FromMilliseconds(100);
             s_microphone.BufferReady += Noop;
             s_microphone.Start();
-            s_references++;
         }
 
         /// <inheritdoc />
-        public AudioSegment Segment { get; } = new();
+        public override AudioSegment Segment { get; } = new();
 
         /// <inheritdoc />
-        public void Dispose()
-        {
-            if (!_disposed && (_disposed = true) && --s_references is 0)
-                s_microphone.Stop();
-        }
+        public override void Dispose() { }
 
         /// <inheritdoc />
         [MustUseReturnValue]
-        public AudioSegment? Poll()
+        public override AudioSegment? Poll()
         {
             if (PollRaw().IsEmpty)
                 return null;
@@ -58,14 +46,14 @@ partial interface IAudioProvider
 
         /// <inheritdoc />
         [MustUseReturnValue]
-        public Span<float> PollRaw()
+        public override Span<float> PollRaw()
         {
             if ((_i += s_microphone.GetData(_pcm, _i, _pcm.Length - _i)) < Length * sizeof(short))
                 return [];
 
             ref var end = ref Unsafe.As<byte, short>(ref Unsafe.Add(ref MemoryMarshal.GetArrayDataReference(_pcm), _i));
             ref var real = ref MemoryMarshal.GetArrayDataReference(_real);
-            ref var pcm = ref Unsafe.Add(ref end, -Length);
+            ref var pcm = ref Unsafe.Subtract(ref end, Length);
             _i = 0;
 
             while (Unsafe.IsAddressLessThan(pcm, end))

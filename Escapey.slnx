@@ -3,6 +3,6 @@
         <BuildType Name="DesktopGL"/>
     </Configurations>
     <Project Path="Escapey.csproj">
-        <Configuration Project="Release|Any CPU" Solution="DesktopGL|Any CPU"/>
+        <Configuration Solution="DesktopGL|Any CPU" Project="Release|Any CPU"/>
     </Project>
 </Solution>
