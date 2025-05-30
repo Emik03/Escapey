@@ -364,6 +364,7 @@ sealed partial class Config : IDisposable
 
     /// <summary>Captures audio and creates training data from it.</summary>
     /// <returns>The training data.</returns>
+    [UnsupportedOSPlatform("android")]
     public ConcurrentBag<AudioSegment> Capture()
     {
         ConcurrentBag<AudioSegment> bag = [];
@@ -456,6 +457,7 @@ sealed partial class Config : IDisposable
     /// <param name="tasks">The list to add the immediately-running tasks that execute the FFT transforms.</param>
     /// <param name="prev">The previous audio data.</param>
     /// <param name="mouth">The current mouth.</param>
+    [UnsupportedOSPlatform("android")]
     void CaptureTrainingData(ConcurrentBag<AudioSegment> bag, ICollection<Task> tasks, float[] prev, Sprite.Mouth mouth)
     {
         var cursor = Console.CursorLeft;

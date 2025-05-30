@@ -3,6 +3,7 @@ namespace Escapey.Domains;
 
 /// <summary>Represents the toggled state.</summary>
 /// <param name="start">The starting state.</param>
+[StructLayout(LayoutKind.Auto)]
 struct Toggle(bool start)
 {
     /// <summary>The state of the button.</summary>

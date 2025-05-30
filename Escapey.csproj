@@ -1,14 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
+        <Optimize>true</Optimize>
         <OutputType>Exe</OutputType>
-        <FileVersion>1.5.1</FileVersion>
+        <DebugType>portable</DebugType>
+        <FileVersion>1.5.2</FileVersion>
         <CopyrightSince>2024</CopyrightSince>
         <TransformOnBuild>true</TransformOnBuild>
         <TargetFramework>net10.0</TargetFramework>
         <ApplicationIcon>Properties/Icon.ico</ApplicationIcon>
         <RepositoryUrl>https://github.com/Emik03/Escapey</RepositoryUrl>
-        <DefineConstants>$(DefineConstants);XNA;RELEASE</DefineConstants>
         <ApplicationManifest>Properties/app.manifest</ApplicationManifest>
+        <DefineConstants>$(DefineConstants);RELEASE;TRACE;XNA</DefineConstants>
         <Description>The application for drawing the adorable character Escapey.</Description>
         <PackageTags>MonoGame Application Input SDL evdev Listener Audio Processor Processing Alc PipeWire Machine Learning ML Keys Config</PackageTags>
     </PropertyGroup>
@@ -16,6 +18,7 @@
         <ApplicationId>dev.emik.escapey</ApplicationId>
         <TargetFramework>net10.0-android</TargetFramework>
         <ApplicationVersion>$(FileVersion)</ApplicationVersion>
+        <AcceptAndroidSDKLicenses>true</AcceptAndroidSDKLicenses>
         <SupportedOSPlatformVersion>23</SupportedOSPlatformVersion>
         <ApplicationDisplayVersion>$(FileVersion)</ApplicationDisplayVersion>
     </PropertyGroup>
@@ -37,10 +40,11 @@
         </None>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Android'">
-        <PackageReference Include="MonoGame.Framework.Android" Version="3.8.4-preview.6" PrivateAssets="all"/>
+        <Reference Include="MonoGame.Framework" HintPath="./MonoGame.Framework.dll" Private="false"/>
+        <PackageReference Include="MonoGame.Framework.Android" Version="3.8.4-preview.7" PrivateAssets="all"/>
     </ItemGroup>
-    <ItemGroup Condition="'$(Configuration)' != 'Android'">
-        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4-preview.6"/>
+    <ItemGroup Condition="'$(Configuration)' == 'DesktopGL'">
+        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4-preview.7"/>
     </ItemGroup>
     <Target Name="CopyToDestination" AfterTargets="PostBuildEvent">
         <Exec Command="$(CopyCommand) &quot;$(ProjectDir)/Content/bin/Sprites&quot; &quot;$(OutDir)/Sprites&quot;"/>

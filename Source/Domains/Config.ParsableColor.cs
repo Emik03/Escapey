@@ -3,6 +3,9 @@ namespace Escapey.Domains;
 
 partial class Config
 {
+    /// <summary>Implements <see cref="ISpanParsable{TSelf}"/> for wrapped <see cref="Color"/> instances.</summary>
+    /// <param name="Result">The color.</param>
+    [StructLayout(LayoutKind.Auto)]
     public readonly record struct ParsableColor(Color Result) : ISpanParsable<ParsableColor>
     {
         /// <summary>The comparison to use.</summary>
@@ -90,9 +93,9 @@ partial class Config
                 _ => Color.Transparent,
             };
 
-        /// <summary>Includes alternate spellings for <see cref="Color.Gray"/> and similar.</summary>
-        /// <param name="x">The property to include.</param>
-        /// <returns>The included properties.</returns>
+        /// <summary>Includes alternate spellings for <see cref="Color.Gray"/>.</summary>
+        /// <param name="x">The property to make potential aliases for.</param>
+        /// <returns>The aliases that refer to the color of the parameter <paramref name="x"/>.</returns>
         static IEnumerable<KeyValuePair<string, Color>> IncludeAlternateSpellings(PropertyInfo x) =>
             (x.GetValue(null) as Color?).GetValueOrDefault() is var color &&
             x.Name.Contains(nameof(Color.Gray), Comparison)

@@ -1,8 +1,10 @@
 ﻿<Solution>
     <Configurations>
+        <BuildType Name="Android"/>
         <BuildType Name="DesktopGL"/>
     </Configurations>
     <Project Path="Escapey.csproj">
-        <Configuration Solution="DesktopGL|Any CPU" Project="Release|Any CPU"/>
+        <Configuration Solution="Android|Any CPU" Project="Android|Any CPU"/>
+        <Configuration Solution="DesktopGL|Any CPU" Project="DesktopGL|Any CPU"/>
     </Project>
 </Solution>

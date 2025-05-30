@@ -49,6 +49,7 @@ sealed class HearMonitor(
         switch (init)
         {
             case false when File.Exists(modelFile): return new(game, ml, ml.Model.Load(modelFile, out _), config);
+            case var _ when OperatingSystem.IsAndroid():
             case false when !config.Audio.HasData: return new(game, null, null, config);
         }
 
@@ -151,6 +152,7 @@ sealed class HearMonitor(
     /// <param name="file">The path to the data to either save or load.</param>
     /// <param name="init">Whether to always start from scratch, not reading from disk.</param>
     /// <returns>The <see cref="IDataView"/> containing the training date.</returns>
+    [UnsupportedOSPlatform("android")]
     static IDataView LoadOrSaveData(MLContext ml, Config config, string file, bool init)
     {
         if (!init && File.Exists(file))

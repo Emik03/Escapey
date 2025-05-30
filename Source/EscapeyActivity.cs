@@ -4,24 +4,20 @@ namespace Escapey;
 
 using Android.App;
 using Android.Content.PM;
-using Android.Content.Res;
 using Android.OS;
 using Android.Views;
-using Android.Content.PM;
+using static Android.Content.PM.ConfigChanges;
 
 /// <summary>The activity for creating and maintaining <see cref="EscapeyGame"/>.</summary>
 [Activity(
-    ConfigurationChanges = ConfigChanges.Orientation |
-        ConfigChanges.Keyboard |
-        ConfigChanges.KeyboardHidden |
-        ConfigChanges.ScreenSize,
-    AlwaysRetainTaskState = true,
-    Icon = "@drawable/icon",
-    Label = "@string/app_name",
-    LaunchMode = LaunchMode.SingleInstance,
-    MainLauncher = true,
-    ScreenOrientation = ScreenOrientation.FullUser
-)]
+     ConfigurationChanges = Orientation | Keyboard | KeyboardHidden | ScreenSize,
+     AlwaysRetainTaskState = true,
+     Icon = "@drawable/icon",
+     Label = "@string/app_name",
+     LaunchMode = LaunchMode.SingleInstance,
+     MainLauncher = true,
+     ScreenOrientation = ScreenOrientation.FullUser
+ ), CLSCompliant(false)]
 public sealed class EscapeyActivity : AndroidGameActivity
 {
     /// <summary>The <see cref="EscapeyGame"/> instance.</summary>
@@ -31,17 +27,20 @@ public sealed class EscapeyActivity : AndroidGameActivity
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        DisposeOf(ref _game);
+        _game?.Dispose();
+        _game = null;
     }
 
     /// <inheritdoc />
-    protected override void OnCreate(Bundle bundle)
+    protected override void OnCreate(Bundle? bundle)
     {
         base.OnCreate(bundle);
-        DisposeOf(ref _game);
-        _game = new();
-        _game.Run();
+        _game?.Dispose();
+        (_game = new()).Run();
         SetContentView(_game.Services.GetService<View>());
     }
 }
+
+[CLSCompliant(false)]
+partial class Resource;
 #endif
