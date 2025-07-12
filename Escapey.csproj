@@ -3,7 +3,7 @@
         <Optimize>true</Optimize>
         <OutputType>Exe</OutputType>
         <DebugType>portable</DebugType>
-        <FileVersion>1.5.2</FileVersion>
+        <FileVersion>1.5.3</FileVersion>
         <CopyrightSince>2024</CopyrightSince>
         <TransformOnBuild>true</TransformOnBuild>
         <TargetFramework>net10.0</TargetFramework>
@@ -23,6 +23,7 @@
         <ApplicationDisplayVersion>$(FileVersion)</ApplicationDisplayVersion>
     </PropertyGroup>
     <ItemGroup>
+        <EmbeddedResource Include="Properties/Icon.bmp" Link="Icon.bmp"/>
         <PackageReference Include="Microsoft.ML" Version="5.0.0-preview.1.25127.4"/>
         <Compile Update="Source/Sprites/Sprite.g.cs">
             <DependentUpon>Sprite.tt</DependentUpon>
@@ -41,10 +42,10 @@
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Android'">
         <Reference Include="MonoGame.Framework" HintPath="./MonoGame.Framework.dll" Private="false"/>
-        <PackageReference Include="MonoGame.Framework.Android" Version="3.8.4-preview.7" PrivateAssets="all"/>
+        <PackageReference Include="MonoGame.Framework.Android" Version="3.8.5-develop.2" PrivateAssets="all"/>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'DesktopGL'">
-        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4-preview.7"/>
+        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.5-develop.2"/>
     </ItemGroup>
     <Target Name="CopyToDestination" AfterTargets="PostBuildEvent">
         <Exec Command="$(CopyCommand) &quot;$(ProjectDir)/Content/bin/Sprites&quot; &quot;$(OutDir)/Sprites&quot;"/>
