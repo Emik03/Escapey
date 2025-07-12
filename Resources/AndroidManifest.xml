@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="dev.emik.escapey" android:versionCode="1.5.2" android:versionName="1.5.2">
-    <application android:label="escapey"/>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="dev.emik.escapey" android:versionCode="1" android:versionName="1.0">
+    <application android:label="escapey" android:debuggable="true"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="36"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
     <uses-permission android:name="android.permission.CAPTURE_AUDIO_OUTPUT"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 </manifest>

@@ -1,29 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Optimize>true</Optimize>
-        <OutputType>Exe</OutputType>
         <DebugType>portable</DebugType>
+        <OutputType>WinExe</OutputType>
         <FileVersion>1.5.3</FileVersion>
         <CopyrightSince>2024</CopyrightSince>
         <TransformOnBuild>true</TransformOnBuild>
         <TargetFramework>net10.0</TargetFramework>
-        <ApplicationIcon>Properties/Icon.ico</ApplicationIcon>
+        <ApplicationIcon>Resources/Drawable/Icon.ico</ApplicationIcon>
         <RepositoryUrl>https://github.com/Emik03/Escapey</RepositoryUrl>
-        <ApplicationManifest>Properties/app.manifest</ApplicationManifest>
+        <ApplicationManifest>Resources/app.manifest</ApplicationManifest>
         <DefineConstants>$(DefineConstants);RELEASE;TRACE;XNA</DefineConstants>
         <Description>The application for drawing the adorable character Escapey.</Description>
         <PackageTags>MonoGame Application Input SDL evdev Listener Audio Processor Processing Alc PipeWire Machine Learning ML Keys Config</PackageTags>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)' == 'Android'">
+        <OutputType>Exe</OutputType>
         <ApplicationId>dev.emik.escapey</ApplicationId>
+        <TargetPlatformVersion>36</TargetPlatformVersion>
         <TargetFramework>net10.0-android</TargetFramework>
-        <ApplicationVersion>$(FileVersion)</ApplicationVersion>
+        <PackageIcon>Resources/Drawable/Icon.png</PackageIcon>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
         <AcceptAndroidSDKLicenses>true</AcceptAndroidSDKLicenses>
         <SupportedOSPlatformVersion>23</SupportedOSPlatformVersion>
-        <ApplicationDisplayVersion>$(FileVersion)</ApplicationDisplayVersion>
     </PropertyGroup>
     <ItemGroup>
-        <EmbeddedResource Include="Properties/Icon.bmp" Link="Icon.bmp"/>
+        <Content Include="Resources/AndroidManifest.xml"/>
+        <EmbeddedResource Include="Resources/Drawable/Icon.bmp" Link="Icon.bmp"/>
         <PackageReference Include="Microsoft.ML" Version="5.0.0-preview.1.25127.4"/>
         <Compile Update="Source/Sprites/Sprite.g.cs">
             <DependentUpon>Sprite.tt</DependentUpon>
@@ -41,8 +44,7 @@
         </None>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Android'">
-        <Reference Include="MonoGame.Framework" HintPath="./MonoGame.Framework.dll" Private="false"/>
-        <PackageReference Include="MonoGame.Framework.Android" Version="3.8.5-develop.2" PrivateAssets="all"/>
+        <PackageReference Include="MonoGame.Framework.Android" Version="3.8.5-develop.2"/>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'DesktopGL'">
         <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.5-develop.2"/>
