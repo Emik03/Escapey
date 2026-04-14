@@ -108,8 +108,8 @@ sealed class Animations(Letterboxed2DGame game)
     /// <param name="a">The action to execute.</param>
     /// <typeparam name="T">The type of the state.</typeparam>
     /// <returns>Itself.</returns>
-    [Inline] // ReSharper disable NullableWarningSuppressionIsUsed RedundantSuppressNullableWarningExpression
-    void ForEach<T>(ref T x, [ResolveDelegate, RequireStaticDelegate(IsError = true)] Act<DrawableGameComponent, T> a)
+    // ReSharper disable NullableWarningSuppressionIsUsed RedundantSuppressNullableWarningExpression
+    void ForEach<T>(ref T x, [RequireStaticDelegate(IsError = true)] Act<DrawableGameComponent, T> a)
         where T : allows ref struct
     {
         var animations = _animations.AsSpan();
@@ -126,8 +126,7 @@ sealed class Animations(Letterboxed2DGame game)
     /// <typeparam name="T">The type of the state.</typeparam>
     /// <typeparam name="TA">The type of sprites.</typeparam>
     /// <returns>Itself.</returns>
-    [Inline]
-    Animations ForEach<T, TA>(ref T x, [ResolveDelegate, RequireStaticDelegate(IsError = true)] Act<Animation<TA>, T> a)
+    Animations ForEach<T, TA>(ref T x, [RequireStaticDelegate(IsError = true)] Act<Animation<TA>, T> a)
         where T : allows ref struct
         where TA : struct, Enum
     {

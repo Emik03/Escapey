@@ -13,6 +13,8 @@
         <DefineConstants>$(DefineConstants);RELEASE;TRACE;XNA</DefineConstants>
         <Description>The application for drawing the adorable character Escapey.</Description>
         <PackageTags>MonoGame Application Input SDL evdev Listener Audio Processor Processing Alc PipeWire Machine Learning ML Keys Config</PackageTags>
+        <Configurations>Debug;Release;DesktopGL</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)' == 'Android'">
         <OutputType>Exe</OutputType>
@@ -25,14 +27,12 @@
         <SupportedOSPlatformVersion>23</SupportedOSPlatformVersion>
     </PropertyGroup>
     <ItemGroup>
+        <Compile Include="$(Morsels)/Compile/**/*.cs"/>
         <Content Include="Resources/AndroidManifest.xml"/>
         <EmbeddedResource Include="Resources/Drawable/Icon.bmp" Link="Icon.bmp"/>
-        <PackageReference Include="Microsoft.ML" Version="5.0.0-preview.1.25127.4"/>
+        <PackageReference Include="Microsoft.ML" Version="6.0.0-preview.26160.2"/>
         <Compile Update="Source/Sprites/Sprite.g.cs">
             <DependentUpon>Sprite.tt</DependentUpon>
-        </Compile>
-        <Compile Update="Source/ML/AudioSegment.g.cs">
-            <DependentUpon>AudioSegment.tt</DependentUpon>
         </Compile>
         <None Update="Source/Sprites/Sprite.tt">
             <Generator>TextTemplatingFileGenerator</Generator>
@@ -40,14 +40,15 @@
         </None>
         <None Update="Source/ML/AudioSegment.tt">
             <Generator>TextTemplatingFileGenerator</Generator>
-            <LastGenOutput>AudioSegment.g.cs</LastGenOutput>
+            <LastGenOutput>AudioSegment.cs</LastGenOutput>
         </None>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Android'">
-        <PackageReference Include="MonoGame.Framework.Android" Version="3.8.5-develop.2"/>
+        <PackageReference Include="MonoGame.Framework.Android" Version="3.8.5-preview.4"/>
+        <Reference Include="../../ModulePack/Assets/Plugins/Managed/wawa.*.dll"/>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'DesktopGL'">
-        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.5-develop.2"/>
+        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.5-preview.4"/>
     </ItemGroup>
     <Target Name="CopyToDestination" AfterTargets="PostBuildEvent">
         <Exec Command="$(CopyCommand) &quot;$(ProjectDir)/Content/bin/Sprites&quot; &quot;$(OutDir)/Sprites&quot;"/>

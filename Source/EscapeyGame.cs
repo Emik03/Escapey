@@ -55,9 +55,7 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     protected override void Initialize()
     {
         base.Initialize();
-
-        if (IsDesktop)
-            Window.IsBorderless = true;
+        _ = IsDesktop && (Window.IsBorderless = true);
 
         _animations = new Animations(this)
            .Add<Sprite.Legs>()
@@ -81,9 +79,9 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
         };
 
         LoadConfig();
-        _hearMonitor = HearMonitor.From(this, _config);
         Window.FileDrop += LoadConfig;
         _watcher.Changed += LoadConfig;
+        _hearMonitor = HearMonitor.From(this, _config);
     }
 
     /// <inheritdoc />

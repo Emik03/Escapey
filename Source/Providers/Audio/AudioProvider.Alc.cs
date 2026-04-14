@@ -22,6 +22,14 @@ partial class AudioProvider
         /// <summary>Initializes a new instance of the <see cref="AudioProvider.Alc"/> class.</summary>
         public Alc()
         {
+            Console.Error.Write(
+                $"""
+                 Using {s_microphone.Name} ({PreferredMicrophone}).
+                 If this is incorrect, override ESCAPEY_MICROPHONE to be one of:
+                 {Microphone.All.Select(x => $"- \"{x.Name}\"\n").Concat()}
+                 """
+            );
+
             s_microphone.BufferDuration = TimeSpan.FromMilliseconds(100);
             s_microphone.BufferReady += Noop;
             s_microphone.Start();
