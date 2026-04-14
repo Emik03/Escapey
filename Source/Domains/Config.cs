@@ -368,7 +368,7 @@ sealed partial class Config : IDisposable
     public ConcurrentBag<AudioSegment> Capture()
     {
         ConcurrentBag<AudioSegment> bag = [];
-        List<Task> tasks = new(TrainingLength);
+        List<Task> tasks = [with(TrainingLength)];
         var previous = new float[AudioProvider.Length];
         var ipa = Environment.GetEnvironmentVariable("ESCAPEY_IPA").OrEmpty();
 
