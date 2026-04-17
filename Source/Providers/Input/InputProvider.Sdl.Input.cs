@@ -6,17 +6,17 @@ partial class InputProvider
     sealed partial class Sdl
     {
         /// <summary>Represents some input.</summary>
-        [Choice.Button<Buttons>.Mouse<MouseButtons>.Key<Keys>]
+        [Choice.Button<Buttons>.Mouse<MouseButtons>.Key<Keys>, Union]
         readonly partial struct Input : ISpanParsable<Input>
         {
             /// <summary>The prefix for button types.</summary>
-            const string ButtonType = "Button.";
+            const string ButtonType = $"{nameof(Button)}.";
 
             /// <summary>The prefix for mouse types.</summary>
-            const string MouseType = "Mouse.";
+            const string MouseType = $"{nameof(Mouse)}.";
 
             /// <summary>The prefix for key types.</summary>
-            const string KeyType = "Key.";
+            const string KeyType = $"{nameof(Key)}.";
 
             /// <inheritdoc />
             public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out Input result) =>

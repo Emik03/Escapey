@@ -17,8 +17,11 @@ partial class InputProvider
         public override void Dispose() { }
 
         /// <inheritdoc />
-        public override bool Add(Columns key, ReadOnlySpan<char> value) =>
-            value.TryInto<Input>() is { } input && _keys.AndAdd(new(key, input)) is var _;
+        public override bool Add(Columns key, ReadOnlySpan<char> value)
+        {
+            ref var input = ref Unsafe.AsRef(Span.LValue(value.TryInto<Input>())).DangerousGetValueOrNullReference();
+            return !Unsafe.IsNullRef(input) && _keys.AndAdd(new(key, input)) is var _;
+        }
 
         /// <inheritdoc />
         public override string GetValidValues() => Input.GetValidValues().Conjoin();
@@ -26,18 +29,23 @@ partial class InputProvider
         /// <inheritdoc />
         public override Columns Poll()
         {
-            var column = Columns.None;
+            var ret = Columns.None;
             var mouse = Mouse.GetState();
             var gamepads = GamePads.Four;
             var keyboard = Keyboard.GetState();
 
-            foreach (var (columns, input) in _keys.AsSpan())
-                if (input.IsButton && gamepads.IsButtonDown(input.Button) ||
-                    input.IsMouse && mouse.ToMouseButtons().Has(input.Mouse) ||
-                    input.IsKey && keyboard.IsKeyDown(input.Key))
-                    column |= columns;
+            foreach (var (column, input) in _keys.AsSpan())
+                ret |= input switch
+                {
+                    null => false,
+                    Keys k => keyboard.IsKeyDown(k),
+                    Buttons b => gamepads.IsButtonDown(b),
+                    MouseButtons m => mouse.ToMouseButtons().Has(m),
+                }
+                    ? column
+                    : default;
 
-            return column;
+            return ret;
         }
     }
 }
