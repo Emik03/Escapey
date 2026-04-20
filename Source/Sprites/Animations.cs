@@ -108,14 +108,14 @@ sealed class Animations(Letterboxed2DGame game)
     /// <param name="a">The action to execute.</param>
     /// <typeparam name="T">The type of the state.</typeparam>
     /// <returns>Itself.</returns>
-    // ReSharper disable NullableWarningSuppressionIsUsed RedundantSuppressNullableWarningExpression
     void ForEach<T>(ref T x, [RequireStaticDelegate(IsError = true)] Act<DrawableGameComponent, T> a)
         where T : allows ref struct
     {
         var animations = _animations.AsSpan();
         ref var start = ref MemoryMarshal.GetReference(animations);
-        ref readonly var end = ref Unsafe.Add(ref start, animations.Length)!;
+        ref readonly var end = ref Unsafe.Add(ref start, animations.Length);
 
+        // ReSharper disable once RedundantSuppressNullableWarningExpression
         for (; Unsafe.IsAddressLessThan(start, end); start = ref Unsafe.Add(ref start, 1)!)
             a(start, ref x);
     }
@@ -138,8 +138,9 @@ sealed class Animations(Letterboxed2DGame game)
 
         var animations = _animations.AsSpan();
         ref var start = ref MemoryMarshal.GetReference(animations);
-        ref readonly var end = ref Unsafe.Add(ref start, animations.Length)!;
+        ref readonly var end = ref Unsafe.Add(ref start, animations.Length);
 
+        // ReSharper disable once RedundantSuppressNullableWarningExpression
         for (; Unsafe.IsAddressLessThan(start, end); start = ref Unsafe.Add(ref start, 1)!)
             if (start is Animation<TA>)
                 a(Unsafe.As<Animation<TA>>(start), ref x);

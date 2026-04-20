@@ -11,7 +11,6 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     readonly Config _config = new();
 
     /// <summary>The set of animations.</summary>
-    // ReSharper disable NullableWarningSuppressionIsUsed
     Animations _animations = null!;
 
     /// <summary>The file system watcher for the config.</summary>

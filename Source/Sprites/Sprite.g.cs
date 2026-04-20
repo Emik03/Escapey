@@ -14,23 +14,23 @@ sealed partial class Sprite
         public enum Left : byte
         {
             /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/arm l/end/1.png">Images</a></summary>
-            [Sprite("end", Frames = 4)]
+            [Sprite("end")]
             Neutral,
 
             /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/arm l/1/1.png">Images</a></summary>
-            [Sprite("1", Frames = 3)]
+            [Sprite("1")]
             Outer,
 
             /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/arm l/3/1.png">Images</a></summary>
-            [Sprite("3", Frames = 3)]
+            [Sprite("3")]
             Inner,
 
             /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/arm l/2/1.png">Images</a></summary>
-            [Sprite("2", Frames = 3)]
+            [Sprite("2")]
             Both,
 
             /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/arm l/idle/1.png">Images</a></summary>
-            [Sprite("idle", Frames = 2, FrameRate = 2, Loops = true)]
+            [Sprite("idle", FrameRate = 2, Looping = true)]
             Idle,
         }
 
@@ -39,23 +39,23 @@ sealed partial class Sprite
         public enum Right : byte
         {
             /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/arm r/end/1.png">Images</a></summary>
-            [Sprite("end", Frames = 4)]
+            [Sprite("end")]
             Neutral,
 
             /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/arm r/3/1.png">Images</a></summary>
-            [Sprite("3", Frames = 3)]
+            [Sprite("3")]
             Inner,
 
             /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/arm r/1/1.png">Images</a></summary>
-            [Sprite("1", Frames = 3)]
+            [Sprite("1")]
             Outer,
 
             /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/arm r/2/1.png">Images</a></summary>
-            [Sprite("2", Frames = 3)]
+            [Sprite("2")]
             Both,
 
             /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/arm r/idle/1.png">Images</a></summary>
-            [Sprite("idle", Frames = 2, FrameRate = 2, Loops = true)]
+            [Sprite("idle", FrameRate = 2, Looping = true)]
             Idle,
         }
     }
@@ -65,11 +65,11 @@ sealed partial class Sprite
     public enum Body : byte
     {
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/body anims/end/1.png">Images</a></summary>
-        [Sprite("end", Frames = 3)]
+        [Sprite("end")]
         Neutral,
 
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/body anims/type/1.png">Images</a></summary>
-        [Sprite("type", Frames = 3)]
+        [Sprite("type")]
         Typing,
     }
 
@@ -191,7 +191,7 @@ sealed partial class Sprite
     public enum LaughterMarks : byte
     {
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/laughter marks/1.png">Images</a></summary>
-        [Sprite("laughter marks", Frames = 3, FrameRate = 8, Loops = true)]
+        [Sprite("laughter marks", FrameRate = 8, Looping = true)]
         Neutral,
     }
 
@@ -199,7 +199,7 @@ sealed partial class Sprite
     public enum Legs : byte
     {
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/legs/1.png">Images</a></summary>
-        [Sprite("legs", Frames = 2, FrameRate = 2, Loops = true)]
+        [Sprite("legs", FrameRate = 2, Looping = true)]
         Neutral,
     }
 
@@ -248,31 +248,31 @@ sealed partial class Sprite
         Upset,
 
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/lipsync/ah/1.png">Images</a></summary>
-        [Sprite("lipsync/ah", Frames = 6)]
+        [Sprite("lipsync/ah")]
         Ah,
 
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/lipsync/dz/1.png">Images</a></summary>
-        [Sprite("lipsync/dz", Frames = 8)]
+        [Sprite("lipsync/dz")]
         Dz,
 
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/lipsync/e/1.png">Images</a></summary>
-        [Sprite("lipsync/e", Frames = 6)]
+        [Sprite("lipsync/e")]
         E,
 
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/lipsync/f/1.png">Images</a></summary>
-        [Sprite("lipsync/f", Frames = 6)]
+        [Sprite("lipsync/f")]
         F,
 
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/lipsync/m/1.png">Images</a></summary>
-        [Sprite("lipsync/m", Frames = 6)]
+        [Sprite("lipsync/m")]
         M,
 
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/lipsync/nsl/1.png">Images</a></summary>
-        [Sprite("lipsync/nsl", Frames = 8)]
+        [Sprite("lipsync/nsl")]
         Nsl,
 
         /// <summary><a href="file:///home/emik/RiderProjects/Escapey/Content/Sprites/lipsync/o/1.png">Images</a></summary>
-        [Sprite("lipsync/o", Frames = 6)]
+        [Sprite("lipsync/o")]
         O,
     }
 }

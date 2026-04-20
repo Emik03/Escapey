@@ -2,9 +2,9 @@
 namespace Escapey.Sprites;
 
 /// <summary>Associates the applied member with a <see cref="Sprite"/> or directory of sprites.</summary>
-/// <param name="path"></param>
+/// <param name="assetPath"></param>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Field)]
-sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)] string? path = null) : Attribute
+sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)] string? assetPath = null) : Attribute
 {
     /// <summary>Represents a loaded sprite.</summary>
     /// <param name="Textures">The loaded textures representing an animation.</param>
@@ -22,33 +22,28 @@ sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)
             where T : struct, Enum =>
             typeof(T).FindPathToNull(x => x.DeclaringType)
                .Select(x => x.GetCustomAttribute<SpriteAttribute>())
-                // ReSharper disable once NullableWarningSuppressionIsUsed
                .Aggregate(x.GetCustomAttribute<SpriteAttribute>()!, Join)
                .Load(manager);
     }
 
     /// <summary>Gets or sets whether the animation should loop.</summary>
-    public bool Loops { get; init; }
-
-    /// <summary>Gets or sets the number of frames.</summary>
-    public int Frames { get; init; }
+    public bool Looping { get; init; }
 
     /// <summary>Gets or sets the frame rate.</summary>
     public int FrameRate { get; init; }
 
     /// <summary>Gets the path.</summary>
-    public string? Path => path;
+    public string? AssetPath => assetPath;
 
     /// <summary>Joins two <see cref="SpriteAttribute"/> instances.</summary>
     /// <param name="accumulator">The accumulator.</param>
     /// <param name="next">The next value.</param>
     /// <returns>The joined value.</returns>
     public static SpriteAttribute Join(SpriteAttribute accumulator, SpriteAttribute? next) =>
-        new(Join(accumulator.Path, next?.Path))
+        new(Join(accumulator.AssetPath, next?.AssetPath))
         {
-            Frames = Join(accumulator.Frames, next?.Frames),
             FrameRate = Join(accumulator.FrameRate, next?.FrameRate),
-            Loops = accumulator.Loops || (next?.Loops ?? false),
+            Looping = accumulator.Looping || (next?.Looping ?? false),
         };
 
     /// <summary>Loads itself onto the provided <see cref="ContentManager"/>.</summary>
@@ -56,16 +51,27 @@ sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)
     /// <returns>The <see cref="Loaded"/> instance.</returns>
     public Loaded Load(ContentManager manager)
     {
-        if (Frames is 0)
-            return new([manager.Load<Texture2D>(Path)], FrameRate, Loops);
+        if (AssetExists(manager, AssetPath))
+            return new([manager.Load<Texture2D>(AssetPath)], FrameRate, Looping);
 
-        var textures = new Texture2D[Frames];
+        var textures = ImmutableArray.CreateBuilder<Texture2D>();
 
-        for (var i = 0; i < textures.Length; i++)
-            textures[i] = manager.Load<Texture2D>($"{Path}/{i + 1}");
+        for (var i = 1; $"{AssetPath}/{i}" is var path && AssetExists(manager, path); i++)
+            textures.Add(manager.Load<Texture2D>(path));
 
-        return new(ImmutableCollectionsMarshal.AsImmutableArray(textures), FrameRate, Loops);
+        return textures is []
+            ? throw new FileNotFoundException($"The following asset appears to be missing: {AssetPath}")
+            : new(textures.DrainToImmutable(), FrameRate, Looping);
     }
+
+    /// <summary>Determines if the path links to an asset.</summary>
+    /// <param name="manager">The content manager.</param>
+    /// <param name="path">The path to check.</param>
+    /// <returns>Whether the parameter <paramref name="path"/> links to an asset.</returns>
+    static bool AssetExists(ContentManager manager, [NotNullWhen(true)] string? path) =>
+        path is not null &&
+        Path.Combine(Path.GetDirectoryName(Environment.ProcessPath) ?? "", manager.RootDirectory, path) is var file &&
+        Path.Exists(Path.ChangeExtension(file, "xnb"));
 
     /// <inheritdoc cref="Join(SpriteAttribute, SpriteAttribute)"/>
     static int Join(int accumulator, int? next) => accumulator is 0 ? next ?? 0 : accumulator;
