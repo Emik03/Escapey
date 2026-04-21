@@ -96,7 +96,6 @@ abstract partial class InputProvider
         public override string GetValidValues() => Enum.GetValues<KeyEventCodes>().Conjoin();
 
         /// <inheritdoc />
-        // ReSharper disable once CognitiveComplexity
         public override Columns Poll()
         {
             ReadOnlySpan2D<bool> keys = _keys;

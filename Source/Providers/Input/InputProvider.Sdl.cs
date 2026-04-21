@@ -19,8 +19,8 @@ partial class InputProvider
         /// <inheritdoc />
         public override bool Add(Columns key, ReadOnlySpan<char> value)
         {
-            ref var input = ref Unsafe.AsRef(Span.LValue(value.TryInto<Input>())).DangerousGetValueOrNullReference();
-            return !Unsafe.IsNullRef(input) && _keys.AndAdd(new(key, input)) is var _;
+            ref var k = ref Unsafe.AsRef(Span.LValue(value.TryInto<Input>())).DangerousGetValueOrNullReference();
+            return !Unsafe.IsNullRef(k) && _keys.AndAdd(new(key, k)) is var _;
         }
 
         /// <inheritdoc />

@@ -29,13 +29,18 @@ abstract partial class InputProvider : IDisposable, ISpanParsable<InputProvider>
     [MustDisposeResource]
     public static InputProvider Default()
     {
-        if (new Evdev(out var warnings) is var e && warnings.All(x => x is WarningException or Win32Exception))
+        if (new Evdev(out var eWarnings) is var evdev && eWarnings.All(x => x is WarningException or Win32Exception))
         {
-            EscapeyGame.Log(warnings.AsSpan());
-            return e;
+            EscapeyGame.Log(eWarnings);
+            return evdev;
         }
 
-        e.Dispose();
+        evdev.Dispose();
+
+        if (new User32(out var uWarnings) is var user && uWarnings.IsEmpty)
+            return user;
+
+        user.Dispose();
         return new Sdl();
     }
 
@@ -43,21 +48,38 @@ abstract partial class InputProvider : IDisposable, ISpanParsable<InputProvider>
     [MustDisposeResource]
     public static InputProvider Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     {
-        if (s.EqualsIgnoreCase(nameof(Sdl)))
-            return new Sdl();
-
-        if (!s.EqualsIgnoreCase(nameof(Evdev)))
-            return Default();
-
-        if (new Evdev(out var warnings) is var evdev && warnings.All(x => x is WarningException or Win32Exception))
+#pragma warning disable IDISP017
+        static InputProvider Evdev()
         {
-            EscapeyGame.Log(warnings.AsSpan());
-            return evdev;
+            Evdev evdev = new(out var warnings);
+            EscapeyGame.Log(warnings);
+
+            if (warnings.All(x => x is WarningException or Win32Exception))
+                return evdev;
+
+            evdev.Dispose();
+            return new Sdl();
         }
 
-        EscapeyGame.Log(warnings.AsSpan());
-        evdev.Dispose();
-        return new Sdl();
+        static InputProvider User32()
+        {
+            User32 user32 = new(out var warnings);
+            EscapeyGame.Log(warnings);
+
+            if (warnings.IsEmpty)
+                return user32;
+
+            user32.Dispose();
+            return new Sdl();
+        }
+#pragma warning restore IDISP017
+        return 0 switch
+        {
+            _ when s.EqualsIgnoreCase(nameof(Sdl)) => new Sdl(),
+            _ when s.EqualsIgnoreCase(nameof(Evdev)) => Evdev(),
+            _ when s.EqualsIgnoreCase(nameof(User32)) => User32(),
+            _ => Default(),
+        };
     }
 
     /// <summary>Clears all inputs.</summary>

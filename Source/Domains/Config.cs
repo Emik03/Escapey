@@ -36,9 +36,9 @@ sealed partial class Config : IDisposable
              PRIMARY CONTROLS
          ========================
 
-         Possible values: [smart], sdl, evdev.
+         Possible values: [smart], sdl, evdev, user32.
          The method in which the application captures input.
-         Smart uses evdev when this application is running on Linux/BSD, otherwise uses SDL.
+         Smart uses user32 when running on Windows, evdev when running on Linux/BSD, otherwise SDL.
          For both primary and secondary controls, the possible values depend on this value.
          Refer to the bottom portion of this document for the list of valid values from both.
          Additionally, you can denote multiple by separating multiple values with commas.
@@ -449,7 +449,7 @@ sealed partial class Config : IDisposable
             if (typeof(Config).GetProperty(column.ToString())?.GetValue(this) is List<string> list)
                 foreach (var next in list.AsSpan())
                     if (!Input.Add(column, next))
-                        EscapeyGame.Log([new FormatException($"Not a valid {column} input value: {next}")]);
+                        EscapeyGame.Log(new FormatException($"Not a valid {column} input value: {next}"));
     }
 
     /// <summary>Captures one set of training data.</summary>

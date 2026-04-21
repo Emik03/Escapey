@@ -38,7 +38,11 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
 
     /// <summary>Prints each exception to the console.</summary>
     /// <param name="exceptions">The exceptions to log.</param>
-    public static void Log(ReadOnlySpan<Exception> exceptions)
+    public static void Log(ImmutableArray<Exception> exceptions) => Log(exceptions.AsSpan());
+
+    /// <summary>Prints each exception to the console.</summary>
+    /// <param name="exceptions">The exceptions to log.</param>
+    public static void Log(params ReadOnlySpan<Exception> exceptions)
     {
         if (s_silent)
             return;
@@ -147,7 +151,7 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     void LoadConfig(object? path = null, [UsedImplicitly] FileSystemEventArgs? __ = null)
     {
         _config.Read(path as string, out var warnings);
-        Log(warnings.AsSpan());
+        Log(warnings);
 
         _animations
            .Change((Sprite.Keys.First)_config.Inverted.ToByte())

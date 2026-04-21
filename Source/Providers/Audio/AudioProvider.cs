@@ -96,7 +96,7 @@ abstract partial class AudioProvider : IDisposable, ISpanParsable<AudioProvider>
         if (PipeWire.Instance(out var warnings) is var pipeWire && warnings.IsEmpty)
             return pipeWire;
 
-        EscapeyGame.Log(warnings.AsSpan());
+        EscapeyGame.Log(warnings);
         return new Null(new float[Length]);
     }
 }
