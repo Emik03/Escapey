@@ -1,0 +1,61 @@
+.
+├── Fonts
+│   └── main
+└── Sprites
+    ├── arm l
+    │   ├── 1
+    │   ├── 2
+    │   ├── 3
+    │   ├── end
+    │   └── idle
+    ├── arm r
+    │   ├── 1
+    │   ├── 2
+    │   ├── 3
+    │   ├── end
+    │   └── idle
+    ├── body anims
+    │   ├── end
+    │   └── type
+    ├── expressions
+    │   ├── eyes
+    │   │   ├── angry
+    │   │   ├── bored
+    │   │   ├── concentrated
+    │   │   ├── confused
+    │   │   ├── frown
+    │   │   ├── happy eyebrow
+    │   │   ├── happy
+    │   │   ├── laughter
+    │   │   ├── scared
+    │   │   └── upset
+    │   └── mouths
+    │       ├── angry
+    │       ├── bored
+    │       ├── concentrated
+    │       ├── confused
+    │       ├── frown
+    │       ├── happy eyebrow
+    │       ├── happy
+    │       ├── laughter
+    │       ├── scared
+    │       └── upset
+    ├── face anims
+    │   ├── end
+    │   └── type
+    ├── idle
+    ├── keys
+    │   ├── keys1
+    │   ├── keys2
+    │   ├── overlay
+    │   └── under
+    ├── laughter marks
+    ├── legs
+    └── lipsync
+        ├── ah
+        ├── dz
+        ├── e
+        ├── f
+        ├── m
+        ├── nsl
+        └── o
