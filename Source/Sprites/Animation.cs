@@ -6,11 +6,8 @@ namespace Escapey.Sprites;
 sealed class Animation<T> : DrawableGameComponent
     where T : struct, Enum
 {
-    /// <summary>Determines whether exactly 1 instance of <see cref="Animation{T}"/> exists.</summary>
-    static bool s_hasOneInstance;
-
     /// <summary>The loaded sprites.</summary>
-    static ImmutableArray<SpriteAttribute.Loaded> s_sprites;
+    readonly ImmutableArray<SpriteAttribute.Loaded> _sprites;
 
     /// <summary>The current state.</summary>
     int _frame, _index;
@@ -25,7 +22,7 @@ sealed class Animation<T> : DrawableGameComponent
     TimeSpan _delta;
 
     /// <summary>Gets the current sprite.</summary>
-    SpriteAttribute.Loaded CurrentSprite => s_sprites[_index];
+    SpriteAttribute.Loaded CurrentSprite => _sprites[_index];
 
     /// <summary>Initializes a new instance of the <see cref="Animation{T}"/> class.</summary>
     /// <param name="game">The game that this component will belong to.</param>
@@ -34,22 +31,11 @@ sealed class Animation<T> : DrawableGameComponent
     {
         SpriteAttribute.Loaded Load(T x) => SpriteAttribute.Loaded.With(game, x);
 
-        if (!s_hasOneInstance)
-        {
-            if (Instance is not null)
-                s_hasOneInstance = true;
-
-            Instance = Instance is null ? this : null;
-        }
-
-        if (s_sprites.IsDefault)
-            s_sprites = ImmutableCollectionsMarshal.AsImmutableArray(Enum.GetValues<T>().ConvertAll(Load));
+        if (_sprites.IsDefault)
+            _sprites = ImmutableCollectionsMarshal.AsImmutableArray(Enum.GetValues<T>().ConvertAll(Load));
 
         _frame = LastFrame;
     }
-
-    /// <summary>Gets the only instance, or <see langword="null"/> if none or more than one were created.</summary>
-    public static Animation<T>? Instance { get; private set; }
 
     /// <summary>Gets or sets the minimum number of frames to wait before accepting a new state.</summary>
     public required int Min { get; init; }
@@ -94,7 +80,7 @@ sealed class Animation<T> : DrawableGameComponent
     /// <returns>Itself.</returns>
     public Animation<T> Change(T value)
     {
-        if (value.AsInt() is var i && i < 0 || i >= s_sprites.Length || i == _index || _frame < LastFrame.Min(Min))
+        if (value.AsInt() is var i && i < 0 || i >= _sprites.Length || i == _index || _frame < LastFrame.Min(Min))
             return this;
 
         _index = i;

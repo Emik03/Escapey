@@ -129,12 +129,6 @@ sealed class Animations(Letterboxed2DGame game) : DrawableGameComponent(game), I
         where T : allows ref struct
         where TA : struct, Enum
     {
-        if (Animation<TA>.Instance is { } instance)
-        {
-            a(instance, ref x);
-            return this;
-        }
-
         var animations = _animations.AsSpan();
         ref var start = ref MemoryMarshal.GetReference(animations);
         ref readonly var end = ref Unsafe.Add(ref start, animations.Length);
