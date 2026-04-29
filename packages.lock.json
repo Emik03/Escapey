@@ -138,9 +138,9 @@
       },
       "StaticLambda.Fody": {
         "type": "Direct",
-        "requested": "[1.1.2, )",
-        "resolved": "1.1.2",
-        "contentHash": "M87LvfaVuG1xh1fDmta0jrvH/ama1rdCmnd+IKkZ6yXEiHikkZgsEwi9oQf9jx/25CP96LWnfEL2OJqRsAFkfQ=="
+        "requested": "[1.1.0, )",
+        "resolved": "1.1.0",
+        "contentHash": "Znant6dbREKt0rn4WkP5Z96k2cIo/6AlctoYqmbem0NsM4rnFkaWBXN2spxX9LBGzRnvBA03pGYbpC9gfzqKKg=="
       },
       "Text.Analyzers": {
         "type": "Direct",

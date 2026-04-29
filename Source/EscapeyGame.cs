@@ -60,22 +60,6 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
         base.Initialize();
         _ = IsDesktop && (Window.IsBorderless = true);
 
-        _animations = new Animations(this)
-           .Add<Sprite.Legs>()
-           .Add<Sprite.Body>()
-           .Add(Sprite.Eyes.Happy)
-           .Add(Sprite.Mouth.Happy, 3)
-           .Add<Sprite.Keys.Background>()
-           .Add<Sprite.Keys.First>(visible: false)
-           .Add<Sprite.Keys.Second>(visible: false)
-           .Add<Sprite.Keys.Third>(visible: false)
-           .Add<Sprite.Keys.Fourth>(visible: false)
-           .Add<Sprite.Keys.Overlay>()
-           .Add<Sprite.Arm.Left>()
-           .Add<Sprite.Arm.Right>()
-           .Add<Sprite.LaughterMarks>()
-           .Sync<Sprite.Legs, Sprite.Arm.Left>();
-
         _watcher = new(Path.GetDirectoryName(Config.TextFile).OrEmpty(), Path.GetFileName(Config.TextFile))
         {
             EnableRaisingEvents = true,
@@ -148,12 +132,28 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     /// <summary>Loads or reloads the config.</summary>
     /// <param name="path">The sender, optionally containing the file to load.</param>
     /// <param name="__">The event args, ignored.</param>
+    [MemberNotNull(nameof(_animations))]
     void LoadConfig(object? path = null, [UsedImplicitly] FileSystemEventArgs? __ = null)
     {
         _config.Read(path as string, out var warnings);
+        Content.RootDirectory = _config.Skin;
         Log(warnings);
 
-        _animations
+        _animations = new Animations(this)
+           .Add<Sprite.Legs>()
+           .Add<Sprite.Body>()
+           .Add(Sprite.Eyes.Happy)
+           .Add(Sprite.Mouth.Happy, 3)
+           .Add<Sprite.Keys.Background>()
+           .Add<Sprite.Keys.First>(visible: false)
+           .Add<Sprite.Keys.Second>(visible: false)
+           .Add<Sprite.Keys.Third>(visible: false)
+           .Add<Sprite.Keys.Fourth>(visible: false)
+           .Add<Sprite.Keys.Overlay>()
+           .Add<Sprite.Arm.Left>()
+           .Add<Sprite.Arm.Right>()
+           .Add<Sprite.LaughterMarks>()
+           .Sync<Sprite.Legs, Sprite.Arm.Left>()
            .Change((Sprite.Keys.First)_config.Inverted.ToByte())
            .Change((Sprite.Keys.Second)_config.Inverted.ToByte())
            .Change((Sprite.Keys.Third)_config.Inverted.ToByte())

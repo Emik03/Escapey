@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Optimize>true</Optimize>
+        <Platforms>AnyCPU</Platforms>
+        <FileVersion>1.6</FileVersion>
         <DebugType>portable</DebugType>
         <OutputType>WinExe</OutputType>
-        <FileVersion>1.5.5</FileVersion>
         <CopyrightSince>2024</CopyrightSince>
         <TransformOnBuild>true</TransformOnBuild>
         <TargetFramework>net10.0</TargetFramework>
@@ -14,7 +15,6 @@
         <Description>The application for drawing the adorable character Escapey.</Description>
         <PackageTags>MonoGame Application Input SDL evdev Listener Audio Processor Processing Alc PipeWire Machine Learning ML Keys Config</PackageTags>
         <Configurations>Debug;Release;DesktopGL</Configurations>
-        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)' == 'Android'">
         <OutputType>Exe</OutputType>

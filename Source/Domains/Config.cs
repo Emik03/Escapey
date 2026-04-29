@@ -187,12 +187,22 @@ sealed partial class Config : IDisposable
     [Description(
          """
 
+         The directory containing the "Fonts" and "Sprites" subdirectory to load graphics from.
+         For images, supported formats include: bmp, dds, gif, jpeg, jpg, png, tif, and xnb.
+         This must be a relative path. Defaults to [].
+         """
+     ), JsonPropertyOrder(23)]
+    public string Skin { get; private set; } = "";
+
+    [Description(
+         """
+
          Possible values: [true], false.
          Should the leftmost button be considered:
          - ...from our point of view? (true)
          - ...from their point of view? (false)
          """
-     ), JsonPropertyOrder(23)]
+     ), JsonPropertyOrder(24)]
     public bool Inverted { get; private set; } = true;
 
     [Description(
@@ -201,7 +211,7 @@ sealed partial class Config : IDisposable
          Possible values: Any number between 0 and [1].
          Determines the brightness of the eyes and face when rainbow mode is on.
          """
-     ), JsonPropertyOrder(24)]
+     ), JsonPropertyOrder(25)]
     public float RainbowBrightness
     {
         get;
@@ -214,7 +224,7 @@ sealed partial class Config : IDisposable
          Possible values: Any number between 0 and [1].
          Determines the saturation of the eyes and face when rainbow mode is on.
          """
-     ), JsonPropertyOrder(25)]
+     ), JsonPropertyOrder(26)]
     public float RainbowSaturation
     {
         get;
@@ -227,7 +237,7 @@ sealed partial class Config : IDisposable
          Possible values: Any number between 0 and [1].
          Determines the speed in which the rainbow colors cycle through.
          """
-     ), JsonPropertyOrder(26)]
+     ), JsonPropertyOrder(27)]
     public float RainbowSpeed
     {
         get;
@@ -247,7 +257,7 @@ sealed partial class Config : IDisposable
          https://developer.mozilla.org/en-US/docs/Web/CSS/named-color
          Defaults to [transparent], effectively disabling this feature.
          """
-     ), JsonPropertyOrder(27)]
+     ), JsonPropertyOrder(28)]
     public ParsableColor FrequencyGraph { get; private set; } = Color.Transparent;
 
     [Description(
@@ -257,7 +267,7 @@ sealed partial class Config : IDisposable
          By default, the value is [0.2].
          The width of the last guesses visualization relative to the entire screen.
          """
-     ), JsonPropertyOrder(28)]
+     ), JsonPropertyOrder(29)]
     public float OrderWidth
     {
         get;
@@ -271,7 +281,7 @@ sealed partial class Config : IDisposable
          By default, the value is [0.8].
          The width of the frequency spectrum relative to the entire screen.
          """
-     ), JsonPropertyOrder(29)]
+     ), JsonPropertyOrder(30)]
     public float FrequencyWidth
     {
         get;
@@ -285,7 +295,7 @@ sealed partial class Config : IDisposable
          The zoom factor for the frequency spectrum.
          1 shows what the model receives as input, but makes the lower frequencies harder to see.
          """
-     ), JsonPropertyOrder(30)]
+     ), JsonPropertyOrder(31)]
     public byte FrequencyScale { get; private set; } = 1;
 
     /// <inheritdoc />

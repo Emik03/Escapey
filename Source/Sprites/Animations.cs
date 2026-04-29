@@ -3,8 +3,7 @@ namespace Escapey.Sprites;
 
 /// <summary>Maintains a list of <see cref="Animation{T}"/> instances.</summary>
 /// <inheritdoc cref="DrawableGameComponent(Game)"/>
-sealed class Animations(Letterboxed2DGame game)
-    : DrawableGameComponent(game), IReadOnlyList<DrawableGameComponent>
+sealed class Animations(Letterboxed2DGame game) : DrawableGameComponent(game), IReadOnlyList<DrawableGameComponent>
 {
     /// <summary>Executes an action for each animation of type <typeparamref name="T"/>.</summary>
     /// <typeparam name="T">The type of sprites.</typeparam>

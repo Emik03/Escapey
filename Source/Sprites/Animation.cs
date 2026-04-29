@@ -32,7 +32,7 @@ sealed class Animation<T> : DrawableGameComponent
     public Animation(Game game)
         : base(game)
     {
-        SpriteAttribute.Loaded Load(T x) => SpriteAttribute.Loaded.With(game.Content, x);
+        SpriteAttribute.Loaded Load(T x) => SpriteAttribute.Loaded.With(game, x);
 
         if (!s_hasOneInstance)
         {

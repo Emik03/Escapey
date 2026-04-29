@@ -15,15 +15,15 @@ sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)
     {
         /// <summary>Gets the <see cref="Loaded"/> for <typeparamref name="T"/>.</summary>
         /// <typeparam name="T">The type of sprites.</typeparam>
-        /// <param name="manager">The content manager to load from.</param>
+        /// <param name="game">The game to load for.</param>
         /// <param name="x">The set of sprites to load.</param>
         /// <returns>The <see cref="Loaded"/> for <typeparamref name="T"/></returns>
-        public static Loaded With<T>(ContentManager manager, T x)
+        public static Loaded With<T>(Game game, T x)
             where T : struct, Enum =>
             typeof(T).FindPathToNull(x => x.DeclaringType)
                .Select(x => x.GetCustomAttribute<SpriteAttribute>())
                .Aggregate(x.GetCustomAttribute<SpriteAttribute>()!, Join)
-               .Load(manager);
+               .Load(game);
     }
 
     /// <summary>Gets or sets whether the animation should loop.</summary>
@@ -34,6 +34,13 @@ sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)
 
     /// <summary>Gets the path.</summary>
     public string? AssetPath => assetPath;
+
+    /// <summary>Gets the full path.</summary>
+    /// <param name="game">The game.</param>
+    /// <param name="path">The path.</param>
+    /// <returns>The full path.</returns>
+    public static string GetFullPath(Game game, string path) =>
+        Path.Combine(Path.GetDirectoryName(Environment.ProcessPath) ?? "", game.Content.RootDirectory, path);
 
     /// <summary>Joins two <see cref="SpriteAttribute"/> instances.</summary>
     /// <param name="accumulator">The accumulator.</param>
@@ -46,32 +53,49 @@ sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)
             Looping = accumulator.Looping || (next?.Looping ?? false),
         };
 
-    /// <summary>Loads itself onto the provided <see cref="ContentManager"/>.</summary>
-    /// <param name="manager">The content manager to load from.</param>
-    /// <returns>The <see cref="Loaded"/> instance.</returns>
-    public Loaded Load(ContentManager manager)
+    /// <summary>Runs the delegate in a context where <see cref="ContentManager.RootDirectory"/> is empty.</summary>
+    /// <typeparam name="T">The resulting type of the delegate.</typeparam>
+    /// <param name="game">The game.</param>
+    /// <param name="converter">The delegate to call.</param>
+    /// <returns>The value returned from the parameter <paramref name="converter"/>.</returns>
+    public static T FromRoot<T>(Game game, [InstantHandle] Converter<Game, T> converter)
     {
-        if (AssetExists(manager, AssetPath))
-            return new([manager.Load<Texture2D>(AssetPath)], FrameRate, Looping);
-
-        var textures = ImmutableArray.CreateBuilder<Texture2D>();
-
-        for (var i = 1; $"{AssetPath}/{i}" is var path && AssetExists(manager, path); i++)
-            textures.Add(manager.Load<Texture2D>(path));
-
-        return textures is []
-            ? throw new FileNotFoundException($"The following asset appears to be missing: {AssetPath}")
-            : new(textures.DrainToImmutable(), FrameRate, Looping);
+        var root = game.Content.RootDirectory;
+        game.Content.RootDirectory = "";
+        var ret = converter(game);
+        game.Content.RootDirectory = root;
+        return ret;
     }
 
+    /// <summary>Loads itself onto the provided <see cref="ContentManager"/>.</summary>
+    /// <param name="game">The content manager to load from.</param>
+    /// <returns>The <see cref="Loaded"/> instance.</returns>
+    public Loaded Load(Game game) =>
+        TryLoad(game) ?? FromRoot(game, TryLoad) ?? throw new FileNotFoundException($"Missing sprite: {AssetPath}");
+
     /// <summary>Determines if the path links to an asset.</summary>
-    /// <param name="manager">The content manager.</param>
+    /// <param name="game">The game.</param>
     /// <param name="path">The path to check.</param>
     /// <returns>Whether the parameter <paramref name="path"/> links to an asset.</returns>
-    static bool AssetExists(ContentManager manager, [NotNullWhen(true)] string? path) =>
-        path is not null &&
-        Path.Combine(Path.GetDirectoryName(Environment.ProcessPath) ?? "", manager.RootDirectory, path) is var file &&
-        Path.Exists(Path.ChangeExtension(file, "xnb"));
+    static Texture2D? FromDisk(Game game, [NotNullWhen(true)] string? path)
+    {
+        static string? WithExtension(string path, string extension) =>
+            Path.ChangeExtension(path, extension) is var file && Path.Exists(file) ? file : null;
+
+        if (path is null)
+            return null;
+
+        if (GetFullPath(game, path) is var file && WithExtension(file, "xnb") is not null)
+            return game.Content.Load<Texture2D>(file);
+
+        ReadOnlySpan<string> extensions = ["bmp", "dis", "gif", "jpeg", "jpg", "png", "tif"];
+
+        foreach (var extension in extensions)
+            if (WithExtension(file, extension) is { } fileWithExtension)
+                return Texture2D.FromFile(game.GraphicsDevice, fileWithExtension);
+
+        return null;
+    }
 
     /// <inheritdoc cref="Join(SpriteAttribute, SpriteAttribute)"/>
     static int Join(int accumulator, int? next) => accumulator is 0 ? next ?? 0 : accumulator;
@@ -80,4 +104,15 @@ sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)
     static string? Join(string? accumulator, string? next) =>
         accumulator is null ? next :
         next is null ? accumulator : $"{next}/{accumulator}";
+
+    /// <summary>Attempts to load the asset.</summary>
+    /// <param name="game">The game.</param>
+    /// <returns>The <see cref="Loaded"/> instance, if it succeeds.</returns>
+    Loaded? TryLoad(Game game) =>
+        FromDisk(game, AssetPath) is { } still ? new([still], FrameRate, Looping) :
+        Enumerable.Range(1, Array.MaxLength)
+           .Select(x => FromDisk(game, $"{AssetPath}/{x}"))
+           .TakeUntil(x => x is null)
+           .Filter()
+           .ToImmutableArray() is var textures and not [] ? new(textures, FrameRate, Looping) : null;
 }

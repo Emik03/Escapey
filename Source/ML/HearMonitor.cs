@@ -14,6 +14,8 @@ sealed class HearMonitor(
 )
     : DrawableGameComponent(game)
 {
+    const string Font = "Fonts/main";
+
     /// <summary>The number of occurrences of each mouth state.</summary>
     readonly int[] _count = new int[Config.Mouths.Length];
 
@@ -22,7 +24,9 @@ sealed class HearMonitor(
         ml?.Model.CreatePredictionEngine<AudioSegment, Prediction>(transformer);
 
     /// <summary>The font to draw with.</summary>
-    readonly SpriteFont _font = game.Content.Load<SpriteFont>("Fonts/main");
+    readonly SpriteFont _font = Path.Exists(SpriteAttribute.GetFullPath(game, Font))
+        ? LoadFont(game)
+        : SpriteAttribute.FromRoot(game, LoadFont);
 
     /// <summary>The previous mouth states.</summary>
     Sprite.Mouth[] _order = [];
@@ -145,6 +149,11 @@ sealed class HearMonitor(
         Vector2 position = new((GraphicsDevice.Width() - 72) / 2f, GraphicsDevice.Height() - 108);
         game.Batch.DrawString(_font, _prediction.ToString(), position, color);
     }
+
+    /// <summary>Loads the font.</summary>
+    /// <param name="game">The game.</param>
+    /// <returns>The font.</returns>
+    static SpriteFont LoadFont(Game game) => game.Content.Load<SpriteFont>(Font);
 
     /// <summary>Loads or saves the data.</summary>
     /// <param name="ml">The machine learning context.</param>
