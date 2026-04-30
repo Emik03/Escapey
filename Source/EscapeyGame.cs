@@ -139,7 +139,8 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
         Content.RootDirectory = _config.Skin;
         Log(warnings);
 
-        _animations = new Animations(this)
+        (GraphicsDeviceManager.PreferredBackBufferHeight, GraphicsDeviceManager.PreferredBackBufferHeight) =
+            (_animations = new(this))
            .Add<Sprite.Legs>()
            .Add<Sprite.Body>()
            .Add(Sprite.Eyes.Happy)
@@ -157,7 +158,10 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
            .Change((Sprite.Keys.First)_config.Inverted.ToByte())
            .Change((Sprite.Keys.Second)_config.Inverted.ToByte())
            .Change((Sprite.Keys.Third)_config.Inverted.ToByte())
-           .Change((Sprite.Keys.Fourth)_config.Inverted.ToByte());
+           .Change((Sprite.Keys.Fourth)_config.Inverted.ToByte())
+           .Size<Sprite.Body>();
+
+        GraphicsDeviceManager.ApplyChanges();
     }
 
     /// <summary>Loads or reloads the config.</summary>

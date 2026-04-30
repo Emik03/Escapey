@@ -99,13 +99,24 @@ sealed class Animations(Letterboxed2DGame game) : DrawableGameComponent(game), I
     /// <inheritdoc />
     public IEnumerator<DrawableGameComponent> GetEnumerator() => _animations.GetEnumerator();
 
+    /// <summary>Gets the largest animation.</summary>
+    /// <typeparam name="T">The type of sprites.</typeparam>
+    /// <returns>The largest size.</returns>
+    public Point Size<T>()
+        where T : struct, Enum
+    {
+        Point max = default;
+        ForEach<Point, T>(ref max, static (a, ref v) => v = new(v.X.Max(a.Size.X), v.Y.Max(a.Size.Y)));
+        return max;
+    }
+
     /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     /// <summary>Executes an action for each animation.</summary>
+    /// <typeparam name="T">The type of the state.</typeparam>
     /// <param name="x">The state to pass to the action.</param>
     /// <param name="a">The action to execute.</param>
-    /// <typeparam name="T">The type of the state.</typeparam>
     /// <returns>Itself.</returns>
     void ForEach<T>(ref T x, [RequireStaticDelegate(IsError = true)] Act<DrawableGameComponent, T> a)
         where T : allows ref struct
@@ -120,10 +131,10 @@ sealed class Animations(Letterboxed2DGame game) : DrawableGameComponent(game), I
     }
 
     /// <summary>Executes an action for each animation of type <typeparamref name="TA"/>.</summary>
-    /// <param name="x">The state to pass to the action.</param>
-    /// <param name="a">The action to execute.</param>
     /// <typeparam name="T">The type of the state.</typeparam>
     /// <typeparam name="TA">The type of sprites.</typeparam>
+    /// <param name="x">The state to pass to the action.</param>
+    /// <param name="a">The action to execute.</param>
     /// <returns>Itself.</returns>
     Animations ForEach<T, TA>(ref T x, [RequireStaticDelegate(IsError = true)] Act<Animation<TA>, T> a)
         where T : allows ref struct

@@ -43,6 +43,9 @@ sealed class Animation<T> : DrawableGameComponent
     /// <summary>The sprite batch to draw with.</summary>
     public required SpriteBatch Batch { get; init; }
 
+    /// <summary>Gets the size.</summary>
+    public Point Size => _sprites[0].Textures[0].Bounds.Size;
+
     /// <summary>Gets the number of frames of the current sprite.</summary>
     int FrameLength => CurrentSprite.Textures.Length;
 
