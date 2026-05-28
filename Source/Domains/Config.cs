@@ -403,6 +403,7 @@ sealed partial class Config : IDisposable
         {
             Console.CursorLeft = cursor;
             Console.Write($"Processing {bag.Count} / {capacity}.");
+            Thread.Sleep(10);
         }
 
         Console.CursorLeft = cursor;
@@ -438,7 +439,7 @@ sealed partial class Config : IDisposable
                 await Task.Yield();
 #if DEBUG
                 if (Go(Add, out var e))
-                    EscapeyGame.Log([e]);
+                    EscapeyGame.Log(e);
 #else
                 Add();
 #endif

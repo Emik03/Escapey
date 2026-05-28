@@ -10,11 +10,17 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     /// <summary>The config.</summary>
     readonly Config _config = new();
 
+    /// <summary>Whether the <see cref="GraphicsDeviceManager"/> needs to be reloaded.</summary>
+    bool _reloadGraphics;
+
     /// <summary>The set of animations.</summary>
     Animations _animations = null!;
 
     /// <summary>The file system watcher for the config.</summary>
-    FileSystemWatcher _watcher = null!;
+    FileSystemWatcher _configWatcher = null!;
+
+    /// <summary>The file system watcher for the skin folder.</summary>
+    FileSystemWatcher? _skinWatcher;
 
     /// <summary>The model for speech recognition.</summary>
     HearMonitor _hearMonitor = null!;
@@ -24,10 +30,6 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
 
     /// <summary>Manages toggle states.</summary>
     Toggle _rainbow, _visible;
-
-    /// <inheritdoc />
-    public override BlendState BatchBlendState =>
-        _config.FrequencyGraph.Result.A is 0 ? BlendState.AlphaBlend : BlendState.NonPremultiplied;
 
     /// <summary>Runs the game.</summary>
     public static void Go()
@@ -42,13 +44,16 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
 
     /// <summary>Prints each exception to the console.</summary>
     /// <param name="exceptions">The exceptions to log.</param>
-    public static void Log(params ReadOnlySpan<Exception> exceptions)
+    public static void Log(params ReadOnlySpan<Exception?> exceptions)
     {
         if (s_silent)
             return;
 
         foreach (var ex in exceptions)
         {
+            if (ex is null)
+                continue;
+
             Console.Error.WriteLine($"{ex.Message}\n{ex.StackTrace.SplitLines()[..3]}");
             Debug.WriteLine(ex);
         }
@@ -60,14 +65,11 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
         base.Initialize();
         _ = IsDesktop && (Window.IsBorderless = true);
 
-        _watcher = new(Path.GetDirectoryName(Config.TextFile).OrEmpty(), Path.GetFileName(Config.TextFile))
-        {
-            EnableRaisingEvents = true,
-        };
+        (_configWatcher = new(Path.GetDirectoryName(Config.TextFile) ?? "", Path.GetFileName(Config.TextFile))
+            { EnableRaisingEvents = true }).Changed += LoadConfig;
 
-        LoadConfig();
         Window.FileDrop += LoadConfig;
-        _watcher.Changed += LoadConfig;
+        LoadConfig();
         _hearMonitor = HearMonitor.From(this, _config);
     }
 
@@ -76,8 +78,12 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     {
         if (isDisposing)
         {
+            Window.FileDrop -= LoadConfig;
+            _skinWatcher?.Changed -= LoadConfig;
+            _configWatcher.Changed -= LoadConfig;
             _hearMonitor.Dispose();
-            _watcher.Dispose();
+            _skinWatcher?.Dispose();
+            _configWatcher.Dispose();
             _config.Dispose();
         }
 
@@ -87,6 +93,12 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     /// <inheritdoc />
     protected override void Draw(GameTime gameTime)
     {
+        if (_reloadGraphics)
+        {
+            GraphicsDeviceManager.ApplyChanges();
+            _reloadGraphics = false;
+        }
+
         var sound = _hearMonitor.Poll();
         var columns = _config.Input.Poll().InvertIf(_config.Inverted);
         var count = columns.ButtonCount();
@@ -135,34 +147,55 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     [MemberNotNull(nameof(_animations))]
     void LoadConfig(object? path = null, [UsedImplicitly] FileSystemEventArgs? __ = null)
     {
-        _config.Read(path as string, out var warnings);
-        Content.RootDirectory = _config.Skin;
-        Content.Unload();
-        Log(warnings);
+        try
+        {
+            _config.Read(path as string, out var warnings);
 
-        (GraphicsDeviceManager.PreferredBackBufferWidth, GraphicsDeviceManager.PreferredBackBufferHeight) =
-            (_animations = new(this))
-           .Add<Sprite.Legs>()
-           .Add<Sprite.Body>()
-           .Add(Sprite.Eyes.Happy)
-           .Add(Sprite.Mouth.Happy, 3)
-           .Add<Sprite.Keys.Background>()
-           .Add<Sprite.Keys.First>(visible: false)
-           .Add<Sprite.Keys.Second>(visible: false)
-           .Add<Sprite.Keys.Third>(visible: false)
-           .Add<Sprite.Keys.Fourth>(visible: false)
-           .Add<Sprite.Keys.Overlay>()
-           .Add<Sprite.Arm.Left>()
-           .Add<Sprite.Arm.Right>()
-           .Add<Sprite.LaughterMarks>()
-           .Sync<Sprite.Legs, Sprite.Arm.Left>()
-           .Change((Sprite.Keys.First)_config.Inverted.ToByte())
-           .Change((Sprite.Keys.Second)_config.Inverted.ToByte())
-           .Change((Sprite.Keys.Third)_config.Inverted.ToByte())
-           .Change((Sprite.Keys.Fourth)_config.Inverted.ToByte())
-           .Size<Sprite.Body>();
+            if (_animations is not null && Content.RootDirectory == _config.Skin)
+                return;
 
-        GraphicsDeviceManager.ApplyChanges();
+            _skinWatcher?.Changed -= LoadConfig;
+            _skinWatcher?.Dispose();
+
+            (_skinWatcher = !string.IsNullOrWhiteSpace(_config.Skin) &&
+                Path.Join(Environment.ProcessPath, _config.Skin) is var directory &&
+                Directory.Exists(directory)
+                    ? new(directory) { EnableRaisingEvents = true }
+                    : null)?.Changed += LoadConfig;
+
+            Content.RootDirectory = _config.Skin;
+            Content.Unload();
+            Log(warnings);
+
+            (GraphicsDeviceManager.PreferredBackBufferWidth, GraphicsDeviceManager.PreferredBackBufferHeight) =
+                (_animations = new(this))
+               .Add<Sprite.Legs>()
+               .Add<Sprite.Body>()
+               .Add(Sprite.Eyes.Happy)
+               .Add(Sprite.Mouth.Happy, 3)
+               .Add<Sprite.Keys.Background>()
+               .Add<Sprite.Keys.First>(visible: false)
+               .Add<Sprite.Keys.Second>(visible: false)
+               .Add<Sprite.Keys.Third>(visible: false)
+               .Add<Sprite.Keys.Fourth>(visible: false)
+               .Add<Sprite.Keys.Overlay>()
+               .Add<Sprite.Arm.Left>()
+               .Add<Sprite.Arm.Right>()
+               .Add<Sprite.LaughterMarks>()
+               .Sync<Sprite.Legs, Sprite.Arm.Left>()
+               .Change((Sprite.Keys.First)_config.Inverted.ToByte())
+               .Change((Sprite.Keys.Second)_config.Inverted.ToByte())
+               .Change((Sprite.Keys.Third)_config.Inverted.ToByte())
+               .Change((Sprite.Keys.Fourth)_config.Inverted.ToByte())
+               .Size<Sprite.Body>();
+
+            _reloadGraphics = true;
+        }
+        catch (Exception e)
+        {
+            Log(e);
+            throw;
+        }
     }
 
     /// <summary>Loads or reloads the config.</summary>

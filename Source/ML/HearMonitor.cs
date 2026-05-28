@@ -76,7 +76,7 @@ sealed class HearMonitor(
 
         ml.Model.Save(transformer, data.Schema, modelFile);
         var evaluate = ml.BinaryClassification.Evaluate(data);
-        Console.WriteLine($"Accuracy: {evaluate.Accuracy:p2}, Loss: {evaluate.LogLoss}.");
+        Console.WriteLine($"Accuracy: {evaluate.Accuracy:p2}");
         return new(game, ml, transformer, config);
     }
 

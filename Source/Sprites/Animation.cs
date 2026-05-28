@@ -41,16 +41,16 @@ sealed class Animation<T> : DrawableGameComponent
     public required SpriteBatch Batch { get; init; }
 
     /// <summary>Gets the size.</summary>
-    public Point Size => _sprites[0].Textures[0].Bounds.Size;
+    public Point Size => _sprites[0].Textures is { IsDefault: false } and [var first, ..] ? first.Bounds.Size : default;
 
     /// <summary>Gets the number of frames of the current sprite.</summary>
-    int FrameLength => CurrentSprite.Textures.Length;
+    int FrameLength => CurrentSprite.Textures is { IsDefault: false, Length: var length } ? length : 0;
 
     /// <summary>Gets the last frame of the current sprite.</summary>
     int LastFrame => FrameLength - 1;
 
     /// <summary>Gets the current texture.</summary>
-    Texture2D CurrentTexture => CurrentSprite.Textures[_frame];
+    Texture2D? CurrentTexture => CurrentSprite.Textures is { IsDefault: false } textures ? textures[_frame] : null;
 
     /// <inheritdoc />
     public override void Draw(GameTime time)
@@ -72,7 +72,8 @@ sealed class Animation<T> : DrawableGameComponent
             }
         }
 
-        Batch.Draw(CurrentTexture, new Vector2(0, DrawOrder), _color);
+        if (CurrentTexture is { } texture)
+            Batch.Draw(texture, new Vector2(0, DrawOrder), _color);
     }
 
     /// <summary>Changes the state.</summary>
