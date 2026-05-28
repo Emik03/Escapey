@@ -27,11 +27,12 @@ sealed class Animation<T> : DrawableGameComponent
     /// <summary>Initializes a new instance of the <see cref="Animation{T}"/> class.</summary>
     /// <param name="game">The game that this component will belong to.</param>
     public Animation(Game game)
-        : base(game) =>
-        (_sprites, _frame) = (ImmutableArray.CreateRange(
-            ImmutableCollectionsMarshal.AsImmutableArray(Enum.GetValues<T>()),
-            x => SpriteAttribute.Loaded.With(game, x)
-        ), LastFrame);
+        : base(game)
+    {
+        var values = ImmutableCollectionsMarshal.AsImmutableArray(Enum.GetValues<T>());
+        _sprites = ImmutableArray.CreateRange(values, (x, g) => SpriteAttribute.Loaded.With(g, x), game);
+        _frame = LastFrame;
+    }
 
     /// <summary>Gets or sets the minimum number of frames to wait before accepting a new state.</summary>
     public required int Min { get; init; }
