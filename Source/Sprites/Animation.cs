@@ -28,10 +28,10 @@ sealed class Animation<T> : DrawableGameComponent
     /// <param name="game">The game that this component will belong to.</param>
     public Animation(Game game)
         : base(game) =>
-        (_frame, _sprites) = (LastFrame, ImmutableArray.CreateRange(
+        (_sprites, _frame) = (ImmutableArray.CreateRange(
             ImmutableCollectionsMarshal.AsImmutableArray(Enum.GetValues<T>()),
             x => SpriteAttribute.Loaded.With(game, x)
-        ));
+        ), LastFrame);
 
     /// <summary>Gets or sets the minimum number of frames to wait before accepting a new state.</summary>
     public required int Min { get; init; }

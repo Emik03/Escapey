@@ -112,12 +112,12 @@
       },
       "MonoGame.Framework.DesktopGL": {
         "type": "Direct",
-        "requested": "[3.8.5-preview.4, )",
-        "resolved": "3.8.5-preview.4",
-        "contentHash": "Mo9lNnGHvF5yojJnKF3DwXhLVc3LJ5x/DSmubmfF1TQE0njl8vgN1dX7W3SBuCsaazlzXIyMgTteRfO/J+9Trg==",
+        "requested": "[3.8.5-preview.6, )",
+        "resolved": "3.8.5-preview.6",
+        "contentHash": "O1xKxaH8ual49llt06uJ7zGjZyDTzzTeYLtnRIehndn4HEOlDupx2UqRWl9hAV4oryChnupA9izDtdqUQ37xbQ==",
         "dependencies": {
-          "MonoGame.Library.OpenAL": "1.24.3.2",
-          "MonoGame.Library.SDL": "2.32.10.1",
+          "MonoGame.Library.OpenAL": "1.24.3.4",
+          "MonoGame.Library.SDL": "2.32.10.2",
           "NVorbis": "0.10.4"
         }
       },
@@ -168,13 +168,13 @@
       },
       "MonoGame.Library.OpenAL": {
         "type": "Transitive",
-        "resolved": "1.24.3.2",
-        "contentHash": "nGRsXQXs+NSUC3C5w90hFQfyKdZPpBnHnyg2w+Dw/2pUH7s+CoRWTJNYbzzdJf3+aeUvfvG4rTbFvMKDDj5olA=="
+        "resolved": "1.24.3.4",
+        "contentHash": "/FhE0hblY9owGPvIHnMbH+6kXtjfl+/t3Cm776RQiZnGyxGy2Qd9pTAzclLuMO8pvtjiGLYkkRwjRciUA4XFyQ=="
       },
       "MonoGame.Library.SDL": {
         "type": "Transitive",
-        "resolved": "2.32.10.1",
-        "contentHash": "mklIUC50O8y2zQ+BcT7tmnBrVT8ZQuHiODW3LxGWJ5UZIZM0PaePJfGuzZB9bSbdP3WvV+RtyvTfnMY7wz0f0w=="
+        "resolved": "2.32.10.2",
+        "contentHash": "mtnmWr50KgH2Ui9fPscHPMI3sXgb5NBRnPS7igi4ViJ23ROdP+MLi/j9CmLWX47KuXvI3Bp5BElCDVwRUlswgg=="
       },
       "Newtonsoft.Json": {
         "type": "Transitive",
