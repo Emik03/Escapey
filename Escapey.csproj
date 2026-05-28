@@ -2,9 +2,9 @@
     <PropertyGroup>
         <Optimize>true</Optimize>
         <Platforms>AnyCPU</Platforms>
-        <FileVersion>1.6</FileVersion>
         <DebugType>portable</DebugType>
         <OutputType>WinExe</OutputType>
+        <FileVersion>1.6.1</FileVersion>
         <CopyrightSince>2024</CopyrightSince>
         <TransformOnBuild>true</TransformOnBuild>
         <TargetFramework>net10.0</TargetFramework>
@@ -44,11 +44,11 @@
         </None>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Android'">
-        <PackageReference Include="MonoGame.Framework.Android" Version="3.8.5-preview.4"/>
+        <PackageReference Include="MonoGame.Framework.Android" Version="3.8.5-preview.6"/>
         <Reference Include="../../ModulePack/Assets/Plugins/Managed/wawa.*.dll"/>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'DesktopGL'">
-        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.5-preview.4"/>
+        <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.5-preview.6"/>
     </ItemGroup>
     <Target Name="CopyToDestination" AfterTargets="PostBuildEvent">
         <Exec Command="$(CopyCommand) &quot;$(ProjectDir)/Content/bin/Sprites&quot; &quot;$(OutDir)/Sprites&quot;"/>

@@ -137,9 +137,10 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     {
         _config.Read(path as string, out var warnings);
         Content.RootDirectory = _config.Skin;
+        Content.Unload();
         Log(warnings);
 
-        (GraphicsDeviceManager.PreferredBackBufferHeight, GraphicsDeviceManager.PreferredBackBufferHeight) =
+        (GraphicsDeviceManager.PreferredBackBufferWidth, GraphicsDeviceManager.PreferredBackBufferHeight) =
             (_animations = new(this))
            .Add<Sprite.Legs>()
            .Add<Sprite.Body>()
