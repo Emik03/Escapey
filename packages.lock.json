@@ -196,6 +196,40 @@
         "resolved": "9.0.4",
         "contentHash": "ynVvqELpMWGQJ1Y90rlAmuTiSQIkXD0W5AMj7pVpEjECmrcIJLexIBblgccerHFijayfcsl1KCbkk+Sg5cS9vQ=="
       }
+    },
+    "net10.0/win-x64": {
+      "Microsoft.ML": {
+        "type": "Direct",
+        "requested": "[6.0.0-preview.26160.2, )",
+        "resolved": "6.0.0-preview.26160.2",
+        "contentHash": "r/yUe5aGW7BL6ZyLaD7Fdsp2ocoreZXIpPfas95pigQiktaB1KoFFj4rEx35gM/A3M0xeu6lZYjpCrEByBwNhQ==",
+        "dependencies": {
+          "Microsoft.Bcl.AsyncInterfaces": "9.0.4",
+          "Microsoft.ML.CpuMath": "6.0.0-preview.26160.2",
+          "Microsoft.ML.DataView": "6.0.0-preview.26160.2",
+          "Newtonsoft.Json": "13.0.3",
+          "System.CodeDom": "9.0.4",
+          "System.Numerics.Tensors": "9.0.4"
+        }
+      },
+      "Microsoft.ML.CpuMath": {
+        "type": "Transitive",
+        "resolved": "6.0.0-preview.26160.2",
+        "contentHash": "FsVNASiQrgXz1P+Y6k5SYez5TpUPFEF2sGNWItfheqzKTYB+LDQPUNhtppPiR0ipAkiBRRlXC5FxPyK2x3tRjA==",
+        "dependencies": {
+          "System.Numerics.Tensors": "9.0.4"
+        }
+      },
+      "MonoGame.Library.OpenAL": {
+        "type": "Transitive",
+        "resolved": "1.24.3.4",
+        "contentHash": "/FhE0hblY9owGPvIHnMbH+6kXtjfl+/t3Cm776RQiZnGyxGy2Qd9pTAzclLuMO8pvtjiGLYkkRwjRciUA4XFyQ=="
+      },
+      "MonoGame.Library.SDL": {
+        "type": "Transitive",
+        "resolved": "2.32.10.2",
+        "contentHash": "mtnmWr50KgH2Ui9fPscHPMI3sXgb5NBRnPS7igi4ViJ23ROdP+MLi/j9CmLWX47KuXvI3Bp5BElCDVwRUlswgg=="
+      }
     }
   }
 }

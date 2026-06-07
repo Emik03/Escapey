@@ -1,6 +1,6 @@
 # Escapey
 
-[![License](https://img.shields.io/github/license/Emik03/Escapey.svg?color=6272a4&style=for-the-badge)](https://github.com/Emik03/Escapey/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/Emik03/Escapey.svg?color=6272a4&style=for-the-badge)](https://github.com/Emik03/Escapey/blob/main/LICENSE.md)
 
 The application for drawing the adorable character Escapey. Tracks input and audio, cross-platform, and with dedicated support for evdev and PipeWire.
 
@@ -19,4 +19,4 @@ Issues and pull requests are welcome to help this repository be the best it can 
 
 ## License
 
-This repository falls under the [MPL-2 license](https://www.mozilla.org/en-US/MPL/2.0/).
+This repository falls under [PolyForm Strict License 1.0.0](https://polyformproject.org/licenses/strict/1.0.0).
