@@ -452,18 +452,6 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/body anims/type/3.png
 
-#begin Sprites/body.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprites/body.png
-
 #begin Sprites/expressions/eyes/angry.png
 /importer:TextureImporter
 /processor:TextureProcessor
