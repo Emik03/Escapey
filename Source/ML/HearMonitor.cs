@@ -62,13 +62,13 @@ sealed class HearMonitor(
         );
 
         var data = LoadOrSaveData(ml, config, dataFile, init);
-        string[] features = [..AudioSegment.Length.For(x => $"E{x}"), nameof(AudioSegment.NormalizationFactor)];
+        string[] feats = [..AudioSegment.Length.For().Select(x => $"E{x}"), nameof(AudioSegment.NormalizationFactor)];
         Console.WriteLine("Hear Monitor will now train on your data. This may take a while, so please be patient!");
 #pragma warning disable IDISP001
         var transformer = ml.Transforms
 #pragma warning restore IDISP001
-           .ReplaceMissingValues(features.ConvertAll(x => new InputOutputColumnPair(x)))
-           .Append(ml.Transforms.Concatenate("Features", features))
+           .ReplaceMissingValues([..feats.Select(x => new InputOutputColumnPair(x))])
+           .Append(ml.Transforms.Concatenate("Features", feats))
            .Append(ml.Transforms.Conversion.MapValueToKey("Label", maximumNumberOfKeys: Config.Mouths.Length))
            .Append(trainer)
            .Append(ml.Transforms.Conversion.MapKeyToValue("PredictedLabel"))
