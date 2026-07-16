@@ -48,7 +48,6 @@
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Android'">
         <PackageReference Include="MonoGame.Framework.Android" Version="3.8.5"/>
-        <Reference Include="../../ModulePack/Assets/Plugins/Managed/wawa.*.dll"/>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'DesktopGL'">
         <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.5"/>
