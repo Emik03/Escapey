@@ -17,11 +17,8 @@ partial class InputProvider
         public override void Dispose() { }
 
         /// <inheritdoc />
-        public override bool Add(Columns key, ReadOnlySpan<char> value)
-        {
-            ref var k = ref Unsafe.AsRef(Span.LValue(value.TryInto<Input>())).DangerousGetValueOrNullReference();
-            return !Unsafe.IsNullRef(k) && _keys.AndAdd(new(key, k)) is var _;
-        }
+        public override bool Add(Columns key, ReadOnlySpan<char> value) =>
+            Input.TryParse(value, null, out var i) && _keys.AndAdd(new(key, i)) is var _;
 
         /// <inheritdoc />
         public override string GetValidValues() => Input.GetValidValues().Conjoin();

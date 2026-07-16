@@ -16,12 +16,12 @@ abstract partial class InputProvider
         const string KeyPrefix = "KEY_";
 
         /// <summary>Contains the shortened aliases for <see cref="KeyEventCodes"/>.</summary>
-        static readonly ImmutableArray<(string Alias, KeyEventCodes Code)> s_aliases =
+        static readonly ImmutableArray<(ReadOnlyMemory<char> Alias, KeyEventCodes Code)> s_aliases =
         [
             ..Enum
                .GetValues<KeyEventCodes>()
-               .Select(x => (Alias: $"{x}", Code: x))
-               .Where(x => x.Alias.StartsWith(KeyPrefix))
+               .Select(x => (Alias: x.ToString().AsMemory(), Code: x))
+               .Where(x => x.Alias.Span.StartsWith(KeyPrefix))
                .Select(x => x with { Alias = x.Alias[KeyPrefix.Length..] }),
         ];
 
