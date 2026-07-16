@@ -40,7 +40,11 @@ sealed class SpriteAttribute([UriString, StringSyntax(StringSyntaxAttribute.Uri)
     /// <param name="path">The path.</param>
     /// <returns>The full path.</returns>
     public static string GetFullPath(Game game, string path) =>
-        Path.Combine(Path.GetDirectoryName(Environment.ProcessPath) ?? "", game.Content.RootDirectory, path);
+        Path.Combine(
+            Path.GetDirectoryName(typeof(SpriteAttribute).Assembly.Location) ?? "",
+            game.Content.RootDirectory,
+            path
+        );
 
     /// <summary>Joins two <see cref="SpriteAttribute"/> instances.</summary>
     /// <param name="accumulator">The accumulator.</param>
