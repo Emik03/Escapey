@@ -58,11 +58,14 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
         base.Initialize();
         _ = IsDesktop && (Window.IsBorderless = true);
 
-        (_configWatcher = new(Path.GetDirectoryName(Config.TextFile) ?? "", Path.GetFileName(Config.TextFile))
-            { EnableRaisingEvents = true }).Changed += LoadConfig;
+        var directory = Path.GetDirectoryName(Config.TextFile) ?? Directory.GetDirectoryRoot(Config.TextFile);
+        var fileName = Path.GetFileName(Config.TextFile);
+        Directory.CreateDirectory(directory);
 
+        (_configWatcher = new(directory, fileName) { EnableRaisingEvents = true }).Changed += LoadConfig;
         Window.FileDrop += LoadConfig;
         LoadConfig();
+
         _hearMonitor = HearMonitor.From(this, _config);
     }
 

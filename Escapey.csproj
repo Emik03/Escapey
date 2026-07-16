@@ -4,7 +4,7 @@
         <Platforms>AnyCPU</Platforms>
         <DebugType>portable</DebugType>
         <OutputType>WinExe</OutputType>
-        <FileVersion>1.6.1</FileVersion>
+        <FileVersion>1.6.2</FileVersion>
         <CopyrightSince>2024</CopyrightSince>
         <TransformOnBuild>true</TransformOnBuild>
         <TargetFramework>net10.0</TargetFramework>
