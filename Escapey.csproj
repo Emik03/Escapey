@@ -34,13 +34,16 @@
         <Compile Update="Source/Sprites/Sprite.g.cs">
             <DependentUpon>Sprite.tt</DependentUpon>
         </Compile>
+        <Compile Update="Source/ML/AudioSegment.g.cs">
+            <DependentUpon>AudioSegment.tt</DependentUpon>
+        </Compile>
         <None Update="Source/Sprites/Sprite.tt">
             <Generator>TextTemplatingFileGenerator</Generator>
             <LastGenOutput>Sprite.g.cs</LastGenOutput>
         </None>
         <None Update="Source/ML/AudioSegment.tt">
             <Generator>TextTemplatingFileGenerator</Generator>
-            <LastGenOutput>AudioSegment.cs</LastGenOutput>
+            <LastGenOutput>AudioSegment.g.cs</LastGenOutput>
         </None>
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)' == 'Android'">

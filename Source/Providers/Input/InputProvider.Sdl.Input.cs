@@ -9,6 +9,8 @@ partial class InputProvider
         [Choice.Button<Buttons>.Mouse<MouseButtons>.Key<Keys>, Union]
         readonly partial struct Input : ISpanParsable<Input>
         {
+            const StringComparison O = StringComparison.OrdinalIgnoreCase;
+
             /// <summary>The prefix for button types.</summary>
             const string ButtonType = $"{nameof(Button)}.";
 
@@ -24,13 +26,12 @@ partial class InputProvider
 
             /// <inheritdoc />
             public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Input result) =>
-                s.Trim() is var t && t.StartsWith(ButtonType, StringComparison.OrdinalIgnoreCase) ?
-                    (result = t[ButtonType.Length..].IntoEnum<Buttons>()) != default(Buttons) :
-                    t.StartsWith(MouseType, StringComparison.OrdinalIgnoreCase) ?
-                        (result = t[MouseType.Length..].IntoEnum<MouseButtons>()) != default(MouseButtons) :
-                        (result = (t.StartsWith(KeyType, StringComparison.OrdinalIgnoreCase) ? t[KeyType.Length..] : t)
-                           .IntoEnum<Keys>()) !=
-                        default(Keys);
+                s.Trim() is var t && (result = default) is var _ && t.StartsWith(ButtonType, O) ?
+                    Enum.TryParse(t[ButtonType.Length..], true, out Buttons b) && (result = b) is var _ :
+                    t.StartsWith(MouseType, O) ?
+                        Enum.TryParse(t[MouseType.Length..], true, out MouseButtons m) && (result = m) is var _ :
+                        (t.StartsWith(KeyType, O) ? t[KeyType.Length..] : t) is var k &&
+                        Enum.TryParse(k, true, out Keys key) ? (result = key) is var _ : (result = default) is var _;
 
             /// <summary>Gets all valid values.</summary>
             /// <returns>All valid values.</returns>

@@ -125,7 +125,7 @@ abstract partial class InputProvider
                 if (alias.EqualsIgnoreCase(value))
                     return code;
 
-            return value.TryIntoEnum<KeyEventCodes>();
+            return Enum.TryParse(value, true, out KeyEventCodes e) ? e : null;
         }
     }
 }

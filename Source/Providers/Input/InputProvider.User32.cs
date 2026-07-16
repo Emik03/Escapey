@@ -22,11 +22,8 @@ partial class InputProvider
         public override void Dispose() { }
 
         /// <inheritdoc />
-        public override bool Add(Columns key, scoped ReadOnlySpan<char> value)
-        {
-            ref var k = ref Unsafe.AsRef(Span.LValue(value.TryIntoEnum<WinKeys>())).DangerousGetValueOrNullReference();
-            return !Unsafe.IsNullRef(k) && _keys.AndAdd(new(key, k)) is var _;
-        }
+        public override bool Add(Columns key, scoped ReadOnlySpan<char> value) =>
+            Enum.TryParse(value, true, out WinKeys k) && _keys.AndAdd(new(key, k)) is var _;
 
         /// <inheritdoc />
         public override string GetValidValues() => Enum.GetValues<WinKeys>().Conjoin();

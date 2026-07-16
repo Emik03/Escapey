@@ -22,7 +22,7 @@ sealed class AudioSegment
     public const int Length = AudioProvider.Length / 2;
 
     /// <summary>The Bluestein transform.</summary>
-    public static Bluestein Bluestein { get; } = AudioProvider.Length.Bluestein<float>();
+    public static Bluestein Bluestein { get; } = FastFourierTransform.Bluestein<float>(AudioProvider.Length);
 
     /// <summary>The inlined array.</summary>
     Array _array;
@@ -1663,7 +1663,7 @@ sealed class AudioSegment
         // To say I've optimized this algorithm is a bit of an understatement.
         Debug.Assert(realBuffer.Length >= Length);
         Debug.Assert(realBuffer.ToImmutableArray().All(x => x is <= 1 and >= -1));
-        var max = Bluestein.MaxHypotFFT(realBuffer, true);
+        var max = FastFourierTransform.MaxHypotFFT(Bluestein, realBuffer, true);
         ref var current = ref Head;
         ref var real = ref MemoryMarshal.GetReference(realBuffer);
         ref readonly var end = ref Unsafe.Add(ref current, Length);

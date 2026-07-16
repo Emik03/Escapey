@@ -11,7 +11,7 @@ static partial class FastFourierTransform
     /// <param name="imaginary">The imaginary part.</param>
     /// <exception cref="ArgumentOutOfRangeException">Any span provided does not have the same length.</exception>
     public static void FFT<T>(
-        this (ImmutableArray<T> Real, ImmutableArray<T> Imaginary) bluestein,
+        (ImmutableArray<T> Real, ImmutableArray<T> Imaginary) bluestein,
         scoped Span<T> real,
         scoped Span<T> imaginary
     )
@@ -91,7 +91,7 @@ static partial class FastFourierTransform
     /// <typeparam name="T">The type of the samples.</typeparam>
     /// <param name="length">The length.</param>
     /// <returns>The real and imaginary parts.</returns>
-    public static (ImmutableArray<T> Real, ImmutableArray<T> Imaginary) Bluestein<T>(this int length)
+    public static (ImmutableArray<T> Real, ImmutableArray<T> Imaginary) Bluestein<T>(int length)
         where T : ITrigonometricFunctions<T>
     {
         T[] re = new T[length], im = new T[length];
@@ -125,8 +125,9 @@ static partial class FastFourierTransform
     /// the whole buffer will be written to, which guarantees that the buffer will end up symmetric.
     /// </param>
     /// <exception cref="ArgumentOutOfRangeException">Any span provided does not have the same length.</exception>
+    // ReSharper disable RedundantSuppressNullableWarningExpression
     public static T MaxHypotFFT<T>(
-        this (ImmutableArray<T> Real, ImmutableArray<T> Imaginary) bluestein,
+        (ImmutableArray<T> Real, ImmutableArray<T> Imaginary) bluestein,
         scoped Span<T> realBuffer,
         bool skipHypotOnLastHalf = false
     )
@@ -135,7 +136,7 @@ static partial class FastFourierTransform
         var rent = ArrayPool<T>.Shared.Rent(realBuffer.Length);
         var imaginaryBuffer = rent.AsSpan().UnsafelyTake(realBuffer.Length);
         imaginaryBuffer.Clear();
-        bluestein.FFT(realBuffer, imaginaryBuffer);
+        FFT(bluestein, realBuffer, imaginaryBuffer);
         var max = T.Epsilon;
         ref var real = ref MemoryMarshal.GetReference(realBuffer);
         ref var imaginary = ref MemoryMarshal.GetReference(imaginaryBuffer);
@@ -148,8 +149,8 @@ static partial class FastFourierTransform
             while (Unsafe.IsAddressLessThan(real, end))
             {
                 max = max.Max(real = real.Hypot(imaginary));
-                real = ref Unsafe.Add(ref real, 1);
-                imaginary = ref Unsafe.Add(ref imaginary, 1);
+                real = ref Unsafe.Add(ref real, 1)!;
+                imaginary = ref Unsafe.Add(ref imaginary, 1)!;
             }
 
             return max;
@@ -159,14 +160,14 @@ static partial class FastFourierTransform
         ref var realLast = ref Unsafe.Add(ref real, length - Vector<T>.Count);
         ref readonly var imaginaryLast = ref Unsafe.Add(ref imaginary, length - Vector<T>.Count);
         StoreUnsafe(ref real, imaginary, ref maxVector);
-        real = ref Unsafe.Add(ref real, Vector<T>.Count);
-        imaginary = ref Unsafe.Add(ref imaginary, Vector<T>.Count);
+        real = ref Unsafe.Add(ref real, Vector<T>.Count)!;
+        imaginary = ref Unsafe.Add(ref imaginary, Vector<T>.Count)!;
 
         while (Unsafe.IsAddressLessThan(real, realLast))
         {
             StoreUnsafe(ref real, imaginary, ref maxVector);
-            real = ref Unsafe.Add(ref real, Vector<T>.Count);
-            imaginary = ref Unsafe.Add(ref imaginary, Vector<T>.Count);
+            real = ref Unsafe.Add(ref real, Vector<T>.Count)!;
+            imaginary = ref Unsafe.Add(ref imaginary, Vector<T>.Count)!;
         }
 
         StoreUnsafe(ref realLast, imaginaryLast, ref maxVector);
