@@ -2,5 +2,6 @@
 #if ANDROID
 [assembly: Android.App.Application(Debuggable = true)]
 #else
-EscapeyGame.Go();
+using EscapeyGame game = new();
+game.Run();
 #endif

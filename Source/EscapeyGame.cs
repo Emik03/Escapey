@@ -31,13 +31,6 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     /// <summary>Manages toggle states.</summary>
     Toggle _rainbow, _visible;
 
-    /// <summary>Runs the game.</summary>
-    public static void Go()
-    {
-        using EscapeyGame game = new();
-        game.Run();
-    }
-
     /// <summary>Prints each exception to the console.</summary>
     /// <param name="exceptions">The exceptions to log.</param>
     public static void Log(ImmutableArray<Exception> exceptions) => Log(exceptions.AsSpan());
@@ -144,58 +137,10 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     /// <summary>Loads or reloads the config.</summary>
     /// <param name="path">The sender, optionally containing the file to load.</param>
     /// <param name="__">The event args, ignored.</param>
-    [MemberNotNull(nameof(_animations))]
-    void LoadConfig(object? path = null, [UsedImplicitly] FileSystemEventArgs? __ = null)
+    void LoadConfig(object? path, [UsedImplicitly] FileSystemEventArgs? __)
     {
-        try
-        {
-            _config.Read(path as string, out var warnings);
-
-            if (_animations is not null && Content.RootDirectory == _config.Skin)
-                return;
-
-            _skinWatcher?.Changed -= LoadConfig;
-            _skinWatcher?.Dispose();
-
-            (_skinWatcher = !string.IsNullOrWhiteSpace(_config.Skin) &&
-                Path.Join(Environment.ProcessPath, _config.Skin) is var directory &&
-                Directory.Exists(directory)
-                    ? new(directory) { EnableRaisingEvents = true }
-                    : null)?.Changed += LoadConfig;
-
-            Content.RootDirectory = _config.Skin;
-            Content.Unload();
-            Log(warnings);
-
-            (GraphicsDeviceManager.PreferredBackBufferWidth, GraphicsDeviceManager.PreferredBackBufferHeight) =
-                (_animations = new(this))
-               .Add<Sprite.Legs>()
-               .Add<Sprite.Body>()
-               .Add(Sprite.Eyes.Happy)
-               .Add(Sprite.Mouth.Happy, 3)
-               .Add<Sprite.Keys.Background>()
-               .Add<Sprite.Keys.First>(visible: false)
-               .Add<Sprite.Keys.Second>(visible: false)
-               .Add<Sprite.Keys.Third>(visible: false)
-               .Add<Sprite.Keys.Fourth>(visible: false)
-               .Add<Sprite.Keys.Overlay>()
-               .Add<Sprite.Arm.Left>()
-               .Add<Sprite.Arm.Right>()
-               .Add<Sprite.LaughterMarks>()
-               .Sync<Sprite.Legs, Sprite.Arm.Left>()
-               .Change((Sprite.Keys.First)_config.Inverted.ToByte())
-               .Change((Sprite.Keys.Second)_config.Inverted.ToByte())
-               .Change((Sprite.Keys.Third)_config.Inverted.ToByte())
-               .Change((Sprite.Keys.Fourth)_config.Inverted.ToByte())
-               .Size<Sprite.Body>();
-
-            _reloadGraphics = true;
-        }
-        catch (Exception e)
-        {
+        if (Go(LoadConfig, in path, out var e))
             Log(e);
-            throw;
-        }
     }
 
     /// <summary>Loads or reloads the config.</summary>
@@ -205,5 +150,51 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
     {
         if (e.Files is [var file])
             LoadConfig(file);
+    }
+
+    [MemberNotNull(nameof(_animations))]
+    void LoadConfig(object? path = null)
+    {
+        _config.Read(path as string, out var warnings);
+
+        if (_animations is not null && Content.RootDirectory == _config.Skin)
+            return;
+
+        _skinWatcher?.Changed -= LoadConfig;
+        _skinWatcher?.Dispose();
+
+        (_skinWatcher = !string.IsNullOrWhiteSpace(_config.Skin) &&
+            Path.Join(Environment.ProcessPath, _config.Skin) is var directory &&
+            Directory.Exists(directory)
+                ? new(directory) { EnableRaisingEvents = true }
+                : null)?.Changed += LoadConfig;
+
+        Content.RootDirectory = _config.Skin;
+        Content.Unload();
+        Log(warnings);
+
+        (GraphicsDeviceManager.PreferredBackBufferWidth, GraphicsDeviceManager.PreferredBackBufferHeight) =
+            (_animations = new(this))
+           .Add<Sprite.Legs>()
+           .Add<Sprite.Body>()
+           .Add(Sprite.Eyes.Happy)
+           .Add(Sprite.Mouth.Happy, 3)
+           .Add<Sprite.Keys.Background>()
+           .Add<Sprite.Keys.First>(visible: false)
+           .Add<Sprite.Keys.Second>(visible: false)
+           .Add<Sprite.Keys.Third>(visible: false)
+           .Add<Sprite.Keys.Fourth>(visible: false)
+           .Add<Sprite.Keys.Overlay>()
+           .Add<Sprite.Arm.Left>()
+           .Add<Sprite.Arm.Right>()
+           .Add<Sprite.LaughterMarks>()
+           .Sync<Sprite.Legs, Sprite.Arm.Left>()
+           .Change((Sprite.Keys.First)_config.Inverted.ToByte())
+           .Change((Sprite.Keys.Second)_config.Inverted.ToByte())
+           .Change((Sprite.Keys.Third)_config.Inverted.ToByte())
+           .Change((Sprite.Keys.Fourth)_config.Inverted.ToByte())
+           .Size<Sprite.Body>();
+
+        _reloadGraphics = true;
     }
 }

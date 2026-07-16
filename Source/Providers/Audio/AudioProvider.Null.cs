@@ -13,8 +13,7 @@ partial class AudioProvider
         bool IsRenting { get; set; }
 
         public Null()
-            : this(new float[Length]) =>
-            IsRenting = false;
+            : this(new float[Length]) { }
 
         /// <inheritdoc />
         public override bool HasData => false;

@@ -108,17 +108,10 @@ partial class AudioProvider
                 return null;
 
             var real = ArrayPool<float>.Shared.Rent(Length);
-
-            try
-            {
-                current.CopyTo(real);
-                Segment.Forward(real.AsSpan().UnsafelyTake(Length));
-                return Segment;
-            }
-            finally
-            {
-                ArrayPool<float>.Shared.Return(real);
-            }
+            current.CopyTo(real);
+            Segment.Forward(real.AsSpan().UnsafelyTake(Length));
+            ArrayPool<float>.Shared.Return(real);
+            return Segment;
         }
 
         /// <inheritdoc />
