@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: LicenseRef-PolyForm-Strict
 namespace Escapey.ML;
 
 /// <summary>Represents the prediction of a phoneme from the model.</summary>

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: LicenseRef-PolyForm-Strict
 namespace Escapey.Domains;
 
 using static Sprite.Mouth;

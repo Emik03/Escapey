@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: LicenseRef-PolyForm-Strict
 namespace Escapey.Providers.Input;
 
 /// <summary>Provides input from an input provider.</summary>

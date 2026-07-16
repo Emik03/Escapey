@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: LicenseRef-PolyForm-Strict
 namespace Escapey.Providers.Input;
 #pragma warning disable SA1602 // ReSharper disable InconsistentNaming UnusedMember.Local
 abstract partial class InputProvider

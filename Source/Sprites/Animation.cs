@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: LicenseRef-PolyForm-Strict
 namespace Escapey.Sprites;
 
 /// <summary>Maintains a state machine for an animation.</summary>

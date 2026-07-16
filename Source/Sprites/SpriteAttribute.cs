@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: LicenseRef-PolyForm-Strict
 namespace Escapey.Sprites;
 
 /// <summary>Associates the applied member with a <see cref="Sprite"/> or directory of sprites.</summary>
