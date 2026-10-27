@@ -7,7 +7,7 @@ partial class AudioProvider
     {
         /// <summary>Represents the <c>pw_stream_events</c> type.</summary>
         [StructLayout(LayoutKind.Sequential)]
-        readonly unsafe partial struct StreamEvents(delegate*<State*, void> process, int version = 2)
+        readonly partial struct StreamEvents(delegate*<State*, void> process, int version = 2)
         {
             /// <summary>The version, which has to be this number.</summary>
             readonly int _version = version;

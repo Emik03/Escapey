@@ -10,7 +10,7 @@ partial class AudioProvider
         readonly partial struct Buffer
         {
             /// <summary>Contains the pointer to the <see cref="SpaBuffer"/>.</summary>
-            readonly unsafe SpaBuffer* _buffer;
+            readonly SpaBuffer* _buffer;
 
             /// <summary>Padding.</summary>
             readonly nint _userData;

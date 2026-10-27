@@ -17,7 +17,7 @@ partial class AudioProvider
 
             /// <summary>The temporary buffers.</summary>
             [UsedImplicitly]
-            unsafe fixed float _buffer[StackLength];
+            fixed float _buffer[StackLength];
 
             /// <summary>The pointers to PipeWire objects.</summary>
             nint _loop, _stream;

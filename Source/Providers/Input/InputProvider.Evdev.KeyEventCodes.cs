@@ -6,7 +6,6 @@ abstract partial class InputProvider
     sealed partial class Evdev
     {
         /// <summary>Contains input event codes related to any key or button.</summary>
-        // ReSharper disable IdentifierTypo
         enum KeyEventCodes : ushort
         {
             KEY_RESERVED = 0,

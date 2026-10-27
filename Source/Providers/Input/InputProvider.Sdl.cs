@@ -18,7 +18,7 @@ partial class InputProvider
 
         /// <inheritdoc />
         public override bool Add(Columns key, ReadOnlySpan<char> value) =>
-            Input.TryParse(value, null, out var i) && _keys.AndAdd(new(key, i)) is var _;
+            Input.TryParse(value, CultureInfo.InvariantCulture, out var i) && _keys.AndAdd(new(key, i)) is var _;
 
         /// <inheritdoc />
         public override string GetValidValues() => Input.GetValidValues().Conjoin();

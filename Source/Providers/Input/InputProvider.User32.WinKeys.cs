@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-PolyForm-Strict
 namespace Escapey.Providers.Input;
-
+#pragma warning disable CA1069 // ReSharper disable GrammarMistakeInComment UnusedMember.Local
 partial class InputProvider
 {
     partial class User32

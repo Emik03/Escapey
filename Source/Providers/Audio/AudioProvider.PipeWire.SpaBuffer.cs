@@ -7,7 +7,7 @@ partial class AudioProvider
     {
         /// <summary>Represents the <c>spa_buffer</c> type.</summary>
         [StructLayout(LayoutKind.Sequential)]
-        readonly unsafe struct SpaBuffer
+        readonly struct SpaBuffer
         {
             /// <summary>Padding.</summary>
             readonly uint _nMetas;

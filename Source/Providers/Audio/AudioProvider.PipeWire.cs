@@ -31,7 +31,7 @@ partial class AudioProvider
         /// Do not dereference this pointer if the <see cref="_task"/> returns <see langword="true"/>
         /// for <see cref="Task.IsCompleted"/>. Only the first element may be dereferenced.
         /// </para></remarks>
-        unsafe State* _state;
+        State* _state;
 
         /// <summary>The task that runs the PipeWire library.</summary>
         Task _task = Task.CompletedTask;

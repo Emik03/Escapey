@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    "net10.0": {
+    "net11.0": {
       "Absence.Fody": {
         "type": "Direct",
         "requested": "[2.0.11, )",
@@ -10,9 +10,9 @@
       },
       "Collections.Analyzer": {
         "type": "Direct",
-        "requested": "[0.2.14.2, )",
-        "resolved": "0.2.14.2",
-        "contentHash": "FCQXj050exC2BDv7/yq/ECQReT62/nU19ZX08eLGO1RCEg31Uf760nz5mQBb9nSM4mqkVnkVHA7XtBEZEUIzFA=="
+        "requested": "[0.3.2, )",
+        "resolved": "0.3.2",
+        "contentHash": "pAMX3fRm5FBuZPDgNRnDxCd4wQ9hzQvOrL/3jRGHXNs+XkSu+o9AQ3hMEm1mVJtH0iEdy+/1MZh38pwXhgklgA=="
       },
       "CommunityToolkit.HighPerformance": {
         "type": "Direct",
@@ -28,9 +28,9 @@
       },
       "Emik.SourceGenerators.Choices": {
         "type": "Direct",
-        "requested": "[1.4.17, )",
-        "resolved": "1.4.17",
-        "contentHash": "TNcX2Q7AfIBgYj5/qvTYPK/ZZh90jU+uB0dobkGXXYFu3pNivYJR8PHMT2p7vSW7Y77R2W0WPO2Bsb5WyK0cAQ=="
+        "requested": "[1.4.18, )",
+        "resolved": "1.4.18",
+        "contentHash": "8WE5Utk9ImLBqzyURCtKMe+XyQgjpEg4O8wK+mxdM53TfHTK2rwNupKB/+9VUqQKO7wgVdA0tq3bk8y5btIEQg=="
       },
       "Emik.SourceGenerators.Implicit": {
         "type": "Direct",
@@ -90,21 +90,15 @@
           "JetBrains.Annotations": "2021.1.0"
         }
       },
-      "Microsoft.CodeAnalysis.Analyzers": {
-        "type": "Direct",
-        "requested": "[5.6.0, )",
-        "resolved": "5.6.0",
-        "contentHash": "30ffAcvc+M4xXFN06dg2bKyH5eXgJQmyuB5H5cpC47559rQV5x7vZRyyC/YakNLQtBG3IdW/ZAyLCMeDBGDxXg=="
-      },
       "Microsoft.ML": {
         "type": "Direct",
-        "requested": "[6.0.0-preview.26160.2, )",
-        "resolved": "6.0.0-preview.26160.2",
-        "contentHash": "r/yUe5aGW7BL6ZyLaD7Fdsp2ocoreZXIpPfas95pigQiktaB1KoFFj4rEx35gM/A3M0xeu6lZYjpCrEByBwNhQ==",
+        "requested": "[6.0.0-preview.26513.4, )",
+        "resolved": "6.0.0-preview.26513.4",
+        "contentHash": "lu9eLSqraILbQul2K+teDwX18dkRZUXsTBUGpuY3CORKkv5d0fFxu40/hYdMRUiO/qvzn7yqziv3DXMud5VSJg==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "9.0.4",
-          "Microsoft.ML.CpuMath": "6.0.0-preview.26160.2",
-          "Microsoft.ML.DataView": "6.0.0-preview.26160.2",
+          "Microsoft.ML.CpuMath": "6.0.0-preview.26513.4",
+          "Microsoft.ML.DataView": "6.0.0-preview.26513.4",
           "Newtonsoft.Json": "13.0.3",
           "System.CodeDom": "9.0.4",
           "System.Numerics.Tensors": "9.0.4"
@@ -112,9 +106,9 @@
       },
       "MonoGame.Framework.DesktopGL": {
         "type": "Direct",
-        "requested": "[3.8.5, )",
-        "resolved": "3.8.5",
-        "contentHash": "oG5Thkic4i/6kX3OWtq2p6DEATflP71yM0p/1ymIoFaIp1xNFOqAd4jW2D9GIQLIMT6mn5RmJknYPqJnOQbi5w==",
+        "requested": "[3.8.6, )",
+        "resolved": "3.8.6",
+        "contentHash": "pVAwFo+wNCco7881v8VAkPcls/jYVyfzxx/eSBMuT45ZqZcTFqptsZxd8KwBEE5PQc5UxbX5erGh0rwtFGsKVg==",
         "dependencies": {
           "MonoGame.Library.OpenAL": "1.24.3.4",
           "MonoGame.Library.SDL": "2.32.10.2",
@@ -138,15 +132,9 @@
       },
       "StaticLambda.Fody": {
         "type": "Direct",
-        "requested": "[1.1.3, )",
-        "resolved": "1.1.3",
-        "contentHash": "Q1aj/jsDoHqz3hkXdex/bnrjV2wEP19Dxj+fgh0C+u0N0Ace8JC6a5xppW72NouwiukQmUE2iLCfINWYtdK+Mw=="
-      },
-      "Text.Analyzers": {
-        "type": "Direct",
-        "requested": "[5.6.0, )",
-        "resolved": "5.6.0",
-        "contentHash": "tDYK+kID75I18NAQhK4U+FolrlpeH4eiUg8d4H5GRbc3L5GMG0ltB7ioANCtuO8V4L7DL4U2bsG1B+zgbsXd/A=="
+        "requested": "[1.1.4, )",
+        "resolved": "1.1.4",
+        "contentHash": "hx+Lnjffz+Lv3GYNMLn31CBWQr5CxyRpgEBnVqfKWspmHBbRLXkkTk9KGVyYe3LwAOhoiFrzWv6Rbub50WgR4g=="
       },
       "Microsoft.Bcl.AsyncInterfaces": {
         "type": "Transitive",
@@ -155,16 +143,16 @@
       },
       "Microsoft.ML.CpuMath": {
         "type": "Transitive",
-        "resolved": "6.0.0-preview.26160.2",
-        "contentHash": "FsVNASiQrgXz1P+Y6k5SYez5TpUPFEF2sGNWItfheqzKTYB+LDQPUNhtppPiR0ipAkiBRRlXC5FxPyK2x3tRjA==",
+        "resolved": "6.0.0-preview.26513.4",
+        "contentHash": "1kfkAs5HNQDPrmI/Mv5+ZNMvqIiyKp3zS07baHLbdoAWa+E7GrZvkTRaORHZrRYLyeF4JJnWxqfYh1rJWNQA9Q==",
         "dependencies": {
           "System.Numerics.Tensors": "9.0.4"
         }
       },
       "Microsoft.ML.DataView": {
         "type": "Transitive",
-        "resolved": "6.0.0-preview.26160.2",
-        "contentHash": "53oyTKHxvoxVQA32BxalPEsDccG+0eY0AWJHdh5xn151mcFZOIR/bxWzKtunpov7lfANNauYza2iiNMmnOpi/Q=="
+        "resolved": "6.0.0-preview.26513.4",
+        "contentHash": "ofbKH9HDLOcL7pVPpNmlPF/VQjW1pSxgti9Ykt/O6zVY1WFmrmMaRsobVwirn9OOnrjqvZJoZDI++UqDkoM+5A=="
       },
       "MonoGame.Library.OpenAL": {
         "type": "Transitive",
