@@ -7,7 +7,7 @@ partial class AudioProvider
     {
         /// <summary>Represents the <c>spa_data</c> type.</summary>
         [StructLayout(LayoutKind.Sequential)]
-        readonly unsafe struct SpaData
+        readonly struct SpaData
         {
             /// <summary>Padding.</summary>
             readonly uint _type, _flags;
@@ -26,7 +26,8 @@ partial class AudioProvider
 
             /// <summary>Gets the <see cref="float"/> array.</summary>
             /// <returns>The <see cref="float"/> array.</returns>
-            public ReadOnlySpan<float> AsSpan => _data is null ? default : new(_data, _chunk->_size / sizeof(float));
+            public unsafe ReadOnlySpan<float> AsSpan =>
+                _data is null ? default : new(_data, _chunk->_size / sizeof(float));
         }
     }
 }
