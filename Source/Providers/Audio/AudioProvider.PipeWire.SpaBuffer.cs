@@ -19,7 +19,7 @@ partial class AudioProvider
             readonly nint _metas;
 
             /// <summary>Contains the pointer to the array.</summary>
-            internal readonly SpaData* _datas;
+            internal readonly unsafe SpaData* _datas;
         }
     }
 }

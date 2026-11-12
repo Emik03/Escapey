@@ -19,10 +19,10 @@ partial class AudioProvider
             readonly uint _mapOffset, _maxSize;
 
             /// <summary>Contains the pointer to the <see cref="float"/> array.</summary>
-            readonly float* _data;
+            readonly unsafe float* _data;
 
             /// <summary>Contains the pointer to the <c>spa_chunk</c> type.</summary>
-            readonly SpaChunk* _chunk;
+            readonly unsafe SpaChunk* _chunk;
 
             /// <summary>Gets the <see cref="float"/> array.</summary>
             /// <returns>The <see cref="float"/> array.</returns>

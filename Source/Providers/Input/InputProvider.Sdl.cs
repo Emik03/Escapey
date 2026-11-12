@@ -34,10 +34,10 @@ partial class InputProvider
             foreach (var (column, input) in _keys.AsSpan())
                 ret |= input switch
                 {
-                    null => false,
-                    Keys k => keyboard.IsKeyDown(k),
-                    Buttons b => gamepads.IsButtonDown(b),
-                    MouseButtons m => mouse.ToMouseButtons().Has(m),
+                    { IsMouse: true, Mouse: var m } => mouse.ToMouseButtons().Has(m),
+                    { IsButton: true, Button: var b } => gamepads.IsButtonDown(b),
+                    { IsKey: true, Key: var k } => keyboard.IsKeyDown(k),
+                    _ => false,
                 }
                     ? column
                     : default;

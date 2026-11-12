@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    "net11.0": {
+    "net9.0": {
       "Absence.Fody": {
         "type": "Direct",
         "requested": "[2.0.11, )",
@@ -92,23 +92,29 @@
       },
       "Microsoft.ML": {
         "type": "Direct",
-        "requested": "[6.0.0-preview.26513.4, )",
-        "resolved": "6.0.0-preview.26513.4",
-        "contentHash": "lu9eLSqraILbQul2K+teDwX18dkRZUXsTBUGpuY3CORKkv5d0fFxu40/hYdMRUiO/qvzn7yqziv3DXMud5VSJg==",
+        "requested": "[6.0.0, )",
+        "resolved": "6.0.0",
+        "contentHash": "1UfEGtCn7/zRAaOG20N9TLbVCPIbtweQI7tZlpgG7ZwyEklXNxbx0fgXFtAbk8os6EmX4GIEwUIKzQBpfIgGnw==",
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "9.0.4",
-          "Microsoft.ML.CpuMath": "6.0.0-preview.26513.4",
-          "Microsoft.ML.DataView": "6.0.0-preview.26513.4",
+          "Microsoft.ML.CpuMath": "6.0.0",
+          "Microsoft.ML.DataView": "6.0.0",
           "Newtonsoft.Json": "13.0.3",
+          "System.Buffers": "4.6.1",
           "System.CodeDom": "9.0.4",
-          "System.Numerics.Tensors": "9.0.4"
+          "System.Collections.Immutable": "9.0.4",
+          "System.Memory": "4.6.3",
+          "System.Numerics.Tensors": "9.0.4",
+          "System.Reflection.Emit.Lightweight": "4.7.0",
+          "System.Runtime.CompilerServices.Unsafe": "6.1.2",
+          "System.Threading.Channels": "9.0.4"
         }
       },
       "MonoGame.Framework.DesktopGL": {
         "type": "Direct",
-        "requested": "[3.8.6, )",
-        "resolved": "3.8.6",
-        "contentHash": "pVAwFo+wNCco7881v8VAkPcls/jYVyfzxx/eSBMuT45ZqZcTFqptsZxd8KwBEE5PQc5UxbX5erGh0rwtFGsKVg==",
+        "requested": "[3.8.6.1, )",
+        "resolved": "3.8.6.1",
+        "contentHash": "jhwekPAUveWBg+qq1hMco0Hc/HKjm65ebEFJAa4BOWVhFEhmQABH0Pmza+/FcVa1PyKo0l0/GLJYPD5Ku+V63A==",
         "dependencies": {
           "MonoGame.Library.OpenAL": "1.24.3.4",
           "MonoGame.Library.SDL": "2.32.10.2",
@@ -143,16 +149,22 @@
       },
       "Microsoft.ML.CpuMath": {
         "type": "Transitive",
-        "resolved": "6.0.0-preview.26513.4",
-        "contentHash": "1kfkAs5HNQDPrmI/Mv5+ZNMvqIiyKp3zS07baHLbdoAWa+E7GrZvkTRaORHZrRYLyeF4JJnWxqfYh1rJWNQA9Q==",
+        "resolved": "6.0.0",
+        "contentHash": "uKTRWLcDQWL4e64hdrTy1VtaCzsnwQ+BMJHDIDmWGkA/7Ek56HFshxnMbQdJuMxBYcL+Q2QVhCGDJgB4KOMqww==",
         "dependencies": {
           "System.Numerics.Tensors": "9.0.4"
         }
       },
       "Microsoft.ML.DataView": {
         "type": "Transitive",
-        "resolved": "6.0.0-preview.26513.4",
-        "contentHash": "ofbKH9HDLOcL7pVPpNmlPF/VQjW1pSxgti9Ykt/O6zVY1WFmrmMaRsobVwirn9OOnrjqvZJoZDI++UqDkoM+5A=="
+        "resolved": "6.0.0",
+        "contentHash": "AShiBd/PYFmbtwQAXLT+c9rsEdHHQL1TdiGCkfe4mKq2+j7p1bnfKk/0aR5vFfwkO8lbUcSLUH4X6J0SuxM1Zw==",
+        "dependencies": {
+          "System.Buffers": "4.6.1",
+          "System.Collections.Immutable": "9.0.4",
+          "System.Memory": "4.6.3",
+          "System.Runtime.CompilerServices.Unsafe": "6.1.2"
+        }
       },
       "MonoGame.Library.OpenAL": {
         "type": "Transitive",
@@ -172,17 +184,56 @@
       "NVorbis": {
         "type": "Transitive",
         "resolved": "0.10.4",
-        "contentHash": "WYnil3DhQHzjCY0dM9I2B3r1vWip90AOuQd25KE4NrjPQBg0tBJFluRLm5YPnO5ZLDmwrfosY8jCQGQRmWI/Pg=="
+        "contentHash": "WYnil3DhQHzjCY0dM9I2B3r1vWip90AOuQd25KE4NrjPQBg0tBJFluRLm5YPnO5ZLDmwrfosY8jCQGQRmWI/Pg==",
+        "dependencies": {
+          "System.Memory": "4.5.3",
+          "System.ValueTuple": "4.5.0"
+        }
+      },
+      "System.Buffers": {
+        "type": "Transitive",
+        "resolved": "4.6.1",
+        "contentHash": "N8GXpmiLMtljq7gwvyS+1QvKT/W2J8sNAvx+HVg4NGmsG/H+2k/y9QI23auLJRterrzCiDH+IWAw4V/GPwsMlw=="
       },
       "System.CodeDom": {
         "type": "Transitive",
         "resolved": "9.0.4",
         "contentHash": "aJdv7Z87PoPW8ijvGIincocooYRbH3Umtlz7OrJKf6GDInbdu1bvk5X1fFlmbl7WP+9ntoIBd7NjKz+siVFdHA=="
       },
+      "System.Collections.Immutable": {
+        "type": "Transitive",
+        "resolved": "9.0.4",
+        "contentHash": "wfm2NgK22MmBe5qJjp52qzpkeDZKb4l9LbdubhZSehY1z4LS+lld6R+B+UQNb2AZRHu/QJlHxEUcRst5hIEejg=="
+      },
+      "System.Memory": {
+        "type": "Transitive",
+        "resolved": "4.6.3",
+        "contentHash": "qdcDOgnFZY40+Q9876JUHnlHu7bosOHX8XISRoH94fwk6hgaeQGSgfZd8srWRZNt5bV9ZW2TljcegDNxsf+96A=="
+      },
       "System.Numerics.Tensors": {
         "type": "Transitive",
         "resolved": "9.0.4",
         "contentHash": "ynVvqELpMWGQJ1Y90rlAmuTiSQIkXD0W5AMj7pVpEjECmrcIJLexIBblgccerHFijayfcsl1KCbkk+Sg5cS9vQ=="
+      },
+      "System.Reflection.Emit.Lightweight": {
+        "type": "Transitive",
+        "resolved": "4.7.0",
+        "contentHash": "a4OLB4IITxAXJeV74MDx49Oq2+PsF6Sml54XAFv+2RyWwtDBcabzoxiiJRhdhx+gaohLh4hEGCLQyBozXoQPqA=="
+      },
+      "System.Runtime.CompilerServices.Unsafe": {
+        "type": "Transitive",
+        "resolved": "6.1.2",
+        "contentHash": "2hBr6zdbIBTDE3EhK7NSVNdX58uTK6iHW/P/Axmm9sl1xoGSLqDvMtpecn226TNwHByFokYwJmt/aQQNlO5CRw=="
+      },
+      "System.Threading.Channels": {
+        "type": "Transitive",
+        "resolved": "9.0.4",
+        "contentHash": "4qBn2H6/aXBpE/Pm3wY5yusY/pEvQz99NlWHrTUji0qCmOdbhhjaALcpmbfW2ksxlPM6i6S+QFLkpOQdyfeKYQ=="
+      },
+      "System.ValueTuple": {
+        "type": "Transitive",
+        "resolved": "4.5.0",
+        "contentHash": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ=="
       }
     }
   }

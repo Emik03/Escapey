@@ -212,11 +212,7 @@ sealed partial class Config : IDisposable
          Determines the brightness of the eyes and face when rainbow mode is on.
          """
      ), JsonPropertyOrder(25)]
-    public float RainbowBrightness
-    {
-        get;
-        [UsedImplicitly] private set => field = float.Clamp(value, 0, 1);
-    } = 1;
+    public Interval RainbowBrightness { get; [UsedImplicitly] private set; } = new(1);
 
     [Description(
          """
@@ -225,11 +221,7 @@ sealed partial class Config : IDisposable
          Determines the saturation of the eyes and face when rainbow mode is on.
          """
      ), JsonPropertyOrder(26)]
-    public float RainbowSaturation
-    {
-        get;
-        [UsedImplicitly] private set => field = float.Clamp(value, 0, 1);
-    } = 1;
+    public Interval RainbowSaturation { get; [UsedImplicitly] private set; } = new(1);
 
     [Description(
          """
@@ -238,11 +230,7 @@ sealed partial class Config : IDisposable
          Determines the speed in which the rainbow colors cycle through.
          """
      ), JsonPropertyOrder(27)]
-    public float RainbowSpeed
-    {
-        get;
-        [UsedImplicitly] private set => field = float.Clamp(value, 0, 1);
-    } = 1;
+    public Interval RainbowSpeed { get; [UsedImplicitly] private set; } = new(1);
 
     [Description(
          """
@@ -268,11 +256,7 @@ sealed partial class Config : IDisposable
          The width of the last guesses visualization relative to the entire screen.
          """
      ), JsonPropertyOrder(29)]
-    public float OrderWidth
-    {
-        get;
-        [UsedImplicitly] private set => field = float.Clamp(value, 0, 1);
-    } = 0.2f;
+    public Interval OrderWidth { get; [UsedImplicitly] private set; } = new(0.2f);
 
     [Description(
          """
@@ -282,11 +266,7 @@ sealed partial class Config : IDisposable
          The width of the frequency spectrum relative to the entire screen.
          """
      ), JsonPropertyOrder(30)]
-    public float FrequencyWidth
-    {
-        get;
-        [UsedImplicitly] private set => field = float.Clamp(value, 0, 1);
-    } = 0.8f;
+    public Interval FrequencyWidth { get; [UsedImplicitly] private set; } = new(0.8f);
 
     [Description(
          """

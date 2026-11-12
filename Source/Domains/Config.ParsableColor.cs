@@ -46,7 +46,7 @@ partial class Config
             (result = Parse(s)) is var _;
 
         /// <inheritdoc />
-        public static ParsableColor Parse(string s, IFormatProvider? provider) => Parse(s);
+        public static ParsableColor Parse(string? s, IFormatProvider? provider) => Parse(s);
 
         /// <inheritdoc />
         public static ParsableColor Parse(ReadOnlySpan<char> s, IFormatProvider? provider) => Parse(s);

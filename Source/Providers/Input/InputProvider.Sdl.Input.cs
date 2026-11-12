@@ -6,7 +6,7 @@ partial class InputProvider
     sealed partial class Sdl
     {
         /// <summary>Represents some input.</summary>
-        [Choice.Button<Buttons>.Mouse<MouseButtons>.Key<Keys>, Union]
+        [Choice.Button<Buttons>.Mouse<MouseButtons>.Key<Keys>]
         readonly partial struct Input : ISpanParsable<Input>
         {
             const StringComparison O = StringComparison.OrdinalIgnoreCase;

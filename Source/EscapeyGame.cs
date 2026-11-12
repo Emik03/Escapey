@@ -37,13 +37,14 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
 
     /// <summary>Prints each exception to the console.</summary>
     /// <param name="exceptions">The exceptions to log.</param>
-    public static void Log(params ReadOnlySpan<Exception?> exceptions)
+    public static void Log(params ReadOnlySpan<Exception> exceptions)
     {
         if (s_silent)
             return;
 
         foreach (var ex in exceptions)
         {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (ex is null)
                 continue;
 
@@ -75,7 +76,10 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
         if (isDisposing)
         {
             Window.FileDrop -= LoadConfig;
-            _skinWatcher?.Changed -= LoadConfig;
+
+            if (_skinWatcher is not null)
+                _skinWatcher.Changed -= LoadConfig;
+
             _configWatcher.Changed -= LoadConfig;
             _hearMonitor.Dispose();
             _skinWatcher?.Dispose();
@@ -163,14 +167,18 @@ public sealed partial class EscapeyGame() : Letterboxed2DGame(930, 779, 0.5f)
         if (_animations is not null && Content.RootDirectory == _config.Skin)
             return;
 
-        _skinWatcher?.Changed -= LoadConfig;
-        _skinWatcher?.Dispose();
+        if (_skinWatcher is not null)
+        {
+            _skinWatcher.Changed -= LoadConfig;
+            _skinWatcher.Dispose();
+        }
 
-        (_skinWatcher = !string.IsNullOrWhiteSpace(_config.Skin) &&
+        if ((_skinWatcher = !string.IsNullOrWhiteSpace(_config.Skin) &&
             Path.Join(Environment.ProcessPath, _config.Skin) is var directory &&
             Directory.Exists(directory)
                 ? new(directory) { EnableRaisingEvents = true }
-                : null)?.Changed += LoadConfig;
+                : null) is not null)
+            _skinWatcher.Changed += LoadConfig;
 
         Content.RootDirectory = _config.Skin;
         Content.Unload();

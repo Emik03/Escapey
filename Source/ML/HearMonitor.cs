@@ -132,7 +132,7 @@ sealed class HearMonitor(
     /// <inheritdoc />
     public override void Draw(GameTime gameTime)
     {
-        if (!Visible || config.FrequencyGraph.Result.A is 0 || config.FrequencyWidth is 0)
+        if (!Visible || config.FrequencyGraph.Result.A is 0 || config.FrequencyWidth.Result is 0)
             return;
 
         var color = config.FrequencyGraph;
